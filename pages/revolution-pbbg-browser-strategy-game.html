@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A persistent browser-based multiplayer game (PBBG) built on native PHP, MySQL, and vanilla JavaScript. Tribal strategy at its core — resource economies, research trees, syndicates, live chat, and a roguelite combat module, all running inside a single AJAX-driven page.">
+  <title>Revolution — Persistent Browser-Based Multiplayer Strategy Game — Andre V. Pesquerra</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/project.css">
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────────── -->
+<nav id="nav" aria-label="Primary navigation">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-logo">Andre<span>.</span></a>
+    <a href="../index.html#projects" class="btn-ghost" style="font-size:0.72rem;padding:0.5rem 1.2rem;">
+      ← All Projects
+    </a>
+  </div>
+</nav>
+
+<!-- ── Hero ──────────────────────────────────────────────────── -->
+<section class="proj-hero">
+  <div class="hero-bg-lines" aria-hidden="true"></div>
+  <div class="container">
+    <div class="proj-hero-inner">
+
+            <div class="proj-tags reveal">
+                <span class="project-tag">Web Application</span>
+                <span class="project-tag">Persistent Browser-Based Game</span>
+                <span class="project-tag">Full-Stack</span>
+              </div>
+      
+      <h1 class="proj-title reveal reveal-delay-1">Revolution — Persistent Browser-Based Multiplayer Strategy Game</h1>
+
+            <p class="proj-summary reveal reveal-delay-2">
+        A persistent browser-based multiplayer game (PBBG) built on native PHP, MySQL, and vanilla JavaScript. Tribal strategy at its core — resource economies, research trees, syndicates, live chat, and a roguelite combat module, all running inside a single AJAX-driven page.      </p>
+      
+      <div class="proj-hero-meta reveal reveal-delay-3">
+        
+        <div class="proj-actions">
+                    <a href="https://gameseek.com/gs2"
+             class="btn-primary" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+            </svg>
+            Live Site
+          </a>
+                            </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<div class="container">
+  <div class="proj-body">
+
+    <aside class="proj-sidebar reveal">
+      
+            <div class="proj-sidebar-block">
+        <p class="proj-sidebar-label">Live URL</p>
+        <a href="https://gameseek.com/gs2"
+           class="proj-sidebar-link" target="_blank" rel="noopener">
+          gameseek.com        </a>
+      </div>
+          </aside>
+
+    <div class="proj-content">
+
+            <div class="proj-section reveal">
+        <div class="gold-rule"><span></span><p>Overview</p></div>
+        <div class="proj-prose">
+          🌱 The Beginning — Foundation &amp; Planning<br />
+Revolution started as a client project with a deceptively simple brief: a browser game people could keep coming back to. No engine, no framework — just native PHP with PDO, MySQL, and vanilla JavaScript. Every system had to be designed from the database up.<br />
+<br />
+The first decision shaped everything after it: a single-entry architecture. One index.php, every interaction routed through AJAX and gated by $_POST[&#039;action&#039;]. No page reloads, no fragmented state — the whole game lives on one screen and rewrites itself as the player moves through it.<br />
+<br />
+🏗️ Building the World<br />
+The Monolith became the hub — chat, stylist, shop, syndicates, trainer, hunting board, and proving grounds all under one roof. From there the game grew outward:<br />
+<br />
+• Resource management — Lumber, Mining, and Farm systems, each with its own research skill tree and workforce assignment, so players allocate limited labor across competing economies.<br />
+• Bullet storm roguelite — a self-contained action module (crimes_against_humanity.php) that breaks the strategy loop with something fast and twitchy.<br />
+• Syndicates — the social layer, where players group up and compete for territory and standing.<br />
+• Achievements — long-tail progression that gives returning players something to chase.<br />
+<br />
+🎯 The Approach<br />
+I handled the entire stack solo: schema design, backend logic, frontend behavior, and UI/UX. Working against a live MySQL database through DBeaver, deploying PHP over FTP with FileZilla, and iterating directly against real player data rather than a sandbox.<br />
+<br />
+Discipline mattered more than cleverness. All JavaScript declared as globals in index.php instead of scattered inline scripts. Data handed to the frontend through base64-encoded data-* attributes so nothing broke on quoting or encoding. Consistent asset path prefixes so the live deployment and local WAMP build behaved identically.        </div>
+      </div>
+      
+            <div class="proj-section reveal">
+        <div class="gold-rule"><span></span><p>Challenges</p></div>
+        <div class="proj-prose">
+          🛠️ Technical Challenges<br />
+Building a persistent multiplayer world without a framework means you are the framework. Every problem below had to be solved from scratch:<br />
+<br />
+• State without page reloads — with everything routed through a single entry point, action routing and response handling had to be airtight. A malformed AJAX payload could not be allowed to leave the player stuck in a half-rendered state.<br />
+• Passing complex data to JavaScript — inline JSON kept breaking on quotes and special characters inside player-generated content. Base64-encoding into data-* attributes ended that class of bug permanently.<br />
+• Script collisions — dozens of interactive modules loading into one page meant JS conflicts everywhere. Declaring everything as controlled globals in index.php made the load order predictable instead of accidental.<br />
+• MariaDB vs MySQL drift — DEFAULT current_timestamp() on bigint columns silently failed on the live MariaDB server while working fine locally. It resurfaced repeatedly across migrations until I standardized the column definitions across both environments.<br />
+• Case-sensitive deployments — the project directory is destroym_gamePBBG on the live Linux server and destroym_gamepbbg on my Windows machine. Linux does not forgive that. Every path reference had to be verified before deploy, not after.<br />
+• Balancing economies — research trees and workforce assignment only feel meaningful if the tradeoffs are real. Tuning those numbers is an ongoing design problem, not a code problem.        </div>
+      </div>
+      
+            <div class="proj-section reveal">
+        <div class="gold-rule"><span></span><p>Outcomes</p></div>
+        <div class="proj-prose">
+          🏁 Outcomes<br />
+Revolution runs live and persistent, with players moving through the Monolith, building economies, joining syndicates, and grinding achievements across sessions.<br />
+<br />
+What I took away from it:<br />
+<br />
+• Proof that a full multiplayer game loop can be built and maintained on native PHP and vanilla JS — no framework, no build step, no dependency graph to babysit.<br />
+• A single-entry AJAX architecture I now reuse across client projects, refined by the failure modes this game exposed.<br />
+• Real experience deploying to and debugging against a live production database instead of a comfortable local copy.<br />
+• Hard-won environment discipline: casing, timestamp defaults, and path handling are not details on Linux, they are the difference between a working deploy and a white screen.<br />
+<br />
+Most of all, it taught me how to own an entire stack alone — design the schema, write the backend, build the frontend, ship it, then keep it alive while people are playing on it.        </div>
+      </div>
+      
+      
+    </div>
+  </div>
+</div>
+
+<div class="proj-adjacent" aria-label="More projects">
+  <div class="container">
+    <div class="proj-adjacent-inner">
+            <a href="web-based-gavina-noble-dental-clinic-appointment-system-with-mobile-application.html" class="adj-card adj-prev">
+        <span class="adj-label">← Previous</span>
+        <span class="adj-title">Web-based Gavina Noble Dental Clinic Appointment System with Mobile Application</span>
+      </a>
+      
+      <a href="../index.html#projects" class="adj-all">All Projects</a>
+
+            <a href="driver-heart-rate-hrv-monitoring-system.html" class="adj-card adj-next">
+        <span class="adj-label">Next →</span>
+        <span class="adj-title">Driver Heart Rate &amp; HRV Monitoring System</span>
+      </a>
+          </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container footer-inner">
+    <p class="footer-copy">© 2026 Andre V. Pesquerra. All rights reserved.</p>
+    <a href="#" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" stroke="currentColor">
+        <path d="M5 15l7-7 7 7"/>
+      </svg>
+      Back to top
+    </a>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js" defer></script>
+</body>
+</html>

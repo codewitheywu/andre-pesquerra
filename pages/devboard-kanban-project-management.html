@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A self-built kanban board for tracking development work — boards, columns, and cards with full drag-and-drop reordering, task assignment, and live status updates. Built on native PHP, MySQL, and vanilla JavaScript, and used to run a 3-person development team.">
+  <title>DevBoard — Drag-and-Drop Kanban Project Management Tool — Andre V. Pesquerra</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/project.css">
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────────── -->
+<nav id="nav" aria-label="Primary navigation">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-logo">Andre<span>.</span></a>
+    <a href="../index.html#projects" class="btn-ghost" style="font-size:0.72rem;padding:0.5rem 1.2rem;">
+      ← All Projects
+    </a>
+  </div>
+</nav>
+
+<!-- ── Hero ──────────────────────────────────────────────────── -->
+<section class="proj-hero">
+  <div class="hero-bg-lines" aria-hidden="true"></div>
+  <div class="container">
+    <div class="proj-hero-inner">
+
+            <div class="proj-tags reveal">
+                <span class="project-tag">Web Application</span>
+                <span class="project-tag">Project Management Tool</span>
+                <span class="project-tag">Full-Stack</span>
+              </div>
+      
+      <h1 class="proj-title reveal reveal-delay-1">DevBoard — Drag-and-Drop Kanban Project Management Tool</h1>
+
+            <p class="proj-summary reveal reveal-delay-2">
+        A self-built kanban board for tracking development work — boards, columns, and cards with full drag-and-drop reordering, task assignment, and live status updates. Built on native PHP, MySQL, and vanilla JavaScript, and used to run a 3-person development team.      </p>
+      
+      <div class="proj-hero-meta reveal reveal-delay-3">
+        
+        <div class="proj-actions">
+                    <a href="https://devboard.infinityfreeapp.com/register.php"
+             class="btn-primary" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+            </svg>
+            Live Site
+          </a>
+                            </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<div class="container">
+  <div class="proj-body">
+
+    <aside class="proj-sidebar reveal">
+      
+            <div class="proj-sidebar-block">
+        <p class="proj-sidebar-label">Live URL</p>
+        <a href="https://devboard.infinityfreeapp.com/register.php"
+           class="proj-sidebar-link" target="_blank" rel="noopener">
+          devboard.infinityfreeapp.com        </a>
+      </div>
+          </aside>
+
+    <div class="proj-content">
+
+            <div class="proj-section reveal">
+        <div class="gold-rule"><span></span><p>Overview</p></div>
+        <div class="proj-prose">
+          🌱 Why I Built It<br />
+DevBoard started as a personal project born out of a practical problem: I was coordinating work across a small dev team and every existing tool was either bloated, paywalled at the exact feature I needed, or built around a workflow that was not ours.<br />
+<br />
+So I built the board I actually wanted. Native PHP with PDO on the backend, MySQL for persistence, vanilla JavaScript on the frontend — no framework, no build step, no dependency tree to maintain.<br />
+<br />
+👥 Leading the Team<br />
+The project stopped being purely personal once three other developers came onto it. I led the team: setting the direction, defining the data model, dividing the work, reviewing what came back, and making the final calls on architecture.<br />
+<br />
+That changed how I had to build. Code that only I would ever touch can be as clever as I like. Code that three other people are writing against needs consistent naming, predictable structure, and conventions everyone follows. Deciding those conventions up front — and then actually holding to them in review — turned out to be the most important thing I did on this project.<br />
+<br />
+It also meant DevBoard was dogfooding itself: we tracked our own work on the board while building it. Every friction point in the interface got felt firsthand within a day.<br />
+<br />
+🎯 The Build<br />
+The core is a familiar kanban model — boards contain columns, columns contain cards — implemented with a relational schema where card position and column membership are first-class persisted data, not just visual state.<br />
+<br />
+Drag-and-drop was the centerpiece. A card should move the instant you release it, with the board reflecting the new order immediately and the database catching up behind it. Every drop fires an asynchronous request that writes the new column and position, while the interface has already moved on.<br />
+<br />
+On top of that sits task assignment, so each card has an owner and everyone can see who is holding what at a glance.        </div>
+      </div>
+      
+            <div class="proj-section reveal">
+        <div class="gold-rule"><span></span><p>Challenges</p></div>
+        <div class="proj-prose">
+          🛠️ Technical Challenges<br />
+Drag-and-drop looks trivial from the outside. It is not.<br />
+<br />
+• Persisting order — the hardest part of any kanban board is not moving the card, it is remembering where it went. Dropping a card between two others means every card below it shifts. Naive approaches rewrite the entire column on every move, which does not scale and floods the database with writes. Getting an ordering scheme that stays stable across repeated reordering took several attempts.<br />
+• Optimistic UI vs. reality — the card has to move instantly on drop, before the server confirms anything. That means the interface can be showing a state the database has not accepted yet. Handling the failure case cleanly — reverting the card without confusing the user — required designing for it deliberately rather than assuming requests succeed.<br />
+• Concurrent edits — with multiple people on the same board, two users can move cards in the same column at nearly the same moment. Reconciling that without cards disappearing or duplicating meant thinking carefully about how position updates are written and how a stale client refreshes.<br />
+• Building drag-and-drop in vanilla JS — no drag library meant handling pointer events, drop zone detection, placeholder rendering, and edge cases like dragging outside the board or releasing over an invalid target, all by hand. Making it feel smooth rather than merely functional was a long tail of small fixes.<br />
+• Leading rather than just building — the real challenge was resisting the urge to write everything myself. Handing work to three developers, letting their approach differ from mine where it did not matter, and pushing back where it did, was a different skill from coding. Untangling merge conflicts and inconsistent conventions early taught me to define the structure before distributing the work, not after.        </div>
+      </div>
+      
+            <div class="proj-section reveal">
+        <div class="gold-rule"><span></span><p>Outcomes</p></div>
+        <div class="proj-prose">
+          🏁 Outcomes<br />
+DevBoard works and was genuinely used — by me and by the three developers I led, to manage the very project it was built for.<br />
+<br />
+What it produced:<br />
+<br />
+• A complete, working kanban tool built entirely from scratch on native PHP, MySQL, and vanilla JavaScript — proof that the polished interactions people associate with heavy frontend frameworks are achievable without one.<br />
+• A drag-and-drop implementation I understand at every level, because I wrote every part of it. That understanding transfers directly to every interactive interface I have built since.<br />
+• Real technical leadership experience: owning the architecture, dividing work across three developers, reviewing their code, and being accountable for the result.<br />
+• A much better instinct for optimistic UI — building interfaces that respond immediately and reconcile with the server afterward, rather than making users wait on a round trip.<br />
+<br />
+The most valuable outcome was not the tool. It was learning that on a team, the architecture decisions you make in the first week determine how much time everyone wastes in the following months.        </div>
+      </div>
+      
+      
+    </div>
+  </div>
+</div>
+
+<div class="proj-adjacent" aria-label="More projects">
+  <div class="container">
+    <div class="proj-adjacent-inner">
+            <a href="driver-heart-rate-hrv-monitoring-system.html" class="adj-card adj-prev">
+        <span class="adj-label">← Previous</span>
+        <span class="adj-title">Driver Heart Rate &amp; HRV Monitoring System</span>
+      </a>
+      
+      <a href="../index.html#projects" class="adj-all">All Projects</a>
+
+            <div></div>
+          </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container footer-inner">
+    <p class="footer-copy">© 2026 Andre V. Pesquerra. All rights reserved.</p>
+    <a href="#" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" stroke="currentColor">
+        <path d="M5 15l7-7 7 7"/>
+      </svg>
+      Back to top
+    </a>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js" defer></script>
+</body>
+</html>
