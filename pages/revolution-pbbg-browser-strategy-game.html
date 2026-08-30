@@ -73,53 +73,26 @@
             <div class="proj-section reveal">
         <div class="gold-rule"><span></span><p>Overview</p></div>
         <div class="proj-prose">
-          🌱 The Beginning — Foundation &amp; Planning<br />
-Revolution started as a client project with a deceptively simple brief: a browser game people could keep coming back to. No engine, no framework — just native PHP with PDO, MySQL, and vanilla JavaScript. Every system had to be designed from the database up.<br />
-<br />
-The first decision shaped everything after it: a single-entry architecture. One index.php, every interaction routed through AJAX and gated by $_POST[&#039;action&#039;]. No page reloads, no fragmented state — the whole game lives on one screen and rewrites itself as the player moves through it.<br />
+          🌱 Foundation<br />
+Revolution started as a client brief: a browser game people would keep coming back to — no engine, no framework, just native PHP with PDO, MySQL, and vanilla JavaScript. The core decision was a single-entry architecture: one index.php, every interaction routed through AJAX and gated by $_POST[&#039;action&#039;], so the whole game lives on one screen and rewrites itself as the player moves through it.<br />
 <br />
 🏗️ Building the World<br />
-The Monolith became the hub — chat, stylist, shop, syndicates, trainer, hunting board, and proving grounds all under one roof. From there the game grew outward:<br />
+The Monolith is the hub — chat, stylist, shop, syndicates, trainer, hunting board, proving grounds. From there: Lumber/Mining/Farm resource systems each with their own research tree and workforce assignment, a self-contained bullet-storm roguelite module, syndicates for the social/territory layer, and long-tail achievements.<br />
 <br />
-• Resource management — Lumber, Mining, and Farm systems, each with its own research skill tree and workforce assignment, so players allocate limited labor across competing economies.<br />
-• Bullet storm roguelite — a self-contained action module (crimes_against_humanity.php) that breaks the strategy loop with something fast and twitchy.<br />
-• Syndicates — the social layer, where players group up and compete for territory and standing.<br />
-• Achievements — long-tail progression that gives returning players something to chase.<br />
-<br />
-🎯 The Approach<br />
-I handled the entire stack solo: schema design, backend logic, frontend behavior, and UI/UX. Working against a live MySQL database through DBeaver, deploying PHP over FTP with FileZilla, and iterating directly against real player data rather than a sandbox.<br />
-<br />
-Discipline mattered more than cleverness. All JavaScript declared as globals in index.php instead of scattered inline scripts. Data handed to the frontend through base64-encoded data-* attributes so nothing broke on quoting or encoding. Consistent asset path prefixes so the live deployment and local WAMP build behaved identically.        </div>
+🎯 Approach<br />
+I owned the entire stack solo — schema, backend, frontend, UI/UX — working against a live MySQL database via DBeaver and deploying over FTP, iterating directly against real player data. Discipline over cleverness: all JavaScript declared as globals in index.php, data passed to the frontend via base64-encoded data-* attributes to dodge quoting bugs, and consistent asset paths so local WAMP and live deployment behaved identically.        </div>
       </div>
       
             <div class="proj-section reveal">
         <div class="gold-rule"><span></span><p>Challenges</p></div>
         <div class="proj-prose">
-          🛠️ Technical Challenges<br />
-Building a persistent multiplayer world without a framework means you are the framework. Every problem below had to be solved from scratch:<br />
-<br />
-• State without page reloads — with everything routed through a single entry point, action routing and response handling had to be airtight. A malformed AJAX payload could not be allowed to leave the player stuck in a half-rendered state.<br />
-• Passing complex data to JavaScript — inline JSON kept breaking on quotes and special characters inside player-generated content. Base64-encoding into data-* attributes ended that class of bug permanently.<br />
-• Script collisions — dozens of interactive modules loading into one page meant JS conflicts everywhere. Declaring everything as controlled globals in index.php made the load order predictable instead of accidental.<br />
-• MariaDB vs MySQL drift — DEFAULT current_timestamp() on bigint columns silently failed on the live MariaDB server while working fine locally. It resurfaced repeatedly across migrations until I standardized the column definitions across both environments.<br />
-• Case-sensitive deployments — the project directory is destroym_gamePBBG on the live Linux server and destroym_gamepbbg on my Windows machine. Linux does not forgive that. Every path reference had to be verified before deploy, not after.<br />
-• Balancing economies — research trees and workforce assignment only feel meaningful if the tradeoffs are real. Tuning those numbers is an ongoing design problem, not a code problem.        </div>
+          Building a persistent multiplayer world without a framework means you are the framework. Routing everything through one entry point meant action routing had to be airtight — a malformed AJAX payload couldn&#039;t leave a player stuck mid-render. Inline JSON kept breaking on quotes inside player content until I moved to base64-encoded data-* attributes. Dozens of interactive modules loading into one page caused JS collisions, solved by declaring everything as controlled globals. MariaDB&#039;s DEFAULT current_timestamp() on bigint columns silently failed live while working locally — a drift I had to standardize across environments. And the live server&#039;s case-sensitive Linux filesystem meant every path had to be verified before deploy, not after.        </div>
       </div>
       
             <div class="proj-section reveal">
         <div class="gold-rule"><span></span><p>Outcomes</p></div>
         <div class="proj-prose">
-          🏁 Outcomes<br />
-Revolution runs live and persistent, with players moving through the Monolith, building economies, joining syndicates, and grinding achievements across sessions.<br />
-<br />
-What I took away from it:<br />
-<br />
-• Proof that a full multiplayer game loop can be built and maintained on native PHP and vanilla JS — no framework, no build step, no dependency graph to babysit.<br />
-• A single-entry AJAX architecture I now reuse across client projects, refined by the failure modes this game exposed.<br />
-• Real experience deploying to and debugging against a live production database instead of a comfortable local copy.<br />
-• Hard-won environment discipline: casing, timestamp defaults, and path handling are not details on Linux, they are the difference between a working deploy and a white screen.<br />
-<br />
-Most of all, it taught me how to own an entire stack alone — design the schema, write the backend, build the frontend, ship it, then keep it alive while people are playing on it.        </div>
+          Revolution runs live and persistent — players build economies, join syndicates, and grind achievements across sessions. It proved a full multiplayer game loop is buildable on native PHP and vanilla JS with no framework or build step, gave me a single-entry AJAX architecture I now reuse on client projects, and taught me real deployment discipline: casing, timestamp defaults, and path handling aren&#039;t details on Linux, they&#039;re the difference between a working deploy and a white screen. Most of all, it taught me to own an entire stack alone — schema to backend to frontend to keeping it alive while people play.        </div>
       </div>
       
       

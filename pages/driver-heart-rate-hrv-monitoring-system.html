@@ -61,54 +61,25 @@
         <div class="gold-rule"><span></span><p>Overview</p></div>
         <div class="proj-prose">
           🌱 The Premise<br />
-Fatigue is one of the quietest causes of road accidents — drivers rarely notice the moment they stop being alert. This project asked whether a low-cost embedded device could catch that moment from the driver&#039;s own body signals instead of waiting for the vehicle to drift out of its lane.<br />
-<br />
-Heart rate variability was the signal of interest. HRV — the small timing differences between consecutive heartbeats — reflects how the autonomic nervous system is behaving, and it shifts measurably as alertness drops or as the body enters distress. Combined with raw BPM, it gives a far better picture of driver state than pulse alone.<br />
+Fatigue rarely announces itself before a driver drifts out of their lane. This project asked whether a low-cost embedded device could catch that moment from the driver&#039;s own body signals — using heart rate variability (HRV), the beat-to-beat timing shifts that reflect autonomic nervous system state, combined with raw BPM.<br />
 <br />
 🔧 The Build<br />
-The hardware stack was kept deliberately small so it could realistically live inside a vehicle:<br />
-<br />
-• Arduino Nano — the controller, chosen for its footprint and low power draw. Small enough to mount discreetly, capable enough to run continuous sampling and analysis.<br />
-• Optical pulse sensor (MAX30102-class) — captures the photoplethysmogram signal used to derive both BPM and beat-to-beat intervals.<br />
-• Buzzer alarm — the output. Deliberately simple: when readings cross the danger threshold, the driver hears it immediately. No menus, no screen to look at, no reason to take eyes off the road.<br />
+An Arduino Nano (small footprint, low power) runs the logic; an optical pulse sensor captures the photoplethysmogram signal; a buzzer is the entire output — no screen, no menu, nothing to take the driver&#039;s eyes off the road.<br />
 <br />
 💡 How It Works<br />
-The sensor streams raw optical data. The Nano filters that signal, detects peaks to isolate individual beats, and calculates the interval between them. From those intervals it derives BPM and the HRV metrics used for the fatigue and distress assessment.<br />
-<br />
-The firmware runs a rolling evaluation rather than reacting to single readings — one odd beat is noise, a sustained trend is a warning. When the trend crosses threshold, the buzzer fires until the readings recover.<br />
-<br />
-This was developed as a capstone-level research build, so the work went beyond making it function: it had to be defensible. Sampling rates, threshold values, and filtering choices all needed justification against the physiological literature, not just whatever number happened to work on the bench.        </div>
+The Nano filters the raw signal, detects peaks to isolate individual beats, and derives BPM and HRV from the intervals between them. It runs a rolling evaluation rather than reacting to single readings — one odd beat is noise, a sustained trend is a warning — and fires the buzzer when that trend crosses threshold. As a capstone-level research build, every sampling rate, threshold, and filtering choice had to be justified against the physiological literature, not just bench-tuned.        </div>
       </div>
       
             <div class="proj-section reveal">
         <div class="gold-rule"><span></span><p>Challenges</p></div>
         <div class="proj-prose">
-          🛠️ Technical Challenges<br />
-Biometric sensing inside a moving vehicle turned out to be a much harder environment than a desk:<br />
-<br />
-• Motion artifacts — every bump, steering input, and hand adjustment corrupts an optical pulse reading. Raw sensor output in a moving car looks almost nothing like a clean lab waveform. Signal filtering and peak validation had to be aggressive enough to reject that noise without throwing away real beats.<br />
-• Sensor placement and contact pressure — optical sensors are brutally sensitive to how firmly and consistently they sit against the skin. Too loose and the signal vanishes, too tight and the reading skews. Getting a mounting approach that survived normal driving movement took repeated iteration.<br />
-• Ambient light interference — sunlight through a windshield leaks into the photodiode and washes out the signal. This needed both physical shielding and handling in software.<br />
-• Arduino Nano constraints — limited SRAM and no floating-point unit means you cannot just buffer long windows of samples and run expensive math on them. The filtering and HRV calculations had to be restructured to work within tight memory and clock budgets.<br />
-• False positives — an alarm that cries wolf gets ignored or unplugged, which makes the whole device useless. Tuning thresholds so genuine fatigue triggered the buzzer while ordinary variation did not was the hardest calibration problem in the project.<br />
-• Individual variation — resting heart rate and baseline HRV differ enormously between people. Fixed universal thresholds do not survive contact with real users, so the logic had to reference a baseline rather than an absolute number.<br />
-• Debugging without a display — with only a buzzer as output, every diagnostic pass ran through serial monitoring and logged sample data analyzed after the fact.        </div>
+          Biometric sensing in a moving vehicle is a much harder environment than a desk. Every bump and steering adjustment corrupts an optical reading, so filtering had to reject that noise without losing real beats. Sensor contact pressure is brutally sensitive — too loose and the signal vanishes, too tight and it skews — and sunlight through the windshield washes out the photodiode, needing both physical shielding and software handling. The Nano&#039;s limited SRAM and lack of a floating-point unit meant the filtering and HRV math had to fit tight memory and clock budgets. Tuning thresholds so genuine fatigue triggered the alarm without crying wolf — across people whose baseline HRV differs enormously — was the hardest calibration problem, and debugging without a display meant every pass ran through serial monitoring and logged data analyzed after the fact.        </div>
       </div>
       
             <div class="proj-section reveal">
         <div class="gold-rule"><span></span><p>Outcomes</p></div>
         <div class="proj-prose">
-          🏁 Outcomes<br />
-The system works as intended: it reads the driver&#039;s pulse continuously, derives HRV from beat-to-beat intervals, and sounds an alarm when the readings indicate fatigue or distress — with no interaction required from the driver.<br />
-<br />
-What came out of it:<br />
-<br />
-• A working, defensible prototype demonstrating that meaningful driver-state monitoring is achievable on hardware costing very little, not just on medical-grade equipment.<br />
-• Practical experience with biometric signal processing — filtering, peak detection, and interval analysis on noisy real-world data rather than clean sample sets.<br />
-• A real appreciation for embedded constraints. Writing code where memory and clock cycles are genuinely scarce forces decisions you never have to make on a web server.<br />
-• Hardware-side skills that carry over: sensor integration, wiring and mounting, iterative bench testing, and validating against physical conditions instead of assumptions.<br />
-<br />
-It also sharpened the discipline of building for a hostile environment. A device that works perfectly on a workbench and fails in a moving car has not actually solved anything — the real requirement was surviving vibration, sunlight, and imperfect human contact all at once.        </div>
+          The system reads the driver&#039;s pulse continuously, derives HRV from beat-to-beat intervals, and sounds an alarm on fatigue or distress with no interaction required. It&#039;s a working, defensible prototype showing meaningful driver-state monitoring doesn&#039;t require medical-grade equipment, and it gave me real experience with biometric signal processing on noisy real-world data plus the discipline of embedded constraints — memory and clock cycles you can&#039;t hand-wave away. A device that works on a bench and fails in a moving car hasn&#039;t solved anything; the real requirement was surviving vibration, sunlight, and imperfect human contact all at once.        </div>
       </div>
       
       

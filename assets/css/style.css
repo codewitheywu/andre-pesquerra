@@ -558,6 +558,32 @@ section + section { border-top: 1px solid var(--border); }
   background: var(--gold);
 }
 
+/* ── Why Hire Me ──────────────────────────────────────────────── */
+#hire .hire-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem 3.5rem;
+  margin-top: 4rem;
+}
+.hire-num {
+  display: block;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  font-family: var(--font-display);
+}
+.hire-item-title {
+  font-size: 1.15rem;
+  color: var(--text-1);
+  margin-bottom: 0.6rem;
+}
+.hire-item-desc {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  line-height: 1.8;
+}
+
 /* ── Projects: fanned carousel ────────────────────────────────── */
 .proj-carousel-wrap {
   position: relative;
@@ -1016,6 +1042,7 @@ footer {
   .about-left        { gap: 1.5rem; }
   .skills-list       { gap: 1.5rem; }
   .exp-item          { grid-template-columns: 1fr; gap: 0.75rem; }
+  #hire .hire-grid   { grid-template-columns: 1fr; gap: 2.5rem; }
   .proj-carousel-track { height: 460px; }
   .proj-fan-card.is-prev { transform: translate(calc(-50% - 56%), 0) scale(0.82); }
   .proj-fan-card.is-next { transform: translate(calc(-50% + 56%), 0) scale(0.82); }
