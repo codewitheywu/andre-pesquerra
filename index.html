@@ -495,7 +495,7 @@
       Let's build something <em>remarkable.</em>
     </h2>
 
-    <div class="contact-grid" style="margin-top:4rem;">
+    <div class="contact-grid" style="margin-top:4rem; grid-template-columns:1fr; max-width:560px;">
       <div class="reveal reveal-delay-2">
         <p class="contact-lead">
           Have a project in mind or want to explore how we can work together?
@@ -511,38 +511,6 @@
             Olongapo City, Zambales, Phillipines
           </div>
         </div>
-      </div>
-
-      <div class="reveal reveal-delay-3">
-        <form id="contact-form" novalidate>
-          <input type="text" name="website" tabindex="-1" autocomplete="off"
-                 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;"
-                 aria-hidden="true">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label" for="cf-name">Name</label>
-              <input class="form-input" id="cf-name" name="name" type="text"
-                     placeholder="Your name" required autocomplete="name">
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="cf-email">Email</label>
-              <input class="form-input" id="cf-email" name="email" type="email"
-                     placeholder="your@email.com" required autocomplete="email">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="cf-subject">Subject</label>
-            <input class="form-input" id="cf-subject" name="subject" type="text"
-                   placeholder="Project inquiry">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="cf-message">Message</label>
-            <textarea class="form-textarea" id="cf-message" name="message"
-                      placeholder="Tell me about your project…" required></textarea>
-          </div>
-          <button type="submit" class="btn-submit">Send Message</button>
-          <div id="form-msg" class="form-msg" role="alert" aria-live="polite"></div>
-        </form>
       </div>
     </div>
   </div>
