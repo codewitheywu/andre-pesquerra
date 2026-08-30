@@ -133,9 +133,9 @@
 .proj-section .gold-rule { margin-bottom: 1.5rem; }
 
 .proj-prose {
-  font-size: 1rem;
+  font-size: 1.0625rem;
   color: var(--text-2);
-  line-height: 1.9;
+  line-height: 1.95;
 }
 .proj-prose br + br { display: block; content: ''; margin-top: 0.75rem; }
 
