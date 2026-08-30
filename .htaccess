@@ -1,5 +1,9 @@
 Options -Indexes
 
+# index.html exists only as a static snapshot for hosts (e.g. GitHub Pages)
+# that can't execute PHP — on a real PHP host, index.php must still win.
+DirectoryIndex index.php index.html
+
 <FilesMatch "\.(sql|md|log)$">
   <IfModule mod_authz_core.c>
     Require all denied
