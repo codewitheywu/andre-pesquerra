@@ -1,0 +1,113 @@
+PORTFOLIO — FOLDER STRUCTURE
+════════════════════════════════════════════════════════
+
+Place the entire `portfolio/` folder inside your web server's
+document root, e.g. for WAMP:
+  C:\wamp64\www\portfolio\
+
+The app auto-detects its own URL and subfolder from the request
+(see includes/url.php) — no hardcoded paths to edit, whether it's
+served from a subfolder or a domain root.
+
+────────────────────────────────────────────────────────
+portfolio/
+│
+├── index.php                     ← Main portfolio page (entry point)
+├── robots.txt                    ← Disallows /cms/ and /includes/
+├── .htaccess                     ← Directory-listing off, blocks .sql/.md/.log
+│
+├── includes/
+│   ├── db.php                    ← PDO connection, DB env vars, error-display bootstrap
+│   ├── data.php                  ← All DB query functions
+│   ├── url.php                   ← Host-agnostic URL helpers (siteBaseUrl, urlPathFor)
+│   ├── security.php              ← sendSecurityHeaders() — CSP, X-Frame-Options, etc.
+│   └── .htaccess                 ← Blocks direct HTTP access to this folder
+│
+├── pages/
+│   ├── contact_handler.php       ← AJAX contact form endpoint (POST), rate-limited + honeypot
+│   ├── project.php                ← Single project / case study page
+│   └── sitemap.php               ← Dynamic sitemap.xml (all published projects)
+│
+├── assets/
+│   ├── css/
+│   │   ├── style.css             ← Full design system (tokens, layout, components, responsive)
+│   │   └── project.css           ← Case-study page styles
+│   ├── js/
+│   │   └── main.js               ← Nav, reveals, skill bars, contact AJAX
+│   ├── img/
+│   │   ├── avatar/                ← Profile photo
+│   │   ├── logos/                 ← Company / institution logos
+│   │   ├── skills/                ← Skill icons
+│   │   └── projects/, testimonials/, uploads/  ← CMS-uploaded images (auto-created)
+│   └── files/                    ← CMS-uploaded documents (e.g. resume.pdf)
+│
+├── database/
+│   ├── schema.sql                ← Full DB schema (structure only) — import to set up fresh
+│   └── README.md                 ← Setup + deployment instructions, incl. creating the admin user
+│
+└── cms/                          ← Admin CMS
+    ├── index.php                 ← Dashboard (stats, recent messages)
+    ├── login.php                 ← Auth, with brute-force lockout
+    ├── logout.php
+    ├── includes/
+    │   ├── config.php            ← BASE_URL/PUBLIC_URL/UPLOAD_URL (auto-detected), upload + URL-safety helpers
+    │   ├── auth.php               ← Session hardening, requireLogin(), role check
+    │   ├── csrf.php               ← CSRF token generation/verification
+    │   ├── layout.php             ← Shared shell (sidebar, topbar, flash messages)
+    │   └── .htaccess              ← Blocks direct HTTP access to this folder
+    ├── assets/
+    │   ├── css/cms.css            ← Dark admin theme (intentionally distinct from the public site)
+    │   └── js/cms.js              ← Mobile sidebar, form tabs, slug auto-generation, copy-email
+    └── pages/
+        ├── profile.php            ← Name, bio, contact info, avatar, resume, social links
+        ├── skills.php
+        ├── education.php
+        ├── experience.php
+        ├── projects.php
+        ├── testimonials.php
+        └── messages.php           ← Contact-form inbox (read/archive/delete, reply via Gmail)
+
+════════════════════════════════════════════════════════
+QUICK-START CHECKLIST
+════════════════════════════════════════════════════════
+
+1. Copy portfolio/ into your web server's document root.
+2. Set up the database — see database/README.md for full steps:
+   → Create an empty database, import database/schema.sql,
+     then create your admin CMS account.
+3. Local dev needs no configuration — includes/db.php falls back
+   to DB_HOST=localhost / DB_USER=root / DB_PASS=(empty) automatically.
+   Deploying elsewhere? Set DB_HOST / DB_NAME / DB_USER / DB_PASS /
+   APP_ENV as real environment variables — no code edits needed.
+4. Visit your site's URL (e.g. http://localhost/portfolio/) and
+   log in to the CMS at /cms/login.php to manage your content.
+
+════════════════════════════════════════════════════════
+FILE RESPONSIBILITIES AT A GLANCE
+════════════════════════════════════════════════════════
+
+File                            Responsibility
+─────────────────────────────────────────────────────────
+includes/db.php                 PDO singleton, env-driven credentials
+includes/data.php               All SELECT + INSERT queries
+includes/url.php                Host-agnostic URL/path resolution
+includes/security.php           Security headers (CSP etc.) for every entry point
+pages/contact_handler.php       POST endpoint, returns JSON, rate-limited + honeypot
+assets/css/style.css            Full design system (tokens, layout, components, responsive)
+assets/js/main.js               Behaviour: nav, reveals, skill bars, form AJAX
+index.php                       Template: fetches data, renders HTML sections
+cms/includes/config.php         CMS constants (auto-detected), upload + URL-safety helpers
+cms/includes/auth.php           Session hardening, login gate, role check
+cms/includes/csrf.php           CSRF protection for every CMS form
+database/schema.sql             Reproducible source of truth for the DB structure
+
+════════════════════════════════════════════════════════
+KNOWN LIMITATIONS
+════════════════════════════════════════════════════════
+
+- The per-IP contact-form rate limit uses REMOTE_ADDR directly; if
+  ever deployed behind a reverse proxy/load balancer, every visitor
+  would share one IP from the app's perspective, collapsing the cap
+  into one shared quota for everyone. Not an issue on a direct host.
+- CMS login lockout (cms_login_attempts) is IP-based — a determined
+  attacker rotating IPs isn't stopped by it, only casual brute-forcing.
