@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Andre V. Pesquerra — Full-Stack Developer &amp; UI Craftsman">
+  <title>Andre V. Pesquerra</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════════════ -->
+<nav id="nav" aria-label="Primary navigation">
+  <div class="container nav-inner">
+    <a href="#hero" class="nav-logo">Andre<span>.</span></a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Work</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile overlay menu -->
+<div class="nav-mobile" role="dialog" aria-label="Mobile navigation">
+  <a href="#about">About</a>
+  <a href="#experience">Work</a>
+  <a href="#projects">Projects</a>
+  <a href="#testimonials">Testimonials</a>
+  <a href="#contact">Contact</a>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════ -->
+<section id="hero" aria-label="Introduction">
+  <div class="hero-bg-lines" aria-hidden="true"></div>
+
+  <div class="hero-socials" aria-label="Social profiles">
+    <a href="https://github.com/codewitheywu" target="_blank" rel="noopener">Github</a>
+    <a href="https://www.linkedin.com/in/andre-pesquerra/" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <p class="hero-label reveal">Full-Stack Developer &amp; UI Craftsman</p>
+        <h1 class="hero-name reveal reveal-delay-1">
+          Andre<em> V. Pesquerra</em>
+        </h1>
+        <p class="hero-bio reveal reveal-delay-2">I build fast, accessible, and beautiful web experiences. Based in the Philippines, open to remote work worldwide.</p>
+        <div class="hero-actions reveal reveal-delay-3">
+          <a href="#projects" class="btn-primary">View Work</a>
+          <a href="#contact" class="btn-ghost">Get in Touch</a>
+        </div>
+      </div>
+
+      <div class="hero-photo reveal reveal-delay-2" aria-label="Portrait">
+        <div class="hero-photo-frame">
+          <img src="assets/img/avatar/Pesquerra.jpg" alt="Andre V. Pesquerra portrait" loading="eager">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="scroll-hint" aria-hidden="true">Scroll to explore</p>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     ABOUT / SKILLS
+══════════════════════════════════════════════════ -->
+<section id="about" aria-label="About me and skills">
+  <div class="container">
+    <div class="about-grid">
+      <!-- LEFT: label + title + bio -->
+      <div class="about-left">
+        <div class="gold-rule reveal">
+          <span></span><p>About</p>
+        </div>
+        <h2 class="section-title reveal reveal-delay-1">
+          Crafting <em>digital experiences</em><br>with intent.
+        </h2>
+        <div class="about-text reveal reveal-delay-2">
+          <p>I build fast, accessible, and beautiful web experiences. Based in the Philippines, open to remote work worldwide.</p>
+          <p style="margin-top:2rem; font-size:0.8rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-3);">
+            Based in Olongapo City, Zambales, Phillipines
+          </p>
+        </div>
+      </div>
+
+      <!-- RIGHT: skills — starts at same top as left column -->
+      <div class="skills-list reveal reveal-delay-2">
+        <div class="skill-category">
+          <p class="skill-category-title">Frontend</p>
+          <div class="skill-bars">
+            <div class="skill-row">
+              <div class="skill-meta">
+                <span class="skill-name">CSS 3</span>
+                <span class="skill-pct">85</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-pct="85"></div>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-meta">
+                <span class="skill-name">JavaScript</span>
+                <span class="skill-pct">80</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-pct="80"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category">
+          <p class="skill-category-title">Tools</p>
+          <div class="skill-bars">
+            <div class="skill-row">
+              <div class="skill-meta">
+                <span class="skill-name">Figma</span>
+                <span class="skill-pct">75</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-pct="75"></div>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-meta">
+                <span class="skill-name">Claude AI</span>
+                <span class="skill-pct">100</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-pct="100"></div>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-meta">
+                <span class="skill-name">ChatGPT</span>
+                <span class="skill-pct">80</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-pct="80"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category">
+          <p class="skill-category-title">Backend</p>
+          <div class="skill-bars">
+            <div class="skill-row">
+              <div class="skill-meta">
+                <span class="skill-name">PHP</span>
+                <span class="skill-pct">85</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-pct="85"></div>
+              </div>
+            </div>
+            <div class="skill-row">
+              <div class="skill-meta">
+                <span class="skill-name">HTML 5</span>
+                <span class="skill-pct">90</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-pct="90"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     WORK EXPERIENCE
+══════════════════════════════════════════════════ -->
+<section id="experience" aria-label="Work experience">
+  <div class="container">
+    <div class="gold-rule reveal">
+      <span></span><p>Experience</p>
+    </div>
+    <h2 class="section-title reveal reveal-delay-1">
+      Where I've <em>made an impact.</em>
+    </h2>
+
+    <div class="exp-list" style="margin-top:4rem;">
+      <div class="exp-item reveal reveal-delay-1">
+        <div class="exp-meta">
+          <p class="exp-dates">May 2026 — Present</p>
+          <p class="exp-company">Online Jobs PH (Remote)</p>
+          <p class="exp-location">Toronto, Ontario, Canada</p>
+        </div>
+
+        <div class="exp-body">
+          <p class="exp-role">Freelancer | PBBG Web Developer</p>
+          <p class="exp-desc">Developed and maintained web-based applications using PHP, MySQL, HTML, CSS, and JavaScript. Collaborated with the client to gather requirements, implement new features, troubleshoot technical issues, and optimize website performance. Ensured clean, secure, and scalable code while providing ongoing support and maintenance for deployed projects.</p>
+          <ul class="exp-highlights">
+            <li>Developed custom web applications using PHP, MySQL, HTML, CSS, and JavaScript.</li>
+            <li>Designed and implemented responsive user interfaces for improved user experience.</li>
+            <li>Integrated database functionality, user authentication, and CRUD operations.</li>
+            <li>Diagnosed and resolved website bugs, performance issues, and security vulnerabilities.</li>
+            <li>Optimized code structure and database queries for better speed and maintainability.</li>
+            <li>Collaborated with clients to translate business requirements into functional solutions.</li>
+            <li>Maintained version control and ensured clean, organized project documentation.</li>
+            <li>Provided technical support, updates, and feature enhancements for active projects.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exp-item reveal reveal-delay-2">
+        <div class="exp-meta">
+          <p class="exp-dates">Jul 2025 — Oct 2025</p>
+          <p class="exp-company">MIS Office - Subic Bay Freeport Zone</p>
+          <p class="exp-location">2/F, Bldg. N, Quezon Road, Central Business District, Subic Bay Freeport Zone, Philippines.</p>
+        </div>
+
+        <div class="exp-body">
+          <p class="exp-role">MIS Intern Officer</p>
+          <p class="exp-desc">As an MIS intern, I assisted in maintaining and organizing company data using Google Sheets to support daily operations and internal monitoring. I handled database management tasks involving employee information, department records, service requests, and IP address tracking. I also helped ensure data accuracy, proper organization, and timely updates for efficient reporting and coordination between departments.</p>
+          <ul class="exp-highlights">
+            <li>Managed and updated employee and department records using Google Sheets</li>
+            <li>Organized and monitored request logs and IP address databases</li>
+            <li>Ensured accuracy and consistency of company data entries</li>
+            <li>Assisted in maintaining structured databases for internal operations</li>
+            <li>Supported the MIS team in data tracking and administrative tasks</li>
+            <li>Helped improve accessibility and organization of operational records</li>
+            <li>Performed regular checking and updating of information for reporting purposes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     PROJECTS
+══════════════════════════════════════════════════ -->
+<section id="projects" aria-label="Featured projects">
+  <div class="container">
+    <div class="gold-rule reveal">
+      <span></span><p>Work</p>
+    </div>
+    <h2 class="section-title reveal reveal-delay-1">
+      Selected <em>projects.</em>
+    </h2>
+  </div>
+
+  <div class="proj-carousel-wrap reveal reveal-delay-2">
+    <button type="button" class="proj-carousel-arrow proj-carousel-prev" aria-label="Previous project">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+
+    <div class="proj-carousel-track" role="region" aria-roledescription="carousel" aria-label="Selected projects">
+      <article class="proj-fan-card" data-index="0" aria-hidden="true">
+        <div class="proj-fan-header">
+          <p class="proj-fan-label">Web Application</p>
+          <h3 class="proj-fan-title">Web-based Gavina Noble Dental Clinic Appointment System with Mobile Application</h3>
+          <ul class="proj-fan-list">
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Web Application
+            </li>
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Clinic Management System
+            </li>
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Full-Stack
+            </li>
+          </ul>
+          <a href="pages/project.php?slug=web-based-gavina-noble-dental-clinic-appointment-system-with-mobile-application" class="proj-fan-btn" tabindex="-1">
+            View Case Study
+          </a>
+        </div>
+      </article>
+      <article class="proj-fan-card" data-index="1" aria-hidden="true">
+        <div class="proj-fan-header">
+          <p class="proj-fan-label">Web Application</p>
+          <h3 class="proj-fan-title">Revolution — Persistent Browser-Based Multiplayer Strategy Game</h3>
+          <ul class="proj-fan-list">
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Web Application
+            </li>
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Persistent Browser-Based Game
+            </li>
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Full-Stack
+            </li>
+          </ul>
+          <a href="pages/project.php?slug=revolution-pbbg-browser-strategy-game" class="proj-fan-btn" tabindex="-1">
+            View Case Study
+          </a>
+        </div>
+      </article>
+      <article class="proj-fan-card" data-index="2" aria-hidden="true">
+        <div class="proj-fan-header">
+          <p class="proj-fan-label">Web Application</p>
+          <h3 class="proj-fan-title">DevBoard — Drag-and-Drop Kanban Project Management Tool</h3>
+          <ul class="proj-fan-list">
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Web Application
+            </li>
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Project Management Tool
+            </li>
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Full-Stack
+            </li>
+          </ul>
+          <a href="pages/project.php?slug=devboard-kanban-project-management" class="proj-fan-btn" tabindex="-1">
+            View Case Study
+          </a>
+        </div>
+      </article>
+      <article class="proj-fan-card" data-index="3" aria-hidden="true">
+        <div class="proj-fan-header">
+          <p class="proj-fan-label">IoT</p>
+          <h3 class="proj-fan-title">Driver Heart Rate &amp; HRV Monitoring System</h3>
+          <ul class="proj-fan-list">
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              IoT
+            </li>
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Hardware
+            </li>
+            <li>
+              <span class="proj-fan-check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </span>
+              Full-Stack
+            </li>
+          </ul>
+          <a href="pages/project.php?slug=driver-heart-rate-hrv-monitoring-system" class="proj-fan-btn" tabindex="-1">
+            View Case Study
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <button type="button" class="proj-carousel-arrow proj-carousel-next" aria-label="Next project">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <div class="proj-carousel-dots" role="tablist" aria-label="Choose a project">
+    <button type="button" class="proj-dot" data-index="0" role="tab" aria-label="Web-based Gavina Noble Dental Clinic Appointment System with Mobile Application"></button>
+    <button type="button" class="proj-dot" data-index="1" role="tab" aria-label="Revolution — Persistent Browser-Based Multiplayer Strategy Game"></button>
+    <button type="button" class="proj-dot" data-index="2" role="tab" aria-label="DevBoard — Drag-and-Drop Kanban Project Management Tool"></button>
+    <button type="button" class="proj-dot" data-index="3" role="tab" aria-label="Driver Heart Rate &amp; HRV Monitoring System"></button>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     TESTIMONIALS
+══════════════════════════════════════════════════ -->
+<section id="testimonials" aria-label="Testimonials">
+  <div class="container">
+    <div class="gold-rule reveal">
+      <span></span><p>Testimonials</p>
+    </div>
+    <h2 class="section-title reveal reveal-delay-1">
+      Kind words from <em>great people.</em>
+    </h2>
+
+    <div class="testi-rotator reveal" aria-label="Testimonials carousel" style="margin-top:4rem;">
+      <div class="testi-track" data-count="3" data-duration="8">
+        <div class="testi-slide">
+          <div class="testi-card">
+            <div class="testi-quote-mark" aria-hidden="true">"</div>
+            <blockquote class="testi-quote">Magaling na bata - mabilis makapag-adapt sa workflow at maaasahan. Isa siya sa mga gumawa ng data migration para sa buong SBFZ offices noong panahon ng kanyang internship, at natapos nila ito nang maayos.</blockquote>
+            <button type="button" class="testi-translate-btn" data-state="idle">Translate to English</button>
+            <div class="testi-author">
+              <div class="testi-avatar" aria-hidden="true">M</div>
+              <div>
+                <p class="testi-name">Maria Liwanag Reyes</p>
+                <p class="testi-title-co">Chief, MIS Department · Subic Bay Freeport Zone (SBFZ)</p>
+              </div>
+              <div class="testi-stars" aria-label="5 stars">★★★★★</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-card">
+            <div class="testi-quote-mark" aria-hidden="true">"</div>
+            <blockquote class="testi-quote">Andre delivered a clean, well-documented codebase on time. Highly recommended.</blockquote>
+            <button type="button" class="testi-translate-btn" data-state="idle">Translate to English</button>
+            <div class="testi-author">
+              <div class="testi-avatar" aria-hidden="true">D</div>
+              <div>
+                <p class="testi-name">Dennise Alyzza Noble</p>
+                <p class="testi-title-co">Dentist, RN. · Gavina Noble Dental Clinic</p>
+              </div>
+              <div class="testi-stars" aria-label="5 stars">★★★★★</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-card">
+            <div class="testi-quote-mark" aria-hidden="true">"</div>
+            <blockquote class="testi-quote">Malaking tulong ang naibigay niya sa aming HRV heart monitoring device para sa mga driver. Nakapag-defense kami nang matagumpay at nagustuhan mismo ng panel ang device.</blockquote>
+            <button type="button" class="testi-translate-btn" data-state="idle">Translate to English</button>
+            <div class="testi-author">
+              <div class="testi-avatar" aria-hidden="true">J</div>
+              <div>
+                <p class="testi-name">Jenny Grace Javier</p>
+                <p class="testi-title-co">Student Researcher · Regional Science High School (RSHS)</p>
+              </div>
+              <div class="testi-stars" aria-label="5 stars">★★★★★</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-slide" aria-hidden="true">
+          <div class="testi-card">
+            <div class="testi-quote-mark" aria-hidden="true">"</div>
+            <blockquote class="testi-quote">Magaling na bata - mabilis makapag-adapt sa workflow at maaasahan. Isa siya sa mga gumawa ng data migration para sa buong SBFZ offices noong panahon ng kanyang internship, at natapos nila ito nang maayos.</blockquote>
+            <button type="button" class="testi-translate-btn" data-state="idle">Translate to English</button>
+            <div class="testi-author">
+              <div class="testi-avatar" aria-hidden="true">M</div>
+              <div>
+                <p class="testi-name">Maria Liwanag Reyes</p>
+                <p class="testi-title-co">Chief, MIS Department · Subic Bay Freeport Zone (SBFZ)</p>
+              </div>
+              <div class="testi-stars" aria-label="5 stars">★★★★★</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-dots" role="tablist" aria-label="Choose testimonial">
+      <button type="button" class="testi-dot is-active" data-index="0" role="tab" aria-selected="true" aria-label="Show testimonial 1 of 3"></button>
+      <button type="button" class="testi-dot" data-index="1" role="tab" aria-selected="false" aria-label="Show testimonial 2 of 3"></button>
+      <button type="button" class="testi-dot" data-index="2" role="tab" aria-selected="false" aria-label="Show testimonial 3 of 3"></button>
+    </div>
+    <div class="testi-progress" aria-hidden="true"><div class="testi-progress-fill"></div></div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     CONTACT
+══════════════════════════════════════════════════ -->
+<section id="contact" aria-label="Contact">
+  <div class="container">
+    <div class="gold-rule reveal">
+      <span></span><p>Contact</p>
+    </div>
+    <h2 class="section-title reveal reveal-delay-1">
+      Let's build something <em>remarkable.</em>
+    </h2>
+
+    <div class="contact-grid" style="margin-top:4rem;">
+      <div class="reveal reveal-delay-2">
+        <p class="contact-lead">
+          Have a project in mind or want to explore how we can work together?
+          I'm always open to the right opportunity.
+        </p>
+        <div class="contact-detail">
+          <div class="contact-detail-row">
+            <span class="contact-detail-label">Email</span>
+            <a href="mailto:andrevpesquerra@gmail.com" style="color:var(--gold)">andrevpesquerra@gmail.com</a>
+          </div>
+          <div class="contact-detail-row">
+            <span class="contact-detail-label">Location</span>
+            Olongapo City, Zambales, Phillipines
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-3">
+        <form id="contact-form" novalidate>
+          <input type="text" name="website" tabindex="-1" autocomplete="off"
+                 style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;"
+                 aria-hidden="true">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="cf-name">Name</label>
+              <input class="form-input" id="cf-name" name="name" type="text"
+                     placeholder="Your name" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cf-email">Email</label>
+              <input class="form-input" id="cf-email" name="email" type="email"
+                     placeholder="your@email.com" required autocomplete="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cf-subject">Subject</label>
+            <input class="form-input" id="cf-subject" name="subject" type="text"
+                   placeholder="Project inquiry">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cf-message">Message</label>
+            <textarea class="form-textarea" id="cf-message" name="message"
+                      placeholder="Tell me about your project…" required></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Send Message</button>
+          <div id="form-msg" class="form-msg" role="alert" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer>
+  <div class="container footer-inner">
+    <p class="footer-copy">© 2026 Andre V. Pesquerra. All rights reserved.</p>
+    <a href="#hero" class="footer-back-top">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 15l7-7 7 7"/>
+      </svg>
+      Back to top
+    </a>
+  </div>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
