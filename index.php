@@ -46,7 +46,20 @@ $year     = date('Y');
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="<?= $name ?> — <?= $tagline ?>">
+  <link rel="canonical" href="https://andre-pesquerra.vercel.app/">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <title><?= $name ?></title>
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://andre-pesquerra.vercel.app/">
+  <meta property="og:title" content="<?= $name ?>">
+  <meta property="og:description" content="<?= $tagline ?>">
+  <meta property="og:image" content="https://andre-pesquerra.vercel.app/assets/img/avatar/Pesquerra.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<?= $name ?>">
+  <meta name="twitter:description" content="<?= $tagline ?>">
+  <meta name="twitter:image" content="https://andre-pesquerra.vercel.app/assets/img/avatar/Pesquerra.jpg">
+
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -129,7 +142,7 @@ $year     = date('Y');
       <div class="hero-photo reveal reveal-delay-2" aria-label="Portrait">
         <div class="hero-photo-frame">
           <img src="<?= htmlspecialchars($profile['avatar_url'], ENT_QUOTES, 'UTF-8') ?>"
-               alt="<?= $name ?> portrait" loading="eager">
+               alt="<?= $name ?> portrait" width="1050" height="1500" loading="eager">
         </div>
       </div>
       <?php endif; ?>
@@ -173,7 +186,13 @@ $year     = date('Y');
             <?php foreach ($skills as $skill): ?>
             <div class="skill-row">
               <div class="skill-meta">
-                <span class="skill-name"><?= htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8') ?></span>
+                <span class="skill-name">
+                  <?php if (!empty($skill['icon_url'])): ?>
+                  <img class="skill-icon" src="<?= htmlspecialchars($skill['icon_url'], ENT_QUOTES, 'UTF-8') ?>"
+                       alt="" width="16" height="16" loading="lazy">
+                  <?php endif; ?>
+                  <?= htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8') ?>
+                </span>
                 <span class="skill-pct"><?= (int)$skill['proficiency'] ?></span>
               </div>
               <div class="skill-bar-bg">
@@ -210,7 +229,13 @@ $year     = date('Y');
             <?= $job['started_at'] ? date('M Y', strtotime($job['started_at'])) : '—' ?> —
             <?= $job['is_current'] ? 'Present' : ($job['ended_at'] ? date('M Y', strtotime($job['ended_at'])) : '—') ?>
           </p>
-          <p class="exp-company"><?= htmlspecialchars($job['company'], ENT_QUOTES, 'UTF-8') ?></p>
+          <div class="exp-company-row">
+            <?php if (!empty($job['logo_url'])): ?>
+            <img class="exp-logo" src="<?= htmlspecialchars($job['logo_url'], ENT_QUOTES, 'UTF-8') ?>"
+                 alt="" width="28" height="28" loading="lazy">
+            <?php endif; ?>
+            <p class="exp-company"><?= htmlspecialchars($job['company'], ENT_QUOTES, 'UTF-8') ?></p>
+          </div>
           <?php if ($job['location']): ?>
           <p class="exp-location"><?= htmlspecialchars($job['location'], ENT_QUOTES, 'UTF-8') ?></p>
           <?php endif; ?>
@@ -387,7 +412,8 @@ $year     = date('Y');
               <div class="testi-avatar" aria-hidden="true">
                 <?php if ($t['avatar_url']): ?>
                   <img src="<?= htmlspecialchars($t['avatar_url'], ENT_QUOTES, 'UTF-8') ?>"
-                       alt="<?= htmlspecialchars($t['name'], ENT_QUOTES, 'UTF-8') ?>">
+                       alt="<?= htmlspecialchars($t['name'], ENT_QUOTES, 'UTF-8') ?>"
+                       width="36" height="36" loading="lazy">
                 <?php else: ?>
                   <?= htmlspecialchars(strtoupper(substr($t['name'], 0, 1)), ENT_QUOTES, 'UTF-8') ?>
                 <?php endif; ?>

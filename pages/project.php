@@ -15,6 +15,7 @@ try {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Temporarily Unavailable</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -41,6 +42,7 @@ if (!$project) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Project Not Found — <?= $name ?></title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -78,7 +80,20 @@ foreach ($project['tech'] as $t) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="<?= htmlspecialchars($project['summary'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+  <link rel="canonical" href="https://andre-pesquerra.vercel.app/pages/<?= htmlspecialchars($project['slug'], ENT_QUOTES, 'UTF-8') ?>.html">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title><?= $title ?> — <?= $name ?></title>
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://andre-pesquerra.vercel.app/pages/<?= htmlspecialchars($project['slug'], ENT_QUOTES, 'UTF-8') ?>.html">
+  <meta property="og:title" content="<?= $title ?> — <?= $name ?>">
+  <meta property="og:description" content="<?= htmlspecialchars($project['summary'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+  <meta property="og:image" content="https://andre-pesquerra.vercel.app/assets/img/avatar/Pesquerra.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<?= $title ?> — <?= $name ?>">
+  <meta name="twitter:description" content="<?= htmlspecialchars($project['summary'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+  <meta name="twitter:image" content="https://andre-pesquerra.vercel.app/assets/img/avatar/Pesquerra.jpg">
+
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/project.css">
 </head>
@@ -160,7 +175,7 @@ foreach ($project['tech'] as $t) {
 <div class="proj-thumbnail reveal">
   <div class="container">
     <img src="<?= htmlspecialchars($project['thumbnail_url'], ENT_QUOTES, 'UTF-8') ?>"
-         alt="<?= $title ?> preview">
+         alt="<?= $title ?> preview" loading="lazy">
   </div>
 </div>
 <?php endif; ?>
@@ -229,7 +244,7 @@ foreach ($project['tech'] as $t) {
           <?php foreach ($project['images'] as $img): ?>
           <figure class="proj-gallery-item">
             <img src="<?= htmlspecialchars($img['image_url'], ENT_QUOTES, 'UTF-8') ?>"
-                 alt="<?= htmlspecialchars($img['caption'] ?? $title, ENT_QUOTES, 'UTF-8') ?>">
+                 alt="<?= htmlspecialchars($img['caption'] ?? $title, ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
             <?php if ($img['caption']): ?>
             <figcaption><?= htmlspecialchars($img['caption'], ENT_QUOTES, 'UTF-8') ?></figcaption>
             <?php endif; ?>

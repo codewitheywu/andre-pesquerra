@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /cms/
 Disallow: /includes/
+
+Sitemap: https://andre-pesquerra.vercel.app/sitemap.xml
