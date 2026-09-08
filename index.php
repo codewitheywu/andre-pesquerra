@@ -45,7 +45,7 @@ $year     = date('Y');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<?= $name ?> — <?= $tagline ?>">
+  <meta name="description" content="<?= $name ?>, <?= $tagline ?>">
   <link rel="canonical" href="https://andre-pesquerra.vercel.app/">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <title><?= $name ?></title>
@@ -109,16 +109,6 @@ $year     = date('Y');
 <section id="hero" aria-label="Introduction">
   <div class="hero-bg-lines" aria-hidden="true"></div>
 
-  <?php if (!empty($profile['social_links'])): ?>
-  <div class="hero-socials" aria-label="Social profiles">
-    <?php foreach ($profile['social_links'] as $sl): ?>
-      <a href="<?= htmlspecialchars($sl['url'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener">
-        <?= htmlspecialchars($sl['platform'], ENT_QUOTES, 'UTF-8') ?>
-      </a>
-    <?php endforeach; ?>
-  </div>
-  <?php endif; ?>
-
   <div class="container">
     <div class="hero-inner">
       <div class="hero-content">
@@ -133,16 +123,26 @@ $year     = date('Y');
         </h1>
         <p class="hero-bio reveal reveal-delay-2"><?= $bio ?></p>
         <div class="hero-actions reveal reveal-delay-3">
-          <a href="#projects" class="btn-primary">View Work</a>
-          <a href="#contact" class="btn-ghost">Get in Touch</a>
+          <a href="#contact" class="btn-primary">Get in Touch</a>
+          <a href="#projects" class="btn-ghost">View Work</a>
         </div>
+
+        <?php if (!empty($profile['social_links'])): ?>
+        <div class="hero-socials reveal reveal-delay-3" aria-label="Social profiles">
+          <?php foreach ($profile['social_links'] as $sl): ?>
+            <a href="<?= htmlspecialchars($sl['url'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener">
+              <?= htmlspecialchars($sl['platform'], ENT_QUOTES, 'UTF-8') ?>
+            </a>
+          <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
       </div>
 
       <?php if (!empty($profile['avatar_url'])): ?>
       <div class="hero-photo reveal reveal-delay-2" aria-label="Portrait">
         <div class="hero-photo-frame">
           <img src="<?= htmlspecialchars($profile['avatar_url'], ENT_QUOTES, 'UTF-8') ?>"
-               alt="<?= $name ?> portrait" width="1050" height="1500" loading="eager">
+               alt="<?= $name ?> portrait" width="800" height="1143" loading="eager">
         </div>
       </div>
       <?php endif; ?>
@@ -159,7 +159,7 @@ $year     = date('Y');
 <section id="about" aria-label="About me and skills">
   <div class="container">
     <div class="about-grid">
-      <!-- LEFT: label + title + bio -->
+      <!-- Skills grid removed for now — will return in a later pass. -->
       <div class="about-left">
         <div class="gold-rule reveal">
           <span></span><p>About</p>
@@ -175,34 +175,6 @@ $year     = date('Y');
           </p>
           <?php endif; ?>
         </div>
-      </div>
-
-      <!-- RIGHT: skills — starts at same top as left column -->
-      <div class="skills-list reveal reveal-delay-2">
-        <?php foreach ($skillGroups as $category => $skills): ?>
-        <div class="skill-category">
-          <p class="skill-category-title"><?= htmlspecialchars($category, ENT_QUOTES, 'UTF-8') ?></p>
-          <div class="skill-bars">
-            <?php foreach ($skills as $skill): ?>
-            <div class="skill-row">
-              <div class="skill-meta">
-                <span class="skill-name">
-                  <?php if (!empty($skill['icon_url'])): ?>
-                  <img class="skill-icon" src="<?= htmlspecialchars($skill['icon_url'], ENT_QUOTES, 'UTF-8') ?>"
-                       alt="" width="16" height="16" loading="lazy">
-                  <?php endif; ?>
-                  <?= htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8') ?>
-                </span>
-                <span class="skill-pct"><?= (int)$skill['proficiency'] ?></span>
-              </div>
-              <div class="skill-bar-bg">
-                <div class="skill-bar-fill" data-pct="<?= (int)$skill['proficiency'] ?>"></div>
-              </div>
-            </div>
-            <?php endforeach; ?>
-          </div>
-        </div>
-        <?php endforeach; ?>
       </div>
     </div>
   </div>
@@ -226,8 +198,8 @@ $year     = date('Y');
       <div class="exp-item reveal reveal-delay-<?= min($i + 1, 4) ?>">
         <div class="exp-meta">
           <p class="exp-dates">
-            <?= $job['started_at'] ? date('M Y', strtotime($job['started_at'])) : '—' ?> —
-            <?= $job['is_current'] ? 'Present' : ($job['ended_at'] ? date('M Y', strtotime($job['ended_at'])) : '—') ?>
+            <?= $job['started_at'] ? date('M Y', strtotime($job['started_at'])) : 'N/A' ?> to
+            <?= $job['is_current'] ? 'Present' : ($job['ended_at'] ? date('M Y', strtotime($job['ended_at'])) : 'N/A') ?>
           </p>
           <div class="exp-company-row">
             <?php if (!empty($job['logo_url'])): ?>
@@ -277,17 +249,17 @@ $year     = date('Y');
       <div class="hire-item reveal reveal-delay-1">
         <span class="hire-num">01</span>
         <p class="hire-item-title">Full-Stack Ownership</p>
-        <p class="hire-item-desc">I design the schema, write the backend, build the frontend, and ship to production myself — no hand-offs, no gaps. Four very different builds prove it: a database-driven web app, a persistent multiplayer game, a team-facing tool, and embedded hardware.</p>
+        <p class="hire-item-desc">I design the schema, write the backend, build the frontend, and ship to production myself, with no hand-offs and no gaps. Four very different builds prove it: a database-driven web app, a persistent multiplayer game, a team-facing tool, and embedded hardware.</p>
       </div>
       <div class="hire-item reveal reveal-delay-2">
         <span class="hire-num">02</span>
         <p class="hire-item-title">Proven in Production</p>
-        <p class="hire-item-desc">Not just coursework — gavinadental.online, gameseek.com/gs2, and devboard.infinityfreeapp.com are live systems real users touch today, backed by an ongoing freelance client relationship.</p>
+        <p class="hire-item-desc">Not just coursework: gavinadental.online, gameseek.com/gs2, and devboard.infinityfreeapp.com are live systems real users touch today, backed by an ongoing freelance client relationship.</p>
       </div>
       <div class="hire-item reveal reveal-delay-3">
         <span class="hire-num">03</span>
         <p class="hire-item-title">Led a Team, Not Just Code</p>
-        <p class="hire-item-desc">I've directed development teams twice — 4 developers on the award-winning Gavina Noble Dental Clinic system, then 3 more on DevBoard — architecture, conventions, code review, and the calls that kept us out of merge-conflict hell.</p>
+        <p class="hire-item-desc">I've directed development teams twice: 4 developers on the award-winning Gavina Noble Dental Clinic system, then 3 more on DevBoard, covering architecture, conventions, code review, and the calls that kept us out of merge-conflict hell.</p>
       </div>
       <div class="hire-item reveal reveal-delay-4">
         <span class="hire-num">04</span>
@@ -482,6 +454,14 @@ $year     = date('Y');
             <?= $location ?>
           </div>
           <?php endif; ?>
+          <div class="contact-detail-row">
+            <span class="contact-detail-label">Mobile</span>
+            <a href="tel:+639682414955" style="color:var(--gold)">+63 968 241 4955</a> (Smart)
+          </div>
+          <div class="contact-detail-row">
+            <span class="contact-detail-label"></span>
+            <a href="tel:+639763933281" style="color:var(--gold)">+63 976 393 3281</a> (Globe/GOMO)
+          </div>
         </div>
       </div>
 
@@ -526,7 +506,13 @@ $year     = date('Y');
 ══════════════════════════════════════════════════ -->
 <footer>
   <div class="container footer-inner">
-    <p class="footer-copy">© <?= $year ?> <?= $name ?>. All rights reserved.</p>
+    <div class="footer-left">
+      <p class="footer-copy">© <?= $year ?> <?= $name ?>. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+    </div>
     <a href="#hero" class="footer-back-top">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 15l7-7 7 7"/>
@@ -535,6 +521,14 @@ $year     = date('Y');
     </a>
   </div>
 </footer>
+
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <p>This site uses minimal, privacy-friendly analytics and a small cookie to remember your choice. No ad trackers, ever. See the <a href="privacy.html">Privacy Policy</a> for details.</p>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-accept" id="cookie-accept">Accept</button>
+    <button type="button" class="cookie-decline" id="cookie-decline">Decline</button>
+  </div>
+</div>
 
 <script src="assets/js/main.js" defer></script>
 </body>

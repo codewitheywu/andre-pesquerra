@@ -41,7 +41,7 @@ if (!$project) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Not Found — <?= $name ?></title>
+  <title>Project Not Found: <?= $name ?></title>
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
@@ -82,15 +82,15 @@ foreach ($project['tech'] as $t) {
   <meta name="description" content="<?= htmlspecialchars($project['summary'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
   <link rel="canonical" href="https://andre-pesquerra.vercel.app/pages/<?= htmlspecialchars($project['slug'], ENT_QUOTES, 'UTF-8') ?>.html">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <title><?= $title ?> — <?= $name ?></title>
+  <title><?= $title ?>, <?= $name ?></title>
 
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://andre-pesquerra.vercel.app/pages/<?= htmlspecialchars($project['slug'], ENT_QUOTES, 'UTF-8') ?>.html">
-  <meta property="og:title" content="<?= $title ?> — <?= $name ?>">
+  <meta property="og:title" content="<?= $title ?>, <?= $name ?>">
   <meta property="og:description" content="<?= htmlspecialchars($project['summary'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
   <meta property="og:image" content="https://andre-pesquerra.vercel.app/assets/img/avatar/Pesquerra.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="<?= $title ?> — <?= $name ?>">
+  <meta name="twitter:title" content="<?= $title ?>, <?= $name ?>">
   <meta name="twitter:description" content="<?= htmlspecialchars($project['summary'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
   <meta name="twitter:image" content="https://andre-pesquerra.vercel.app/assets/img/avatar/Pesquerra.jpg">
 
@@ -288,7 +288,13 @@ foreach ($project['tech'] as $t) {
 <!-- ── Footer ────────────────────────────────────────────────── -->
 <footer>
   <div class="container footer-inner">
-    <p class="footer-copy">© <?= $year ?> <?= $name ?>. All rights reserved.</p>
+    <div class="footer-left">
+      <p class="footer-copy">© <?= $year ?> <?= $name ?>. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../terms.html">Terms</a>
+      </div>
+    </div>
     <a href="#" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" stroke="currentColor">
         <path d="M5 15l7-7 7 7"/>
@@ -297,6 +303,14 @@ foreach ($project['tech'] as $t) {
     </a>
   </div>
 </footer>
+
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <p>This site uses minimal, privacy-friendly analytics and a small cookie to remember your choice. No ad trackers, ever. See the <a href="../privacy.html">Privacy Policy</a> for details.</p>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-accept" id="cookie-accept">Accept</button>
+    <button type="button" class="cookie-decline" id="cookie-decline">Decline</button>
+  </div>
+</div>
 
 <script src="../assets/js/main.js" defer></script>
 </body>
