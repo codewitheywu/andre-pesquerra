@@ -538,20 +538,17 @@ section + section { border-top: 1px solid var(--border); }
 .exp-item::before {
   content: '';
   position: absolute;
-  inset: 1rem 1rem;
+  inset: 0.5rem -1rem;
   z-index: -1;
   border-radius: var(--radius-sm);
-  border: 1px solid transparent;
   border-left: 2px solid transparent;
-  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
 .exp-item:hover::before {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-color: var(--glass-border);
   border-left-color: var(--gold);
-  box-shadow: var(--glass-shadow);
 }
 .exp-item:first-child { border-top: 1px solid var(--border); }
 
