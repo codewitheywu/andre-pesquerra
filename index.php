@@ -77,7 +77,6 @@ $year     = date('Y');
       <li><a href="#hire">Why Me</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#testimonials">Testimonials</a></li>
-      <li><a href="#contact">Contact</a></li>
     </ul>
 
     <a href="#contact" class="nav-cta">
