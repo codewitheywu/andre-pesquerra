@@ -80,11 +80,9 @@ $year     = date('Y');
       <li><a href="#contact">Contact</a></li>
     </ul>
 
-    <?php if (!empty($profile['resume_url'])): ?>
-    <a href="<?= htmlspecialchars($profile['resume_url'], ENT_QUOTES, 'UTF-8') ?>" class="nav-cta" target="_blank" rel="noopener">
-      Resume
+    <a href="#contact" class="nav-cta">
+      Quick Contact
     </a>
-    <?php endif; ?>
 
     <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
