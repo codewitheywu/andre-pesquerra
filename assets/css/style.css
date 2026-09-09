@@ -405,14 +405,6 @@ section + section { border-top: 1px solid var(--border); }
   align-items: center;
   gap: 1.25rem;
   margin-top: 1.75rem;
-  padding: 0.7rem 1.4rem;
-  width: fit-content;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-pill);
-  box-shadow: var(--glass-shadow);
 }
 .hero-socials a {
   font-size: var(--fs-label-sm);
