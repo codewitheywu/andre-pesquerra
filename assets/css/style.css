@@ -128,16 +128,9 @@ section + section { border-top: 1px solid var(--border); }
 .gold-rule {
   display: flex;
   align-items: center;
-  gap: 1rem;
   margin-bottom: 1.25rem;
 }
-.gold-rule span {
-  display: block;
-  width: 32px;
-  height: 1px;
-  background: var(--gold);
-  flex-shrink: 0;
-}
+.gold-rule span { display: none; }
 .gold-rule p {
   font-size: var(--fs-label);
   letter-spacing: 0.2em;
@@ -312,15 +305,6 @@ section + section { border-top: 1px solid var(--border); }
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.hero-label::before {
-  content: '';
-  display: block;
-  width: 24px; height: 1px;
-  background: var(--gold);
 }
 
 .hero-name {

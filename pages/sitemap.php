@@ -24,12 +24,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
   </url>
   <?php endforeach; ?>
   <url>
-    <loc><?= htmlspecialchars($base . '/privacy.html', ENT_QUOTES, 'UTF-8') ?></loc>
+    <loc><?= htmlspecialchars($base . '/privacy/', ENT_QUOTES, 'UTF-8') ?></loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc><?= htmlspecialchars($base . '/terms.html', ENT_QUOTES, 'UTF-8') ?></loc>
+    <loc><?= htmlspecialchars($base . '/terms/', ENT_QUOTES, 'UTF-8') ?></loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

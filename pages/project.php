@@ -291,8 +291,8 @@ foreach ($project['tech'] as $t) {
     <div class="footer-left">
       <p class="footer-copy">© <?= $year ?> <?= $name ?>. All rights reserved.</p>
       <div class="footer-links">
-        <a href="../privacy.html">Privacy Policy</a>
-        <a href="../terms.html">Terms</a>
+        <a href="../privacy/">Privacy Policy</a>
+        <a href="../terms/">Terms</a>
       </div>
     </div>
     <a href="#" class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
@@ -305,7 +305,7 @@ foreach ($project['tech'] as $t) {
 </footer>
 
 <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
-  <p>This site uses minimal, privacy-friendly analytics and a small cookie to remember your choice. No ad trackers, ever. See the <a href="../privacy.html">Privacy Policy</a> for details.</p>
+  <p>This site uses minimal, privacy-friendly analytics and a small cookie to remember your choice. No ad trackers, ever. See the <a href="../privacy/">Privacy Policy</a> for details.</p>
   <div class="cookie-banner-actions">
     <button type="button" class="cookie-accept" id="cookie-accept">Accept</button>
     <button type="button" class="cookie-decline" id="cookie-decline">Decline</button>
