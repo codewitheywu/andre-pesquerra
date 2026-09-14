@@ -156,7 +156,6 @@ $year     = date('Y');
 <section id="about" aria-label="About me and skills">
   <div class="container">
     <div class="about-grid">
-      <!-- Skills grid removed for now — will return in a later pass. -->
       <div class="about-left">
         <div class="gold-rule reveal">
           <span></span><p>About</p>
@@ -172,6 +171,27 @@ $year     = date('Y');
           </p>
           <?php endif; ?>
         </div>
+      </div>
+
+      <div class="skills-list reveal reveal-delay-2">
+        <?php foreach ($skillGroups as $category => $skills): ?>
+        <div class="skill-category">
+          <p class="skill-category-title"><?= htmlspecialchars($category, ENT_QUOTES, 'UTF-8') ?></p>
+          <div class="skill-bars">
+            <?php foreach ($skills as $skill): ?>
+            <div class="skill-row">
+              <div class="skill-meta">
+                <span class="skill-name"><?= htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8') ?></span>
+                <span class="skill-pct"><?= (int)$skill['proficiency'] ?>%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-pct="<?= (int)$skill['proficiency'] ?>"></div>
+              </div>
+            </div>
+            <?php endforeach; ?>
+          </div>
+        </div>
+        <?php endforeach; ?>
       </div>
     </div>
   </div>

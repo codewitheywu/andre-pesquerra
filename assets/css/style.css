@@ -448,7 +448,7 @@ section + section { border-top: 1px solid var(--border); }
    revert to `1fr 1fr` when the skills column comes back. */
 #about .about-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 5rem;
   align-items: start;
   overflow: hidden;
