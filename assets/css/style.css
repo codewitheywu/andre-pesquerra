@@ -511,6 +511,50 @@ section + section { border-top: 1px solid var(--border); }
   transition: width 1.2s var(--ease-out);
 }
 
+/* ── Skill cards: icon badge + name + segmented proficiency dashes ── */
+.skill-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.skill-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.65rem;
+}
+.skill-icon-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+.skill-card-name {
+  font-size: 0.82rem;
+  color: var(--text-2);
+}
+.skill-dashes {
+  display: flex;
+  gap: 4px;
+}
+.skill-dash {
+  width: 11px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+}
+.skill-dash.is-filled {
+  background: linear-gradient(90deg, var(--gold), #e8c07a);
+}
+
 /* ── Work Experience ─────────────────────────────────────────── */
 #experience .exp-list {
   display: flex;

@@ -39,6 +39,30 @@ $bio      = htmlspecialchars($profile['bio']        ?? '',            ENT_QUOTES
 $location = htmlspecialchars($profile['location']   ?? '',            ENT_QUOTES, 'UTF-8');
 $email    = htmlspecialchars($profile['email']       ?? '',           ENT_QUOTES, 'UTF-8');
 $year     = date('Y');
+
+// Small colored badge (background + short label) per skill, matched by a
+// case-insensitive substring so DB name variants (e.g. "HTML 5" vs "HTML")
+// still resolve. Falls back to a neutral badge with the first 2 letters.
+function skillBadge(string $skillName): array {
+    $key = strtolower($skillName);
+    $map = [
+        'php'        => ['#4F5B93', 'PHP'],
+        'html'       => ['#E34F26', '</>'],
+        'css'        => ['#1572B6', 'CSS'],
+        'javascript' => ['#F7DF1E', 'JS', '#171512'],
+        'figma'      => ['#A259FF', 'F'],
+        'webflow'    => ['#4353FF', 'W'],
+        'claude'     => ['#DA7756', 'C'],
+        'chatgpt'    => ['#10A37F', 'GPT'],
+        'gpt'        => ['#10A37F', 'GPT'],
+    ];
+    foreach ($map as $needle => $badge) {
+        if (str_contains($key, $needle)) {
+            return ['bg' => $badge[0], 'label' => $badge[1], 'color' => $badge[2] ?? '#fff'];
+        }
+    }
+    return ['bg' => '#7c5f28', 'label' => strtoupper(substr($skillName, 0, 2)), 'color' => '#fff'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -177,15 +201,23 @@ $year     = date('Y');
         <?php foreach ($skillGroups as $category => $skills): ?>
         <div class="skill-category">
           <p class="skill-category-title"><?= htmlspecialchars($category, ENT_QUOTES, 'UTF-8') ?></p>
-          <div class="skill-bars">
+          <div class="skill-cards">
             <?php foreach ($skills as $skill): ?>
-            <div class="skill-row">
-              <div class="skill-meta">
-                <span class="skill-name"><?= htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8') ?></span>
-                <span class="skill-pct"><?= (int)$skill['proficiency'] ?>%</span>
+            <?php
+              $badge = skillBadge($skill['name']);
+              $pct   = (int)$skill['proficiency'];
+              $dashesTotal  = 10;
+              $dashesFilled = (int)round($pct / 100 * $dashesTotal);
+            ?>
+            <div class="skill-card">
+              <div class="skill-icon-badge" style="background:<?= $badge['bg'] ?>; color:<?= $badge['color'] ?>;" aria-hidden="true">
+                <?= htmlspecialchars($badge['label'], ENT_QUOTES, 'UTF-8') ?>
               </div>
-              <div class="skill-bar-bg">
-                <div class="skill-bar-fill" data-pct="<?= (int)$skill['proficiency'] ?>"></div>
+              <p class="skill-card-name"><?= htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8') ?></p>
+              <div class="skill-dashes" role="img" aria-label="<?= htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8') ?> proficiency: <?= $pct ?>%">
+                <?php for ($i = 0; $i < $dashesTotal; $i++): ?>
+                <span class="skill-dash<?= $i < $dashesFilled ? ' is-filled' : '' ?>"></span>
+                <?php endfor; ?>
               </div>
             </div>
             <?php endforeach; ?>
