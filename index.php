@@ -201,26 +201,36 @@ function skillBadge(string $skillName): array {
         <?php foreach ($skillGroups as $category => $skills): ?>
         <div class="skill-category">
           <p class="skill-category-title"><?= htmlspecialchars($category, ENT_QUOTES, 'UTF-8') ?></p>
-          <div class="skill-cards">
-            <?php foreach ($skills as $skill): ?>
-            <?php
-              $badge = skillBadge($skill['name']);
-              $pct   = (int)$skill['proficiency'];
-              $dashesTotal  = 10;
-              $dashesFilled = (int)round($pct / 100 * $dashesTotal);
-            ?>
-            <div class="skill-card">
-              <div class="skill-icon-badge" style="background:<?= $badge['bg'] ?>; color:<?= $badge['color'] ?>;" aria-hidden="true">
-                <?= htmlspecialchars($badge['label'], ENT_QUOTES, 'UTF-8') ?>
+          <div class="skill-marquee">
+            <div class="skill-cards" style="animation-duration: <?= count($skills) * 3 ?>s;">
+              <?php
+                // Rendered twice — once real, once aria-hidden — so the track's
+                // content tiles seamlessly at the -50% loop point (see .skill-cards
+                // keyframes in style.css).
+                foreach ([false, true] as $isDuplicate):
+                foreach ($skills as $skill):
+                  $badge = skillBadge($skill['name']);
+                  $pct   = (int)$skill['proficiency'];
+                  $dashesTotal  = 5;
+                  $dashesFilled = (int)round($pct / 100 * $dashesTotal);
+                  $nameEsc = htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8');
+              ?>
+              <div class="skill-card"<?= $isDuplicate ? ' aria-hidden="true"' : '' ?>>
+                <div class="skill-icon-badge" style="background:<?= $badge['bg'] ?>; color:<?= $badge['color'] ?>;" aria-hidden="true">
+                  <?= htmlspecialchars($badge['label'], ENT_QUOTES, 'UTF-8') ?>
+                </div>
+                <p class="skill-card-name"><?= $nameEsc ?></p>
+                <div class="skill-dashes" role="img" aria-label="<?= $nameEsc ?> proficiency: <?= $pct ?>%">
+                  <?php for ($i = 0; $i < $dashesTotal; $i++): ?>
+                  <span class="skill-dash<?= $i < $dashesFilled ? ' is-filled' : '' ?>"></span>
+                  <?php endfor; ?>
+                </div>
               </div>
-              <p class="skill-card-name"><?= htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8') ?></p>
-              <div class="skill-dashes" role="img" aria-label="<?= htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8') ?> proficiency: <?= $pct ?>%">
-                <?php for ($i = 0; $i < $dashesTotal; $i++): ?>
-                <span class="skill-dash<?= $i < $dashesFilled ? ' is-filled' : '' ?>"></span>
-                <?php endfor; ?>
-              </div>
+              <?php
+                endforeach;
+                endforeach;
+              ?>
             </div>
-            <?php endforeach; ?>
           </div>
         </div>
         <?php endforeach; ?>

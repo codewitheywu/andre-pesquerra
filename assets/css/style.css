@@ -511,11 +511,32 @@ section + section { border-top: 1px solid var(--border); }
   transition: width 1.2s var(--ease-out);
 }
 
-/* ── Skill cards: icon badge + name + segmented proficiency dashes ── */
+/* ── Skill cards: icon badge + name + segmented proficiency dashes ──
+   Rendered in a row per category, auto-scrolling right-to-left. The
+   track's content is duplicated once (aria-hidden on the copy) and
+   animated by exactly -50% so the loop point is seamless. ── */
+.skill-marquee {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
 .skill-cards {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  flex-direction: row;
+  gap: 1.75rem;
+  width: max-content;
+  animation: skill-scroll linear infinite;
+}
+.skill-marquee:hover .skill-cards {
+  animation-play-state: paused;
+}
+@keyframes skill-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skill-cards { animation: none; }
 }
 .skill-card {
   display: flex;
@@ -523,6 +544,8 @@ section + section { border-top: 1px solid var(--border); }
   align-items: center;
   text-align: center;
   gap: 0.65rem;
+  flex-shrink: 0;
+  width: 84px;
 }
 .skill-icon-badge {
   width: 48px;
