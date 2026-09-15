@@ -568,6 +568,16 @@ section + section { border-top: 1px solid var(--border); }
   letter-spacing: 0.02em;
   color: #fff;
 }
+/* Real icon art already carries its own (gold) color — no fill container,
+   just center the mark in the same 48px footprint as the text badges. */
+.skill-icon-badge--img {
+  background: none;
+}
+.skill-icon-badge--img img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
 .skill-card-name {
   font-size: 0.82rem;
   color: var(--text-2);

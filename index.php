@@ -40,28 +40,38 @@ $location = htmlspecialchars($profile['location']   ?? '',            ENT_QUOTES
 $email    = htmlspecialchars($profile['email']       ?? '',           ENT_QUOTES, 'UTF-8');
 $year     = date('Y');
 
-// Small colored badge (background + short label) per skill, matched by a
-// case-insensitive substring so DB name variants (e.g. "HTML 5" vs "HTML")
-// still resolve. Falls back to a neutral badge with the first 2 letters.
+// Per-skill icon, matched by a case-insensitive substring so DB name
+// variants (e.g. "HTML 5" vs "HTML") still resolve. Prefers a real gold
+// icon image (assets/img/icons/) where one exists; falls back to a small
+// colored text badge for skills that don't have one yet.
 function skillBadge(string $skillName): array {
     $key = strtolower($skillName);
-    $map = [
-        'php'        => ['#4F5B93', 'PHP'],
-        'html'       => ['#E34F26', '</>'],
-        'css'        => ['#1572B6', 'CSS'],
-        'javascript' => ['#F7DF1E', 'JS', '#171512'],
-        'figma'      => ['#A259FF', 'F'],
-        'webflow'    => ['#4353FF', 'W'],
-        'claude'     => ['#DA7756', 'C'],
-        'chatgpt'    => ['#10A37F', 'GPT'],
-        'gpt'        => ['#10A37F', 'GPT'],
+
+    $imgMap = [
+        'html'    => 'html.png',
+        'css'     => 'css.png',
+        'webflow' => 'webflow.png',
+        'chatgpt' => 'chatgpt.png',
+        'gpt'     => 'chatgpt.png',
+        'claude'  => 'claude.png',
     ];
-    foreach ($map as $needle => $badge) {
+    foreach ($imgMap as $needle => $file) {
         if (str_contains($key, $needle)) {
-            return ['bg' => $badge[0], 'label' => $badge[1], 'color' => $badge[2] ?? '#fff'];
+            return ['type' => 'img', 'src' => 'assets/img/icons/' . $file];
         }
     }
-    return ['bg' => '#7c5f28', 'label' => strtoupper(substr($skillName, 0, 2)), 'color' => '#fff'];
+
+    $textMap = [
+        'php'        => ['#4F5B93', 'PHP'],
+        'javascript' => ['#F7DF1E', 'JS', '#171512'],
+        'figma'      => ['#A259FF', 'F'],
+    ];
+    foreach ($textMap as $needle => $badge) {
+        if (str_contains($key, $needle)) {
+            return ['type' => 'text', 'bg' => $badge[0], 'label' => $badge[1], 'color' => $badge[2] ?? '#fff'];
+        }
+    }
+    return ['type' => 'text', 'bg' => '#7c5f28', 'label' => strtoupper(substr($skillName, 0, 2)), 'color' => '#fff'];
 }
 ?>
 <!DOCTYPE html>
@@ -216,9 +226,15 @@ function skillBadge(string $skillName): array {
                   $nameEsc = htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8');
               ?>
               <div class="skill-card"<?= $isDuplicate ? ' aria-hidden="true"' : '' ?>>
+                <?php if ($badge['type'] === 'img'): ?>
+                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true">
+                  <img src="<?= htmlspecialchars($badge['src'], ENT_QUOTES, 'UTF-8') ?>" alt="" width="28" height="28" loading="lazy">
+                </div>
+                <?php else: ?>
                 <div class="skill-icon-badge" style="background:<?= $badge['bg'] ?>; color:<?= $badge['color'] ?>;" aria-hidden="true">
                   <?= htmlspecialchars($badge['label'], ENT_QUOTES, 'UTF-8') ?>
                 </div>
+                <?php endif; ?>
                 <p class="skill-card-name"><?= $nameEsc ?></p>
                 <div class="skill-dashes" role="img" aria-label="<?= $nameEsc ?> proficiency: <?= $pct ?>%">
                   <?php for ($i = 0; $i < $dashesTotal; $i++): ?>
