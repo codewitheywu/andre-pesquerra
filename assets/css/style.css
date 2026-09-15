@@ -211,6 +211,8 @@ section + section { border-top: 1px solid var(--border); }
 }
 .nav-links a:hover { color: var(--text-1); }
 .nav-links a:hover::after { width: 100%; }
+.nav-links a.is-active { color: var(--text-1); }
+.nav-links a.is-active::after { width: 100%; }
 
 .nav-cta {
   font-size: var(--fs-label);
@@ -218,7 +220,7 @@ section + section { border-top: 1px solid var(--border); }
   text-transform: uppercase;
   padding: var(--btn-pad-sm);
   border: 1px solid var(--gold-line);
-  color: var(--gold);
+  color: #6b5424;
   border-radius: var(--radius-sm);
   transition: background 0.25s, color 0.25s;
 }
@@ -227,10 +229,13 @@ section + section { border-top: 1px solid var(--border); }
 .nav-hamburger {
   display: none;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 5px;
+  width: 44px;
+  height: 44px;
   background: none;
   border: none;
-  padding: 6px;
   border-radius: 50%;
   transition: background 0.2s;
 }
@@ -266,7 +271,8 @@ section + section { border-top: 1px solid var(--border); }
   letter-spacing: -0.01em;
   transition: color 0.2s;
 }
-.nav-mobile a:hover { color: var(--gold); }
+.nav-mobile a:hover,
+.nav-mobile a.is-active { color: var(--gold); }
 
 /* ── Hero ─────────────────────────────────────────────────────── */
 #hero {
@@ -496,7 +502,7 @@ section + section { border-top: 1px solid var(--border); }
   font-weight: 400;
 }
 .skill-icon { object-fit: contain; flex-shrink: 0; }
-.skill-pct  { font-size: 0.72rem; color: var(--gold); font-family: var(--font-display); }
+.skill-pct  { font-size: 0.72rem; color: #6b5424; font-family: var(--font-display); }
 .skill-bar-bg {
   height: 2px;
   background: var(--border);
@@ -518,8 +524,8 @@ section + section { border-top: 1px solid var(--border); }
 .skill-marquee {
   overflow: hidden;
   width: 100%;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
 }
 .skill-cards {
   display: flex;
@@ -537,6 +543,8 @@ section + section { border-top: 1px solid var(--border); }
 }
 @media (prefers-reduced-motion: reduce) {
   .skill-cards { animation: none; }
+  .reveal { transition: none; }
+  .proj-fan-card { transition: none; }
 }
 .skill-card {
   display: flex;
@@ -890,10 +898,18 @@ section + section { border-top: 1px solid var(--border); }
   box-shadow: var(--glass-shadow);
 }
 .proj-dot {
+  position: relative;
   width: 7px; height: 7px;
   border-radius: 50%;
   background: var(--border-hover);
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+/* Invisible hit area — grows the tap target to ~44px without touching the
+   dot's visual size or the row's gap-based spacing. */
+.proj-dot::before {
+  content: '';
+  position: absolute;
+  inset: -18px;
 }
 .proj-dot.is-active { background: var(--gold); transform: scale(1.4); box-shadow: 0 0 8px rgba(124,95,40,0.5); }
 
@@ -928,6 +944,7 @@ section + section { border-top: 1px solid var(--border); }
   margin-top: 1.75rem;
 }
 .testi-dot {
+  position: relative;
   width: 8px; height: 8px;
   border-radius: 50%;
   background: var(--border-hover);
@@ -935,6 +952,11 @@ section + section { border-top: 1px solid var(--border); }
   padding: 0;
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
+}
+.testi-dot::before {
+  content: '';
+  position: absolute;
+  inset: -18px;
 }
 .testi-dot.is-active { background: var(--gold); transform: scale(1.35); }
 .testi-progress {
@@ -1098,6 +1120,18 @@ section + section { border-top: 1px solid var(--border); }
 .form-input::placeholder,
 .form-textarea::placeholder { color: var(--text-3); }
 .form-textarea { resize: vertical; min-height: 140px; }
+
+.form-input.is-invalid,
+.form-textarea.is-invalid { border-color: rgba(198,40,40,0.45); }
+.form-input.is-invalid:focus-visible,
+.form-textarea.is-invalid:focus-visible { box-shadow: 0 0 0 3px rgba(198,40,40,0.15); }
+.field-error {
+  display: none;
+  color: #b23434;
+  font-size: 0.75rem;
+  margin-top: 0.4rem;
+}
+.field-error.visible { display: block; }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 

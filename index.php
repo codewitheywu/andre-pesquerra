@@ -533,12 +533,14 @@ function skillBadge(string $skillName): array {
             <div class="form-group">
               <label class="form-label" for="cf-name">Name</label>
               <input class="form-input" id="cf-name" name="name" type="text"
-                     placeholder="Your name" required autocomplete="name">
+                     placeholder="Your name" required autocomplete="name" aria-describedby="cf-name-error">
+              <p class="field-error" id="cf-name-error"></p>
             </div>
             <div class="form-group">
               <label class="form-label" for="cf-email">Email</label>
               <input class="form-input" id="cf-email" name="email" type="email"
-                     placeholder="your@email.com" required autocomplete="email">
+                     placeholder="your@email.com" required autocomplete="email" aria-describedby="cf-email-error">
+              <p class="field-error" id="cf-email-error"></p>
             </div>
           </div>
           <div class="form-group">
@@ -549,7 +551,8 @@ function skillBadge(string $skillName): array {
           <div class="form-group">
             <label class="form-label" for="cf-message">Message</label>
             <textarea class="form-textarea" id="cf-message" name="message"
-                      placeholder="Tell me about your project…" required></textarea>
+                      placeholder="Tell me about your project…" required aria-describedby="cf-message-error"></textarea>
+            <p class="field-error" id="cf-message-error"></p>
           </div>
           <button type="submit" class="btn-submit">Send Message</button>
           <div id="form-msg" class="form-msg" role="alert" aria-live="polite"></div>

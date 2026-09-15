@@ -73,6 +73,56 @@
   const form = document.getElementById('contact-form');
   if (form) {
 
+    // Inline, per-field validation — catches obvious mistakes (empty name,
+    // malformed email, too-short message) before the network round trip,
+    // instead of only surfacing them after the server responds.
+    const fields = {
+      name:    { el: document.getElementById('cf-name'),
+                 errorEl: document.getElementById('cf-name-error'),
+                 validate: v => v.trim().length >= 2 ? '' : 'Name is required.' },
+      email:   { el: document.getElementById('cf-email'),
+                 errorEl: document.getElementById('cf-email-error'),
+                 validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Enter a valid email address.' },
+      message: { el: document.getElementById('cf-message'),
+                 errorEl: document.getElementById('cf-message-error'),
+                 validate: v => v.trim().length >= 10 ? '' : 'Message must be at least 10 characters.' },
+    };
+
+    const showFieldError = (field, message) => {
+      field.el.classList.toggle('is-invalid', !!message);
+      field.el.setAttribute('aria-invalid', message ? 'true' : 'false');
+      if (field.errorEl) {
+        field.errorEl.textContent = message;
+        field.errorEl.classList.toggle('visible', !!message);
+      }
+    };
+
+    const validateField = (key) => {
+      const field = fields[key];
+      const message = field.validate(field.el.value);
+      showFieldError(field, message);
+      return !message;
+    };
+
+    Object.keys(fields).forEach(key => {
+      fields[key].el.addEventListener('blur', () => validateField(key));
+      fields[key].el.addEventListener('input', () => {
+        if (fields[key].el.classList.contains('is-invalid')) validateField(key);
+      });
+    });
+
+    // Best-effort match of a server-returned error string back to the field
+    // it's about, so the specific input gets highlighted too — the server's
+    // errors are plain sentences, not field-keyed, so this is a fallback on
+    // top of (not a replacement for) the inline validation above.
+    const highlightServerErrors = (errors) => {
+      errors.forEach(err => {
+        const lower = err.toLowerCase();
+        const key = Object.keys(fields).find(k => lower.includes(k));
+        if (key) showFieldError(fields[key], err);
+      });
+    };
+
     // Renders a title + optional detail line (or a bulleted list for
     // multiple validation errors) instead of one run-on sentence.
     const setFormMessage = (msg, type, title, details) => {
@@ -114,6 +164,13 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      const invalidKey = Object.keys(fields).find(key => !validateField(key));
+      if (invalidKey) {
+        fields[invalidKey].el.focus();
+        return;
+      }
+
       const btn = form.querySelector('.btn-submit');
       const msg = document.getElementById('form-msg');
       const original = btn.textContent;
@@ -141,6 +198,7 @@
           form.reset();
         } else if (data.errors) {
           setFormMessage(msg, 'error', 'Please check the form:', data.errors);
+          highlightServerErrors(data.errors);
         } else {
           setFormMessage(msg, 'error', 'Unable to send your message.', data.message);
         }
@@ -349,14 +407,14 @@
 
   /* ── Smooth active nav link ──────────────────────────────── */
   const sections = document.querySelectorAll('section[id]');
-  const navLinks  = document.querySelectorAll('.nav-links a');
+  const navLinks  = document.querySelectorAll('.nav-links a, .nav-mobile a');
   const activeObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
+          const href = '#' + e.target.id;
           navLinks.forEach(a => {
-            a.style.color = a.getAttribute('href') === '#' + e.target.id
-              ? 'var(--text-1)' : '';
+            a.classList.toggle('is-active', a.getAttribute('href') === href);
           });
         }
       });
