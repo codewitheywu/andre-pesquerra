@@ -578,6 +578,13 @@ section + section { border-top: 1px solid var(--border); }
   height: 28px;
   object-fit: contain;
 }
+/* Horizontal wordmarks (e.g. Claude) are far wider than tall, so a 28px box
+   shrinks their lettering to nothing — give them the full card width instead. */
+.skill-icon-badge--img.skill-icon-badge--wide { width: 80px; }
+.skill-icon-badge--img.skill-icon-badge--wide img {
+  width: 80px;
+  height: auto;
+}
 .skill-card-name {
   font-size: 0.82rem;
   color: var(--text-2);

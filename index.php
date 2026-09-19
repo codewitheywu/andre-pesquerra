@@ -47,30 +47,25 @@ $year     = date('Y');
 function skillBadge(string $skillName): array {
     $key = strtolower($skillName);
 
+    // 'wide' marks are horizontal wordmarks (not square glyphs) and get a
+    // larger display box so their lettering stays legible.
     $imgMap = [
-        'html'    => 'html.png',
-        'css'     => 'css.png',
-        'webflow' => 'webflow.png',
-        'chatgpt' => 'chatgpt.png',
-        'gpt'     => 'chatgpt.png',
-        'claude'  => 'claude.png',
+        'php'        => ['php.png'],
+        'html'       => ['html.png'],
+        'css'        => ['css.png'],
+        'javascript' => ['js.png'],
+        'figma'      => ['figma.png'],
+        'webflow'    => ['webflow.png'],
+        'chatgpt'    => ['chatgpt.png'],
+        'gpt'        => ['chatgpt.png'],
+        'claude'     => ['claude.png', true],
     ];
-    foreach ($imgMap as $needle => $file) {
+    foreach ($imgMap as $needle => $icon) {
         if (str_contains($key, $needle)) {
-            return ['type' => 'img', 'src' => 'assets/img/icons/' . $file];
+            return ['type' => 'img', 'src' => 'assets/img/icons/' . $icon[0], 'wide' => $icon[1] ?? false];
         }
     }
 
-    $textMap = [
-        'php'        => ['#4F5B93', 'PHP'],
-        'javascript' => ['#F7DF1E', 'JS', '#171512'],
-        'figma'      => ['#A259FF', 'F'],
-    ];
-    foreach ($textMap as $needle => $badge) {
-        if (str_contains($key, $needle)) {
-            return ['type' => 'text', 'bg' => $badge[0], 'label' => $badge[1], 'color' => $badge[2] ?? '#fff'];
-        }
-    }
     return ['type' => 'text', 'bg' => '#7c5f28', 'label' => strtoupper(substr($skillName, 0, 2)), 'color' => '#fff'];
 }
 ?>
@@ -227,8 +222,9 @@ function skillBadge(string $skillName): array {
               ?>
               <div class="skill-card"<?= $isDuplicate ? ' aria-hidden="true"' : '' ?>>
                 <?php if ($badge['type'] === 'img'): ?>
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true">
-                  <img src="<?= htmlspecialchars($badge['src'], ENT_QUOTES, 'UTF-8') ?>" alt="" width="28" height="28" loading="lazy">
+                <div class="skill-icon-badge skill-icon-badge--img<?= !empty($badge['wide']) ? ' skill-icon-badge--wide' : '' ?>" aria-hidden="true">
+                  <img src="<?= htmlspecialchars($badge['src'], ENT_QUOTES, 'UTF-8') ?>" alt=""
+                       width="<?= !empty($badge['wide']) ? 80 : 28 ?>" height="<?= !empty($badge['wide']) ? 20 : 28 ?>" loading="lazy">
                 </div>
                 <?php else: ?>
                 <div class="skill-icon-badge" style="background:<?= $badge['bg'] ?>; color:<?= $badge['color'] ?>;" aria-hidden="true">
