@@ -92,7 +92,12 @@
     </div>
   </div>
 
-  <p class="scroll-hint" aria-hidden="true">Scroll to explore</p>
+  <div class="container scroll-hint-wrap">
+    <a href="#about" class="scroll-hint">
+      <span class="scroll-hint-mouse" aria-hidden="true"></span>
+      Scroll to explore
+    </a>
+  </div>
 </section>
 
 
@@ -111,145 +116,44 @@
         </h2>
         <div class="about-text reveal reveal-delay-2">
           <p>I build fast, accessible, and beautiful web experiences. Based in the Philippines, open to remote work worldwide.</p>
-          <p style="margin-top:2rem; font-size:0.8rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-3);">
-            Based in Olongapo City, Zambales, Phillipines
-          </p>
         </div>
+
+        <ul class="about-stats reveal reveal-delay-3" aria-label="At a glance">
+          <li><strong>4</strong><span>Featured projects</span></li>
+          <li><strong>3</strong><span>Roles held</span></li>
+          <li><strong>8</strong><span>Tools &amp; skills</span></li>
+        </ul>
+
+        <p class="about-location reveal reveal-delay-3">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          Based in Olongapo City, Zambales, Phillipines
+        </p>
       </div>
 
       <div class="skills-list reveal reveal-delay-2">
+        <p class="skills-heading">Toolkit</p>
         <div class="skill-category">
           <p class="skill-category-title">Backend</p>
-          <div class="skill-marquee">
-            <div class="skill-cards" style="animation-duration: 3s;">
-              <div class="skill-card">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/php.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">PHP</p>
-                <div class="skill-dashes" role="img" aria-label="PHP proficiency: 85%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-              <div class="skill-card" aria-hidden="true">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/php.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">PHP</p>
-                <div class="skill-dashes" role="img" aria-label="PHP proficiency: 85%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ul class="skill-chips">
+            <li class="skill-chip" title="PHP · 85%"><img src="assets/img/icons/php.png" alt="" height="20" class="skill-chip-icon" loading="lazy"> PHP</li>
+          </ul>
         </div>
         <div class="skill-category">
           <p class="skill-category-title">Frontend</p>
-          <div class="skill-marquee">
-            <div class="skill-cards" style="animation-duration: 9s;">
-              <div class="skill-card">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/html.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">HTML</p>
-                <div class="skill-dashes" role="img" aria-label="HTML proficiency: 90%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span>
-                </div>
-              </div>
-              <div class="skill-card">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/css.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">CSS</p>
-                <div class="skill-dashes" role="img" aria-label="CSS proficiency: 85%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-              <div class="skill-card">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/js.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">JavaScript</p>
-                <div class="skill-dashes" role="img" aria-label="JavaScript proficiency: 80%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-              <div class="skill-card" aria-hidden="true">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/html.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">HTML</p>
-                <div class="skill-dashes" role="img" aria-label="HTML proficiency: 90%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span>
-                </div>
-              </div>
-              <div class="skill-card" aria-hidden="true">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/css.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">CSS</p>
-                <div class="skill-dashes" role="img" aria-label="CSS proficiency: 85%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-              <div class="skill-card" aria-hidden="true">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/js.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">JavaScript</p>
-                <div class="skill-dashes" role="img" aria-label="JavaScript proficiency: 80%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ul class="skill-chips">
+            <li class="skill-chip" title="HTML · 90%"><img src="assets/img/icons/html.png" alt="" height="20" class="skill-chip-icon" loading="lazy"> HTML</li>
+            <li class="skill-chip" title="CSS · 85%"><img src="assets/img/icons/css.png" alt="" height="20" class="skill-chip-icon" loading="lazy"> CSS</li>
+            <li class="skill-chip" title="JavaScript · 80%"><img src="assets/img/icons/js.png" alt="" height="20" class="skill-chip-icon" loading="lazy"> JavaScript</li>
+          </ul>
         </div>
         <div class="skill-category">
           <p class="skill-category-title">Applications</p>
-          <div class="skill-marquee">
-            <div class="skill-cards" style="animation-duration: 12s;">
-              <div class="skill-card">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/figma.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">Figma</p>
-                <div class="skill-dashes" role="img" aria-label="Figma proficiency: 75%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-              <div class="skill-card">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/webflow.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">Webflow</p>
-                <div class="skill-dashes" role="img" aria-label="Webflow proficiency: 80%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-              <div class="skill-card">
-                <div class="skill-icon-badge skill-icon-badge--img skill-icon-badge--wide" aria-hidden="true"><img src="assets/img/icons/claude.png" alt="" width="80" height="20" loading="lazy"></div>
-                <p class="skill-card-name">Claude AI</p>
-                <div class="skill-dashes" role="img" aria-label="Claude AI proficiency: 100%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span>
-                </div>
-              </div>
-              <div class="skill-card">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/chatgpt.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">ChatGPT</p>
-                <div class="skill-dashes" role="img" aria-label="ChatGPT proficiency: 80%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-              <div class="skill-card" aria-hidden="true">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/figma.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">Figma</p>
-                <div class="skill-dashes" role="img" aria-label="Figma proficiency: 75%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-              <div class="skill-card" aria-hidden="true">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/webflow.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">Webflow</p>
-                <div class="skill-dashes" role="img" aria-label="Webflow proficiency: 80%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-              <div class="skill-card" aria-hidden="true">
-                <div class="skill-icon-badge skill-icon-badge--img skill-icon-badge--wide" aria-hidden="true"><img src="assets/img/icons/claude.png" alt="" width="80" height="20" loading="lazy"></div>
-                <p class="skill-card-name">Claude AI</p>
-                <div class="skill-dashes" role="img" aria-label="Claude AI proficiency: 100%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span>
-                </div>
-              </div>
-              <div class="skill-card" aria-hidden="true">
-                <div class="skill-icon-badge skill-icon-badge--img" aria-hidden="true"><img src="assets/img/icons/chatgpt.png" alt="" width="28" height="28" loading="lazy"></div>
-                <p class="skill-card-name">ChatGPT</p>
-                <div class="skill-dashes" role="img" aria-label="ChatGPT proficiency: 80%">
-                  <span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash is-filled"></span><span class="skill-dash"></span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ul class="skill-chips">
+            <li class="skill-chip" title="Figma · 75%"><img src="assets/img/icons/figma.png" alt="" height="20" class="skill-chip-icon" loading="lazy"> Figma</li>
+            <li class="skill-chip" title="Webflow · 80%"><img src="assets/img/icons/webflow.png" alt="" height="20" class="skill-chip-icon" loading="lazy"> Webflow</li>
+            <li class="skill-chip" title="Claude AI · 100%"><img src="assets/img/icons/claude.png" alt="Claude AI" height="20" class="skill-chip-icon skill-chip-icon--wide" loading="lazy"></li>
+            <li class="skill-chip" title="ChatGPT · 80%"><img src="assets/img/icons/chatgpt.png" alt="" height="20" class="skill-chip-icon" loading="lazy"> ChatGPT</li>
+          </ul>
         </div>
       </div>
     </div>

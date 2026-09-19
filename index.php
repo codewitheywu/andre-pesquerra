@@ -175,7 +175,12 @@ function skillBadge(string $skillName): array {
     </div>
   </div>
 
-  <p class="scroll-hint" aria-hidden="true">Scroll to explore</p>
+  <div class="container scroll-hint-wrap">
+    <a href="#about" class="scroll-hint">
+      <span class="scroll-hint-mouse" aria-hidden="true"></span>
+      Scroll to explore
+    </a>
+  </div>
 </section>
 
 
@@ -194,56 +199,43 @@ function skillBadge(string $skillName): array {
         </h2>
         <div class="about-text reveal reveal-delay-2">
           <p><?= $bio ?></p>
-          <?php if ($location): ?>
-          <p style="margin-top:2rem; font-size:0.8rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-3);">
-            Based in <?= $location ?>
-          </p>
-          <?php endif; ?>
         </div>
+
+        <ul class="about-stats reveal reveal-delay-3" aria-label="At a glance">
+          <li><strong><?= count($projects) ?></strong><span>Featured projects</span></li>
+          <li><strong><?= count($experience) ?></strong><span>Roles held</span></li>
+          <li><strong><?= array_sum(array_map('count', $skillGroups)) ?></strong><span>Tools &amp; skills</span></li>
+        </ul>
+
+        <?php if ($location): ?>
+        <p class="about-location reveal reveal-delay-3">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          Based in <?= $location ?>
+        </p>
+        <?php endif; ?>
       </div>
 
       <div class="skills-list reveal reveal-delay-2">
+        <p class="skills-heading">Toolkit</p>
         <?php foreach ($skillGroups as $category => $skills): ?>
         <div class="skill-category">
           <p class="skill-category-title"><?= htmlspecialchars($category, ENT_QUOTES, 'UTF-8') ?></p>
-          <div class="skill-marquee">
-            <div class="skill-cards" style="animation-duration: <?= count($skills) * 3 ?>s;">
-              <?php
-                // Rendered twice — once real, once aria-hidden — so the track's
-                // content tiles seamlessly at the -50% loop point (see .skill-cards
-                // keyframes in style.css).
-                foreach ([false, true] as $isDuplicate):
-                foreach ($skills as $skill):
-                  $badge = skillBadge($skill['name']);
-                  $pct   = (int)$skill['proficiency'];
-                  $dashesTotal  = 5;
-                  $dashesFilled = (int)round($pct / 100 * $dashesTotal);
-                  $nameEsc = htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8');
-              ?>
-              <div class="skill-card"<?= $isDuplicate ? ' aria-hidden="true"' : '' ?>>
-                <?php if ($badge['type'] === 'img'): ?>
-                <div class="skill-icon-badge skill-icon-badge--img<?= !empty($badge['wide']) ? ' skill-icon-badge--wide' : '' ?>" aria-hidden="true">
-                  <img src="<?= htmlspecialchars($badge['src'], ENT_QUOTES, 'UTF-8') ?>" alt=""
-                       width="<?= !empty($badge['wide']) ? 80 : 28 ?>" height="<?= !empty($badge['wide']) ? 20 : 28 ?>" loading="lazy">
-                </div>
-                <?php else: ?>
-                <div class="skill-icon-badge" style="background:<?= $badge['bg'] ?>; color:<?= $badge['color'] ?>;" aria-hidden="true">
-                  <?= htmlspecialchars($badge['label'], ENT_QUOTES, 'UTF-8') ?>
-                </div>
-                <?php endif; ?>
-                <p class="skill-card-name"><?= $nameEsc ?></p>
-                <div class="skill-dashes" role="img" aria-label="<?= $nameEsc ?> proficiency: <?= $pct ?>%">
-                  <?php for ($i = 0; $i < $dashesTotal; $i++): ?>
-                  <span class="skill-dash<?= $i < $dashesFilled ? ' is-filled' : '' ?>"></span>
-                  <?php endfor; ?>
-                </div>
-              </div>
-              <?php
-                endforeach;
-                endforeach;
-              ?>
-            </div>
-          </div>
+          <ul class="skill-chips">
+            <?php foreach ($skills as $skill):
+              $badge   = skillBadge($skill['name']);
+              $nameEsc = htmlspecialchars($skill['name'], ENT_QUOTES, 'UTF-8');
+            ?>
+            <li class="skill-chip" title="<?= $nameEsc ?> · <?= (int)$skill['proficiency'] ?>%">
+              <?php if ($badge['type'] === 'img'): ?>
+              <img src="<?= htmlspecialchars($badge['src'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= !empty($badge['wide']) ? $nameEsc : '' ?>" height="20"
+                   class="skill-chip-icon<?= !empty($badge['wide']) ? ' skill-chip-icon--wide' : '' ?>" loading="lazy">
+              <?php else: ?>
+              <span class="skill-chip-text" aria-hidden="true"><?= htmlspecialchars($badge['label'], ENT_QUOTES, 'UTF-8') ?></span>
+              <?php endif; ?>
+              <?= !empty($badge['wide']) ? '' : $nameEsc ?>
+            </li>
+            <?php endforeach; ?>
+          </ul>
         </div>
         <?php endforeach; ?>
       </div>
