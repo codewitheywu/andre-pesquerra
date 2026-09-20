@@ -47,8 +47,12 @@ $year     = date('Y');
 function skillBadge(string $skillName): array {
     $key = strtolower($skillName);
 
-    // 'wide' marks are horizontal wordmarks (not square glyphs) and get a
-    // larger display box so their lettering stays legible.
+    // "C" is too short to match by substring ('css', 'claude' contain it),
+    // so it is matched on the whole name instead.
+    if (preg_match('/^c([[:space:]]+(language|programming))?$/', $key)) {
+        return ['type' => 'img', 'src' => 'assets/img/icons/c.png'];
+    }
+
     $imgMap = [
         'php'        => ['php.png'],
         'html'       => ['html.png'],
@@ -58,11 +62,11 @@ function skillBadge(string $skillName): array {
         'webflow'    => ['webflow.png'],
         'chatgpt'    => ['chatgpt.png'],
         'gpt'        => ['chatgpt.png'],
-        'claude'     => ['claude.png', true],
+        'claude'     => ['claude.png'],
     ];
     foreach ($imgMap as $needle => $icon) {
         if (str_contains($key, $needle)) {
-            return ['type' => 'img', 'src' => 'assets/img/icons/' . $icon[0], 'wide' => $icon[1] ?? false];
+            return ['type' => 'img', 'src' => 'assets/img/icons/' . $icon[0]];
         }
     }
 
@@ -227,12 +231,11 @@ function skillBadge(string $skillName): array {
             ?>
             <li class="skill-chip" title="<?= $nameEsc ?> · <?= (int)$skill['proficiency'] ?>%">
               <?php if ($badge['type'] === 'img'): ?>
-              <img src="<?= htmlspecialchars($badge['src'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= !empty($badge['wide']) ? $nameEsc : '' ?>" height="20"
-                   class="skill-chip-icon<?= !empty($badge['wide']) ? ' skill-chip-icon--wide' : '' ?>" loading="lazy">
+              <img src="<?= htmlspecialchars($badge['src'], ENT_QUOTES, 'UTF-8') ?>" alt="" height="20" class="skill-chip-icon" loading="lazy">
               <?php else: ?>
               <span class="skill-chip-text" aria-hidden="true"><?= htmlspecialchars($badge['label'], ENT_QUOTES, 'UTF-8') ?></span>
               <?php endif; ?>
-              <?= !empty($badge['wide']) ? '' : $nameEsc ?>
+              <?= $nameEsc ?>
             </li>
             <?php endforeach; ?>
           </ul>

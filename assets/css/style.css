@@ -606,7 +606,6 @@ section + section { border-top: 1px solid var(--border); }
 }
 .skill-chip:hover { border-color: var(--gold); background: var(--gold-dim); transform: translateY(-2px); }
 .skill-chip-icon { height: 20px; width: auto; object-fit: contain; }
-.skill-chip-icon--wide { height: 16px; }
 .skill-chip-text {
   display: grid; place-items: center;
   width: 20px; height: 20px;
