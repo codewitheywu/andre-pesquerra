@@ -282,10 +282,32 @@
     let index = 0;
     let timer = null;
 
-    const position = (instant) => {
-      testiTrack.style.transition = instant ? 'none' : '';
-      testiTrack.style.transform  = `translateY(-${index * testiRotator.clientHeight}px)`;
+    // Each slide is sized to its card (plus room for the shadow), floored at
+    // the rotator's CSS min-height. The rotator then shows one slide at a time.
+    const SHADOW_PAD = 56;
+    let offsets = [];
+
+    const measure = () => {
+      const floor = parseFloat(getComputedStyle(testiRotator).minHeight) || 0;
+      let top = 0;
+      offsets = slides.map(slide => {
+        const height = Math.max(slide.firstElementChild.offsetHeight + SHADOW_PAD, floor);
+        slide.style.height = `${height}px`;
+        const entry = { top, height };
+        top += height;
+        return entry;
+      });
     };
+
+    const position = (instant) => {
+      const { top, height } = offsets[index];
+      testiRotator.style.transition = instant ? 'none' : '';
+      testiTrack.style.transition   = instant ? 'none' : '';
+      testiRotator.style.height     = `${height}px`;
+      testiTrack.style.transform    = `translateY(-${top}px)`;
+    };
+
+    const refit = () => { measure(); position(true); };
 
     const render = () => {
       const activeReal = index % realCount;
@@ -339,10 +361,17 @@
       });
       testiRotator.addEventListener('mouseleave', () => { restartProgress(); startTimer(); });
 
-      window.addEventListener('resize', () => position(true));
-
       restartProgress();
       startTimer();
+    }
+
+    // Re-fit whenever a card's size changes: viewport resize, web fonts
+    // loading, or a quote swapping between original and translated text.
+    refit();
+    window.addEventListener('resize', refit);
+    if ('ResizeObserver' in window) {
+      const cardObserver = new ResizeObserver(refit);
+      slides.forEach(slide => cardObserver.observe(slide.firstElementChild));
     }
 
     render();
