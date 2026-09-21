@@ -20,7 +20,7 @@ try {
 </head>
 <body>
   <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;">
-    <p style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">503</p>
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">503</p>
     <h1 class="section-title" style="margin-bottom:1rem;">Site temporarily <em>unavailable.</em></h1>
     <p style="color:var(--text-2);">Please try again shortly.</p>
   </div>
@@ -52,7 +52,7 @@ if (!$project) {
     </div>
   </nav>
   <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;">
-    <p style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">404</p>
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">404</p>
     <h1 class="section-title" style="margin-bottom:1.5rem;">Project <em>not found.</em></h1>
     <a href="../index.php#projects" class="btn-ghost">← Back to Projects</a>
   </div>
@@ -103,7 +103,7 @@ foreach ($project['tech'] as $t) {
 <nav id="nav" aria-label="Primary navigation">
   <div class="container nav-inner">
     <a href="../index.php" class="nav-logo"><?= explode(' ', $name)[0] ?><span>.</span></a>
-    <a href="../index.php#projects" class="btn-ghost" style="font-size:0.72rem;padding:0.5rem 1.2rem;">
+    <a href="../index.php#projects" class="btn-ghost" style="padding:0.5rem 1.2rem;">
       ← All Projects
     </a>
   </div>

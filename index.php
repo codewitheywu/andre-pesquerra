@@ -23,7 +23,7 @@ try {
 </head>
 <body>
   <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;">
-    <p style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">503</p>
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">503</p>
     <h1 class="section-title" style="margin-bottom:1rem;">Site temporarily <em>unavailable.</em></h1>
     <p style="color:var(--text-2);">Please try again shortly.</p>
   </div>

@@ -30,7 +30,7 @@
   padding: 0.3rem 0.8rem;
   border-radius: var(--radius-pill);
   background: var(--gold-dim);
-  color: var(--gold);
+  color: var(--gold-ink);
 }
 
 .proj-title {
@@ -69,7 +69,7 @@
   text-transform: uppercase;
   padding: 0.3rem 0.8rem;
   border: 1px solid var(--gold-line);
-  color: var(--gold);
+  color: var(--gold-ink);
   border-radius: var(--radius-pill);
   transition: background 0.2s, color 0.2s;
 }
@@ -122,13 +122,13 @@
   margin-bottom: 0.6rem;
 }
 .proj-sidebar-item {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--text-2);
   line-height: 1.9;
 }
 .proj-sidebar-link {
-  font-size: 0.82rem;
-  color: var(--gold);
+  font-size: 0.9rem;
+  color: var(--gold-ink);
   word-break: break-all;
   transition: opacity 0.2s;
 }
@@ -145,7 +145,8 @@
 .proj-section .gold-rule { margin-bottom: 1.5rem; }
 
 .proj-prose {
-  font-size: 1.05rem;
+  max-width: 68ch;
+  font-size: 1.1rem;
   color: var(--text-2);
   line-height: 1.95;
 }
@@ -173,7 +174,7 @@
 }
 .proj-gallery-item:hover img { transform: scale(1.03); }
 .proj-gallery-item figcaption {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   color: var(--text-3);
   letter-spacing: 0.06em;
   padding: 0.6rem 0.75rem;

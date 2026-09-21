@@ -21,12 +21,13 @@ html, body { max-width: 100%; overflow-x: hidden; }
   --border-hover:rgba(20,18,14,0.28);
 
   --text-1:      #171512;
-  --text-2:      #4f4a3f;
-  --text-3:      #5f5645;
+  --text-2:      #443f35;
+  --text-3:      #554d3e;
 
   --gold:        #7c5f28;
   --gold-dim:    rgba(124,95,40,0.14);
   --gold-line:   rgba(124,95,40,0.4);
+  --gold-ink:    #654b1a;   /* darker gold for small text & buttons (6.7:1 on ivory) */
 
   --font-display: 'Epilogue', system-ui, sans-serif;
   --font-body:    'Hanken Grotesk', system-ui, sans-serif;
@@ -46,8 +47,8 @@ html, body { max-width: 100%; overflow-x: hidden; }
   --glass-shadow: 0 8px 32px -12px rgba(20,18,14,0.18);
   --glass-blur:   blur(16px) saturate(160%);
 
-  --fs-label:    0.7rem;
-  --fs-label-sm: 0.66rem;
+  --fs-label:    0.8rem;
+  --fs-label-sm: 0.78rem;
 
   --btn-pad:     0.8rem 2rem;
   --btn-pad-sm:  0.55rem 1.4rem;
@@ -136,7 +137,7 @@ section + section { border-top: 1px solid var(--border); }
   font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-ink);
   font-weight: 500;
 }
 
@@ -196,11 +197,12 @@ section + section { border-top: 1px solid var(--border); }
 }
 .nav-links a {
   font-size: var(--fs-label);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-2);
   transition: color 0.25s;
   position: relative;
+  font-weight: 500;
 }
 .nav-links a::after {
   content: '';
@@ -217,13 +219,14 @@ section + section { border-top: 1px solid var(--border); }
 
 .nav-cta {
   font-size: var(--fs-label);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: var(--btn-pad-sm);
   border: 1px solid var(--gold-line);
-  color: #6b5424;
+  color: var(--gold-ink);
   border-radius: var(--radius-sm);
   transition: background 0.25s, color 0.25s;
+  font-weight: 500;
 }
 .nav-cta:hover { background: var(--gold); color: var(--bg); }
 
@@ -311,7 +314,7 @@ section + section { border-top: 1px solid var(--border); }
   font-size: var(--fs-label);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-ink);
   margin-bottom: 1.5rem;
 }
 
@@ -330,9 +333,9 @@ section + section { border-top: 1px solid var(--border); }
 }
 
 .hero-bio {
-  font-size: 1.0rem;
+  font-size: 1.06rem;
   color: var(--text-2);
-  max-width: min(420px, 100%);
+  max-width: min(460px, 100%);
   line-height: 1.8;
   margin-bottom: 2.5rem;
 }
@@ -348,11 +351,11 @@ section + section { border-top: 1px solid var(--border); }
   align-items: center;
   gap: 0.5rem;
   padding: var(--btn-pad);
-  background: var(--gold);
+  background: var(--gold-ink);
   color: var(--bg);
   font-size: var(--fs-label);
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   border: none;
   border-radius: var(--radius-sm);
@@ -368,8 +371,8 @@ section + section { border-top: 1px solid var(--border); }
   background: transparent;
   color: var(--text-1);
   font-size: var(--fs-label);
-  font-weight: 400;
-  letter-spacing: 0.14em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   border: 1px solid var(--border-hover);
   border-radius: var(--radius-sm);
@@ -452,9 +455,9 @@ section + section { border-top: 1px solid var(--border); }
 .about-left .gold-rule { margin-bottom: 0; }
 .about-left .section-title { margin-bottom: 0; font-size: clamp(2rem, 3vw, 2.55rem); }
 .about-text {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: var(--text-2);
-  line-height: 1.9;
+  line-height: 1.8;
   padding-left: 1.25rem;
   border-left: 2px solid var(--gold-line);
 }
@@ -513,9 +516,9 @@ section + section { border-top: 1px solid var(--border); }
   font-family: var(--font-display);
   font-size: 1.4rem;
   font-style: italic;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: -0.02em;
-  color: var(--gold);
+  color: var(--gold-ink);
   margin-bottom: 0.5rem;
 }
 .skill-category { padding: 1rem 0; }
@@ -548,7 +551,7 @@ section + section { border-top: 1px solid var(--border); }
   gap: 0.45rem;
   min-height: 40px;
   padding: 0.35rem 0.75rem 0.35rem 0.6rem;
-  font-size: 0.83rem;
+  font-size: 0.875rem;
   font-weight: 400;
   color: var(--text-1);
   background: rgba(238,232,219,0.7);
@@ -637,24 +640,26 @@ section + section { border-top: 1px solid var(--border); }
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-ink);
   margin-bottom: 0.75rem;
   font-weight: 500;
 }
 .exp-desc {
-  font-size: 0.92rem;
+  font-size: 1rem;
   color: var(--text-2);
   line-height: 1.8;
   margin-bottom: 1rem;
+  max-width: 66ch;
 }
 .exp-highlights {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  max-width: 66ch;
 }
 .exp-highlights li {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--text-2);
   padding-left: 1.2rem;
   position: relative;
@@ -692,7 +697,7 @@ section + section { border-top: 1px solid var(--border); }
   display: block;
   font-size: 0.8rem;
   letter-spacing: 0.2em;
-  color: var(--gold);
+  color: var(--gold-ink);
   margin-bottom: 0.75rem;
   font-family: var(--font-display);
 }
@@ -702,7 +707,7 @@ section + section { border-top: 1px solid var(--border); }
   margin-bottom: 0.6rem;
 }
 .hire-item-desc {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text-2);
   line-height: 1.8;
 }
@@ -775,7 +780,7 @@ section + section { border-top: 1px solid var(--border); }
   font-size: var(--fs-label-sm);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(238,232,219,0.55);
+  color: rgba(238,232,219,0.82);
   margin-bottom: 0.85rem;
 }
 .is-active .proj-fan-label { color: rgba(255,255,255,0.75); }
@@ -800,8 +805,8 @@ section + section { border-top: 1px solid var(--border); }
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.8rem;
-  color: rgba(238,232,219,0.85);
+  font-size: 0.875rem;
+  color: rgba(238,232,219,0.94);
   text-transform: capitalize;
 }
 .proj-fan-check {
@@ -984,13 +989,13 @@ section + section { border-top: 1px solid var(--border); }
 }
 .testi-quote {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-style: italic;
   letter-spacing: -0.015em;
   color: var(--text-1);
   line-height: 1.7;
   margin-bottom: 1.5rem;
-  font-weight: 300;
+  font-weight: 400;
 }
 .testi-translate-btn {
   display: inline-block;
@@ -999,7 +1004,7 @@ section + section { border-top: 1px solid var(--border); }
   background: none;
   border: none;
   font-family: inherit;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-3);
@@ -1027,9 +1032,9 @@ section + section { border-top: 1px solid var(--border); }
   font-size: 1rem;
   color: var(--gold);
 }
-.testi-name { font-size: 0.85rem; font-weight: 500; color: var(--text-1); }
-.testi-title-co { font-size: 0.72rem; color: var(--text-3); margin-top: 0.15rem; }
-.testi-stars { margin-left: auto; font-size: 0.7rem; color: var(--gold); letter-spacing: 1px; }
+.testi-name { font-size: 0.95rem; font-weight: 500; color: var(--text-1); }
+.testi-title-co { font-size: 0.8rem; color: var(--text-3); margin-top: 0.15rem; }
+.testi-stars { margin-left: auto; font-size: 0.85rem; color: var(--gold); letter-spacing: 1px; }
 
 /* ── Contact ──────────────────────────────────────────────────── */
 #contact .contact-grid {
@@ -1055,7 +1060,7 @@ section + section { border-top: 1px solid var(--border); }
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--text-2);
 }
 .contact-detail-label {
@@ -1261,7 +1266,7 @@ footer {
 }
 .cookie-banner.visible { display: flex; flex-direction: column; gap: 0.9rem; }
 .cookie-banner p {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   line-height: 1.6;
   color: var(--text-2);
 }
@@ -1270,13 +1275,13 @@ footer {
 .cookie-banner-actions button {
   padding: 0.55rem 1.2rem;
   font-size: var(--fs-label-sm);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   border-radius: var(--radius-sm);
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 .cookie-accept {
-  background: var(--gold);
+  background: var(--gold-ink);
   color: var(--bg);
   border: none;
 }
@@ -1334,7 +1339,7 @@ footer {
   /* ── Testimonials ── */
   .testi-rotator { height: 400px; }
   .testi-card    { padding: 1.5rem 1rem; }
-  .testi-quote   { font-size: 1.1rem; }
+  .testi-quote   { font-size: 1.15rem; }
 
   /* ── Contact ── */
   .form-row { grid-template-columns: 1fr; }
@@ -1350,7 +1355,7 @@ footer {
   /* ── Typography ── */
   .section-title { font-size: clamp(1.9rem, 7.4vw, 2.5rem); }
   .hero-name     { font-size: clamp(2.6rem, 11vw, 3.6rem); }
-  .hero-bio      { font-size: 0.95rem; }
+  .hero-bio      { font-size: 1rem; }
 
   /* ── Spacing ── */
   .container { padding: 0 1.25rem; }
@@ -1371,7 +1376,7 @@ footer {
   gap: 0.65rem;
   margin-bottom: 1.25rem;
   padding: 0.45rem 1rem 0.45rem 0.85rem;
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   line-height: 1.4;
   text-transform: uppercase;
   color: var(--text-1);
@@ -1410,21 +1415,21 @@ footer {
   margin-bottom: 0.45rem;
   font-size: var(--fs-label-sm);
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-ink);
 }
 .about-goal-title {
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 1.9vw, 1.5rem);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.03em;
   color: var(--text-1);
 }
-.about-goal-title em { font-style: italic; color: var(--gold); }
+.about-goal-title em { font-style: italic; color: var(--gold-ink); }
 .about-goal-text {
   text-wrap: pretty;
   margin-top: 0.5rem;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   line-height: 1.65;
   color: var(--text-2);
 }
@@ -1439,10 +1444,15 @@ footer {
 .exp-dates, .exp-role, .hire-num, .proj-fan-label,
 .contact-detail-label, .form-label, .footer-back-top, .footer-links a {
   font-family: var(--font-mono);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   font-weight: 400;
 }
 .hero-status { font-weight: 500; }
-.about-location { font-size: 0.72rem; }
-.gold-rule p, .hero-label { letter-spacing: 0.14em; }
-.hero-label { font-size: 0.78rem; font-weight: 500; }
+.about-location { font-size: 0.78rem; }
+.gold-rule p, .hero-label { letter-spacing: 0.1em; }
+.hero-label { font-size: 0.8rem; font-weight: 500; }
+
+/* ── Legibility ───────────────────────────────────────────────────
+   Minimum text size is 12px, small text never uses a thin weight, and
+   small gold text uses --gold-ink (darker) instead of --gold. ───── */
+.hero-label, .gold-rule p, .about-goal-label, .exp-role, .hire-num { font-weight: 500; }
