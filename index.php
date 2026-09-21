@@ -449,7 +449,6 @@ function skillBadge(string $skillName): array {
           <div class="testi-card">
             <div class="testi-quote-mark" aria-hidden="true">&ldquo;</div>
             <blockquote class="testi-quote"><?= htmlspecialchars($t['quote'], ENT_QUOTES, 'UTF-8') ?></blockquote>
-            <button type="button" class="testi-translate-btn" data-state="idle">Translate to English</button>
             <div class="testi-author">
               <div class="testi-avatar" aria-hidden="true">
                 <?php if ($t['avatar_url']): ?>

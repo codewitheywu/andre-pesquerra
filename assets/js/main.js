@@ -365,8 +365,8 @@
       startTimer();
     }
 
-    // Re-fit whenever a card's size changes: viewport resize, web fonts
-    // loading, or a quote swapping between original and translated text.
+    // Re-fit whenever a card's size changes (viewport resize, web fonts
+    // loading in).
     refit();
     window.addEventListener('resize', refit);
     if ('ResizeObserver' in window) {
@@ -376,63 +376,6 @@
 
     render();
   }
-
-  /* ── Testimonial Translation ─────────────────────────────── */
-  document.querySelectorAll('.testi-translate-btn').forEach(btn => {
-    const quote    = btn.previousElementSibling; // .testi-quote
-    const original = quote.textContent;
-    let translated = null;
-    let showingOriginal = true;
-
-    btn.addEventListener('click', async () => {
-      if (btn.dataset.state === 'loading' || btn.dataset.state === 'done-english') return;
-
-      // Already translated once this session — just toggle, no re-fetch.
-      if (!showingOriginal) {
-        quote.textContent = original;
-        btn.textContent = 'Translate to English';
-        showingOriginal = true;
-        return;
-      }
-      if (translated) {
-        quote.textContent = translated;
-        btn.textContent = 'Show original';
-        showingOriginal = false;
-        return;
-      }
-
-      btn.dataset.state = 'loading';
-      btn.textContent = 'Translating…';
-      try {
-        const res  = await fetch('pages/translate_handler.php', {
-          method: 'POST',
-          body: new URLSearchParams({ text: original }),
-        });
-        const data = await res.json();
-
-        if (data.success && data.translated) {
-          translated = data.translated;
-          quote.textContent = translated;
-          btn.textContent = 'Show original';
-          showingOriginal = false;
-          btn.dataset.state = 'idle';
-        } else if (data.success && data.alreadyEnglish) {
-          // Source and target both detected as English — nothing to translate.
-          btn.dataset.state = 'done-english';
-          btn.textContent = 'Already in English';
-        } else {
-          throw new Error('Unexpected translation response');
-        }
-      } catch {
-        btn.dataset.state = 'error';
-        btn.textContent = 'Translation unavailable';
-        setTimeout(() => {
-          btn.dataset.state = 'idle';
-          btn.textContent = 'Translate to English';
-        }, 3000);
-      }
-    });
-  });
 
   /* ── Smooth active nav link ──────────────────────────────── */
   const sections = document.querySelectorAll('section[id]');

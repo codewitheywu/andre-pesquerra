@@ -1002,23 +1002,6 @@ section + section { border-top: 1px solid var(--border); }
   margin-bottom: 1.5rem;
   font-weight: 400;
 }
-.testi-translate-btn {
-  display: inline-block;
-  margin: -0.75rem 0 1.25rem;
-  padding: 0;
-  background: none;
-  border: none;
-  font-family: inherit;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.testi-translate-btn:hover { color: var(--gold); }
-.testi-translate-btn[data-state="loading"] { opacity: 0.6; pointer-events: none; }
-.testi-translate-btn[data-state="error"] { color: #b23434; }
 .testi-author {
   display: flex;
   align-items: center;
@@ -1345,7 +1328,6 @@ footer {
   .testi-card    { padding: 1.5rem 1.25rem; }
   .testi-quote-mark { font-size: 3.25rem; margin-bottom: 1.1rem; }
   .testi-quote   { font-size: 1.1rem; line-height: 1.65; margin-bottom: 1.25rem; }
-  .testi-translate-btn { padding: 0.6rem 0; margin: -0.6rem 0 0.4rem; }
   .testi-title-co { line-height: 1.45; }
 
   /* ── Contact ── */
