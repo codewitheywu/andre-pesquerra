@@ -53,6 +53,8 @@ function skillBadge(string $skillName): array {
         return ['type' => 'img', 'src' => 'assets/img/icons/c.png'];
     }
 
+    // Second value marks a wordmark (logo that already spells the name): it is
+    // shown wide and without a separate text label.
     $imgMap = [
         'php'        => ['php.png'],
         'html'       => ['html.png'],
@@ -63,10 +65,14 @@ function skillBadge(string $skillName): array {
         'chatgpt'    => ['chatgpt.png'],
         'gpt'        => ['chatgpt.png'],
         'claude'     => ['claude.png'],
+        'vercel'     => ['vercel.svg'],
+        'hostinger'  => ['hostinger.svg'],
+        'mysql'      => ['mysql.svg', true],
+        'wamp'       => ['wamp.svg'],
     ];
     foreach ($imgMap as $needle => $icon) {
         if (str_contains($key, $needle)) {
-            return ['type' => 'img', 'src' => 'assets/img/icons/' . $icon[0]];
+            return ['type' => 'img', 'src' => 'assets/img/icons/' . $icon[0], 'wordmark' => $icon[1] ?? false];
         }
     }
 
@@ -142,6 +148,7 @@ function skillBadge(string $skillName): array {
   <div class="container">
     <div class="hero-inner">
       <div class="hero-content">
+        <p class="hero-status reveal"><span class="status-dot" aria-hidden="true"></span>Open to work &middot; Remote worldwide</p>
         <p class="hero-label reveal"><?= $tagline ?></p>
         <h1 class="hero-name reveal reveal-delay-1">
           <?php
@@ -205,6 +212,12 @@ function skillBadge(string $skillName): array {
           <p><?= $bio ?></p>
         </div>
 
+        <div class="about-goal reveal reveal-delay-3">
+          <p class="about-goal-label">Aiming for</p>
+          <p class="about-goal-title">Full-Stack Developer <em>with a designer&rsquo;s eye.</em></p>
+          <p class="about-goal-text">Owning products end to end, from database schema to polished interface.</p>
+        </div>
+
         <ul class="about-stats reveal reveal-delay-3" aria-label="At a glance">
           <li><strong><?= count($projects) ?></strong><span>Featured projects</span></li>
           <li><strong><?= count($experience) ?></strong><span>Roles held</span></li>
@@ -231,11 +244,12 @@ function skillBadge(string $skillName): array {
             ?>
             <li class="skill-chip" title="<?= $nameEsc ?> · <?= (int)$skill['proficiency'] ?>%">
               <?php if ($badge['type'] === 'img'): ?>
-              <img src="<?= htmlspecialchars($badge['src'], ENT_QUOTES, 'UTF-8') ?>" alt="" height="20" class="skill-chip-icon" loading="lazy">
+              <img src="<?= htmlspecialchars($badge['src'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= !empty($badge['wordmark']) ? $nameEsc : '' ?>" height="<?= !empty($badge['wordmark']) ? 30 : 20 ?>"
+                   class="skill-chip-icon<?= !empty($badge['wordmark']) ? ' skill-chip-icon--wordmark' : '' ?>" loading="lazy">
               <?php else: ?>
               <span class="skill-chip-text" aria-hidden="true"><?= htmlspecialchars($badge['label'], ENT_QUOTES, 'UTF-8') ?></span>
               <?php endif; ?>
-              <?= $nameEsc ?>
+              <?= !empty($badge['wordmark']) ? '' : $nameEsc ?>
             </li>
             <?php endforeach; ?>
           </ul>
@@ -443,7 +457,7 @@ function skillBadge(string $skillName): array {
         <?php foreach ($testiSlides as $si => $t): ?>
         <div class="testi-slide"<?= $si >= $testiCount ? ' aria-hidden="true"' : '' ?>>
           <div class="testi-card">
-            <div class="testi-quote-mark" aria-hidden="true">"</div>
+            <div class="testi-quote-mark" aria-hidden="true">&ldquo;</div>
             <blockquote class="testi-quote"><?= htmlspecialchars($t['quote'], ENT_QUOTES, 'UTF-8') ?></blockquote>
             <button type="button" class="testi-translate-btn" data-state="idle">Translate to English</button>
             <div class="testi-author">
