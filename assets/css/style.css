@@ -488,7 +488,7 @@ section + section { border-top: 1px solid var(--border); }
    revert to `1fr 1fr` when the skills column comes back. */
 #about .about-grid {
   display: grid;
-  grid-template-columns: 7fr 6fr;
+  grid-template-columns: 13fr 12fr;
   gap: 4rem;
   align-items: center;
   overflow: hidden;
@@ -500,7 +500,7 @@ section + section { border-top: 1px solid var(--border); }
   max-width: 680px;
 }
 .about-left .gold-rule { margin-bottom: 0; }
-.about-left .section-title { margin-bottom: 0; font-size: clamp(2rem, 3.2vw, 2.7rem); }
+.about-left .section-title { margin-bottom: 0; font-size: clamp(2rem, 3vw, 2.55rem); }
 .about-text {
   font-size: 1.05rem;
   color: var(--text-2);
@@ -591,15 +591,15 @@ section + section { border-top: 1px solid var(--border); }
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 .skill-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   min-height: 40px;
-  padding: 0.35rem 0.85rem 0.35rem 0.65rem;
-  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.6rem;
+  font-size: 0.83rem;
   font-weight: 400;
   color: var(--text-1);
   background: rgba(238,232,219,0.7);
@@ -609,7 +609,6 @@ section + section { border-top: 1px solid var(--border); }
 }
 .skill-chip:hover { border-color: var(--gold); background: var(--gold-dim); transform: translateY(-2px); }
 .skill-chip-icon { height: 20px; width: auto; object-fit: contain; }
-.skill-chip-icon--wordmark { height: 30px; margin: 0 -0.1rem; }
 .skill-chip-text {
   display: grid; place-items: center;
   width: 20px; height: 20px;
@@ -1475,6 +1474,7 @@ footer {
 }
 .about-goal-title em { font-style: italic; color: var(--gold); }
 .about-goal-text {
+  text-wrap: pretty;
   margin-top: 0.5rem;
   font-size: 0.92rem;
   line-height: 1.65;
