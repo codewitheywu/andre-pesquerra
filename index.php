@@ -183,13 +183,6 @@ function skillBadge(string $skillName): array {
       <?php endif; ?>
     </div>
   </div>
-
-  <div class="container scroll-hint-wrap">
-    <a href="#about" class="scroll-hint">
-      <span class="scroll-hint-mouse" aria-hidden="true"></span>
-      Scroll to explore
-    </a>
-  </div>
 </section>
 
 

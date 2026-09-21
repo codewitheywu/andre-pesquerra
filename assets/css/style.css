@@ -433,56 +433,6 @@ section + section { border-top: 1px solid var(--border); }
   background: var(--border-hover);
 }
 
-.scroll-hint-wrap {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 2rem;
-  pointer-events: none;
-}
-.scroll-hint {
-  pointer-events: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  min-height: 48px;
-  padding: 0.4rem 1.4rem 0.4rem 0.6rem;
-  font-size: 0.8rem;
-  font-weight: 400;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-1);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-pill);
-  -webkit-backdrop-filter: var(--glass-blur);
-          backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-shadow);
-  transition: border-color 0.25s, color 0.25s, transform 0.25s var(--ease-out);
-}
-.scroll-hint:hover { border-color: var(--gold); color: var(--gold); transform: translateY(2px); }
-.scroll-hint-mouse {
-  position: relative;
-  flex-shrink: 0;
-  width: 26px; height: 40px;
-  border: 1.5px solid var(--gold);
-  border-radius: 13px;
-}
-.scroll-hint-mouse::after {
-  content: '';
-  position: absolute;
-  top: 8px; left: 50%;
-  width: 4px; height: 8px;
-  margin-left: -2px;
-  border-radius: 2px;
-  background: var(--gold);
-  animation: scroll-dot 1.8s var(--ease-in-out) infinite;
-}
-@keyframes scroll-dot {
-  0%   { transform: translateY(0);    opacity: 1; }
-  70%  { transform: translateY(12px); opacity: 0; }
-  100% { transform: translateY(0);    opacity: 0; }
-}
-
 /* ── About / Skills ──────────────────────────────────────────── */
 /* Single column while the skills grid is out (see index.php/index.html comments) —
    revert to `1fr 1fr` when the skills column comes back. */
@@ -579,7 +529,6 @@ section + section { border-top: 1px solid var(--border); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scroll-hint-mouse::after { animation: none; }
   .status-dot::after { animation: none; }
   .reveal { transition: none; }
   .proj-fan-card { transition: none; }
@@ -1343,7 +1292,6 @@ footer {
 @media (max-width: 900px) {
   .hero-inner        { grid-template-columns: 1fr; }
   .hero-photo        { display: none; }
-  .scroll-hint-wrap  { display: none; }
   #about .about-grid { grid-template-columns: 1fr; gap: 3rem; }
   .about-left        { gap: 1.5rem; }
   .skills-list       { padding: 1.5rem 1.25rem 1rem; }
@@ -1486,7 +1434,7 @@ footer {
    "metadata" (eyebrows, dates, form labels, counters) is set in mono,
    which gives the page its developer voice. Buttons and nav links stay
    in the body face. ────────────────────────────────────────────── */
-.hero-status, .hero-label, .hero-socials a, .gold-rule p, .scroll-hint,
+.hero-status, .hero-label, .hero-socials a, .gold-rule p,
 .about-stats span, .about-location, .about-goal-label, .skill-category-title,
 .exp-dates, .exp-role, .hire-num, .proj-fan-label,
 .contact-detail-label, .form-label, .footer-back-top, .footer-links a {
@@ -1495,7 +1443,6 @@ footer {
   font-weight: 400;
 }
 .hero-status { font-weight: 500; }
-.scroll-hint { font-size: 0.72rem; }
 .about-location { font-size: 0.72rem; }
 .gold-rule p, .hero-label { letter-spacing: 0.14em; }
 .hero-label { font-size: 0.78rem; font-weight: 500; }
