@@ -610,6 +610,22 @@ function skillBadge(string $skillName): array {
   </div>
 </div>
 
+<!-- Background music: opt-in (never autoplays), quiet, and only shown when the audio file exists -->
+<button type="button" class="music-dock" id="music-dock" data-src="assets/audio/coffee.mp3" data-state="idle" hidden
+        aria-pressed="false" aria-label="Play background music: Coffee by Jack Stauber"
+        title="Coffee, Jack Stauber's Micropop">
+  <span class="music-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <span class="music-meta" aria-hidden="true">
+    <span class="music-kicker">Background music</span>
+    <span class="music-title">Coffee &middot; Jack Stauber</span>
+  </span>
+  <span class="music-icon" aria-hidden="true">
+    <svg class="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.53.85l10.9-6.86a1 1 0 0 0 0-1.7L9.53 4.29A1 1 0 0 0 8 5.14z"/></svg>
+    <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4.2" height="15" rx="1"/><rect x="13.8" y="4.5" width="4.2" height="15" rx="1"/></svg>
+  </span>
+</button>
+<p class="sr-only" id="music-status" role="status" aria-live="polite"></p>
+
 <script src="assets/js/main.js" defer></script>
 </body>
 </html>
