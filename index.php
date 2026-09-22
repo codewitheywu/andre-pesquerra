@@ -91,11 +91,14 @@ function skillBadge(string $skillName): array {
   <meta property="og:url" content="https://andre-pesquerra.vercel.app/">
   <meta property="og:title" content="<?= $name ?>">
   <meta property="og:description" content="<?= $tagline ?>">
-  <meta property="og:image" content="https://andre-pesquerra.vercel.app/assets/img/avatar/Pesquerra.jpg">
+  <meta property="og:image" content="https://andre-pesquerra.vercel.app/assets/img/og/og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="<?= $name ?>, <?= $tagline ?>">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<?= $name ?>">
   <meta name="twitter:description" content="<?= $tagline ?>">
-  <meta name="twitter:image" content="https://andre-pesquerra.vercel.app/assets/img/avatar/Pesquerra.jpg">
+  <meta name="twitter:image" content="https://andre-pesquerra.vercel.app/assets/img/og/og-cover.jpg">
 
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
