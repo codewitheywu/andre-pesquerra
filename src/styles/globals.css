@@ -1,0 +1,202 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+ * Light coffee palette (CLAUDE.md §1). Light --muted is darkened from
+ * #8C7764 (3.7:1) to #76614F (>= 4.7:1 on every surface) so it can carry
+ * small text. --accent is never used for small text (3.9:1); it marks
+ * hover underlines, the status dot and focus rings.
+ * ------------------------------------------------------------------ */
+:root {
+  --bg: #f6efe6;
+  --surface: #fbf7f1;
+  --surface-2: #efe5d8;
+  --border: #e2d4c2;
+  --ink: #2a1e16;
+  --ink-2: #5c4a3c;
+  --muted: #76614f;
+  --accent: #a8693a;
+  --accent-2: #c99a6b;
+  --ring: #a8693a40;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17110d;
+    --surface: #1f1712;
+    --surface-2: #2a2019;
+    --border: #3a2d23;
+    --ink: #f2e8dc;
+    --ink-2: #cdbba8;
+    --muted: #9a8572;
+    --accent: #d29a63;
+    --accent-2: #e6bb8c;
+    --ring: #d29a6366;
+    color-scheme: dark;
+  }
+}
+
+/* Only the design system exists: Tailwind's default colors, sizes, radii
+ * and shadows are removed so off-system values fail to compile. */
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  --text-meta: 13px;
+  --text-meta--line-height: 1.5;
+  --text-body: 15px;
+  --text-body--line-height: 1.6;
+  --text-lead: 17px;
+  --text-lead--line-height: 1.6;
+  --text-h3: 22px;
+  --text-h3--line-height: 1.2;
+  --text-h2: 32px;
+  --text-h2--line-height: 1.15;
+  --text-h1: 48px;
+  --text-h1--line-height: 1.1;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-full: 9999px;
+
+  --shadow-soft: 0 1px 2px #2a1e160d;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--ink);
+    /* Clear the sticky mobile bar when jumping to a section. */
+    scroll-padding-top: 72px;
+  }
+
+  @media (min-width: 64rem) {
+    html {
+      scroll-padding-top: 32px;
+    }
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: var(--accent-2);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+@layer components {
+  /* Underline that draws in from the left (CLAUDE.md §2). */
+  .link-draw {
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link-draw:hover,
+  .link-draw:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Arrow nudges 2px on hover of its parent link. */
+  .nudge {
+    display: inline-block;
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  :where(a, button):hover .nudge {
+    transform: translateX(2px);
+  }
+
+  :where(a, button):hover .nudge-up {
+    transform: translate(2px, -2px);
+  }
+
+  .press {
+    transition: transform 120ms ease;
+  }
+
+  .press:active {
+    transform: scale(0.98);
+  }
+
+  .skip-link {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 100;
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus-visible {
+    transform: none;
+  }
+
+  /* The command palette is a native modal <dialog>. */
+  .palette::backdrop {
+    background: color-mix(in srgb, var(--ink) 30%, transparent);
+  }
+}
+
+/*
+ * Reveal failsafe: CSS animations override inline styles, so if hydration
+ * never happens (JS blocked or failed) hidden sections appear after 2s.
+ * Once hydrated, the selector stops matching and motion takes over.
+ */
+[data-reveal="pending"] {
+  animation: reveal-failsafe 0s 2s forwards;
+}
+
+@keyframes reveal-failsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Andre V. Pesquerra — Portfolio
 
-## Getting Started
+Personal portfolio built with Next.js 16 (App Router), TypeScript, Tailwind CSS v4 and Supabase.
 
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local   # then fill in your Supabase values
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Supabase is optional: without it the site renders
+the fallback content in `src/data/content.ts`. Environment variables are validated at startup
+(`src/lib/env.ts`); a half-configured Supabase pair fails fast.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Project structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+  app/
+    (site)/            Public routes: shell (sidebar, mobile bar, palette), homepage, error boundary
+    layout.tsx         Root layout: fonts, metadata, smooth scroll
+    not-found.tsx      Styled 404
+    robots.ts, sitemap.ts, icon.svg
+  assets/              Statically imported images (blur placeholders)
+  components/
+    layout/            Sidebar, mobile bar, footer, command palette (⌘K), smooth scroll
+    sections/          Hero, Projects, Experience, Education, Stack, Contact
+    ui/                Primitives: Section, TextLink, LinkList, Kbd, CopyButton, Reveal
+  data/content.ts      Static content and database fallbacks
+  hooks/               useHydrated
+  lib/
+    env.ts             Zod-validated environment
+    queries.ts         Server-side data access
+    mappers.ts         Row validation and mapping (unit tested)
+    motion.ts          Shared animation timing
+    supabase/          The only place Supabase clients are created
+  styles/globals.css   Light-coffee tokens and the Tailwind v4 design system
+  types/               UI types; database.ts is generated (see below)
+supabase/
+  migrations/          Every schema change, applied in order
+  seed.sql             Local development data
+tests/
+  unit/                Vitest
+  e2e/                 Playwright (+ axe accessibility scans)
+```
 
-## Learn More
+## Database types
 
-To learn more about Next.js, take a look at the following resources:
+`src/types/database.ts` must be generated, never hand-written:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npx supabase login
+npx supabase link --project-ref <your-project-ref>
+npm run db:types
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Until then, every row is validated at runtime by the zod schemas in `src/lib/mappers.ts`.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Command             | Description                                        |
+| ------------------- | -------------------------------------------------- |
+| `npm run dev`       | Start the dev server                               |
+| `npm run build`     | Production build                                   |
+| `npm run start`     | Serve the production build                         |
+| `npm run lint`      | ESLint (Next + TypeScript rules)                   |
+| `npm run typecheck` | Generate route types and run `tsc --noEmit`        |
+| `npm test`          | Unit tests (Vitest)                                |
+| `npm run test:e2e`  | E2E tests against the production build (Playwright, local Chrome); run `npm run build` first |
+| `npm run db:types`  | Generate `src/types/database.ts` from the linked Supabase project |
