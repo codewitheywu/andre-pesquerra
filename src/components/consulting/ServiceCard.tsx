@@ -1,9 +1,15 @@
+import Halftone from "@/components/ui/Halftone";
 import type { Service } from "@/data/consulting";
 
-/** A service as a menu entry: name and rate, what it is, then what it covers. */
+/**
+ * A service as a menu entry: name and rate, what it is, then what it covers.
+ * On hover the coffee-ring halftone steeps into the corner and the border
+ * darkens (opacity and colour only, so reduced motion needs no override).
+ */
 export default function ServiceCard({ service }: { service: Service }) {
   return (
-    <li className="flex flex-col rounded-lg border border-border bg-surface p-5 sm:p-6">
+    <li className="group relative isolate flex flex-col overflow-hidden rounded-lg border border-border bg-surface p-5 transition-colors duration-300 hover:border-muted sm:p-6">
+      <Halftone className="absolute -top-12 -right-12 -z-10 size-96 opacity-0 transition-opacity duration-500 [color:color-mix(in_srgb,var(--ink)_var(--card-dots),transparent)] group-hover:opacity-100" />
       <h3 className="text-lead font-semibold tracking-normal text-ink">{service.title}</h3>
       <p className="mt-0.5 font-mono text-meta text-muted">{service.rate}</p>
       <p className="mt-3 mb-5 text-body text-ink-2">{service.summary}</p>

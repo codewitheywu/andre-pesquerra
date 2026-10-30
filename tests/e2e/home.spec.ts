@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Browser, type Page } from "@playwright/test";
 
-const SECTIONS = ["projects", "experience", "github", "certifications", "contact"];
+const SECTIONS = ["projects", "experience", "github", "certifications", "recommendations", "contact"];
 const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
 function collectErrors(page: Page): string[] {
@@ -175,11 +175,12 @@ test.describe("layout", () => {
     }
 
     // Round trip through Blog: the sections are new elements when we return.
+    // Page changes get longer waits; they are the slow part under a full run.
     await nav.getByRole("link", { name: "Blog" }).click();
-    await expect(page).toHaveURL(/[/]blog$/);
+    await expect(page).toHaveURL(/[/]blog$/, { timeout: 15_000 });
     await expect(current).toHaveCount(0);
     await nav.getByRole("link", { name: "Contact", exact: true }).click();
-    await expect(page.locator("#contact")).toBeInViewport();
+    await expect(page.locator("#contact")).toBeInViewport({ timeout: 15_000 });
     await expect(current).toHaveText("Contact");
     await nav.getByRole("link", { name: "Projects", exact: true }).click();
     await expect(current).toHaveText("Projects");
@@ -526,12 +527,32 @@ test.describe("themes and motion", () => {
       await expect(tracks.nth(1)).toBeHidden();
     });
 
-    test("the theme switches instantly, without the reveal", async ({ page }) => {
+    test("the theme crossfades instead of revealing with a moving circle", async ({ page }) => {
       await page.goto("/");
       await waitForHydration(page);
-      await page.getByRole("button", { name: "Hot coffee (dark theme)" }).click();
+      const kinds = await page
+        .getByRole("button", { name: "Hot coffee (dark theme)" })
+        .filter({ visible: true })
+        .first()
+        .evaluate((button) => {
+          const seen = new Set<string>();
+          const root = document.documentElement;
+          const observer = new MutationObserver(() => {
+            if (root.dataset.themeTransition) seen.add(root.dataset.themeTransition);
+          });
+          observer.observe(root, { attributes: true, attributeFilter: ["data-theme-transition"] });
+          (button as HTMLButtonElement).click();
+          return new Promise<string[]>((resolve) =>
+            setTimeout(() => {
+              observer.disconnect();
+              resolve([...seen]);
+            }, 800)
+          );
+        });
       await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
       await expect(page.locator("html")).not.toHaveAttribute("data-theme-transition", /.+/);
+      // Engines without View Transitions switch instantly (nothing recorded).
+      expect(kinds.filter((kind) => kind !== "fade")).toEqual([]);
     });
   });
 });

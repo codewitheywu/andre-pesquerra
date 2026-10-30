@@ -7,10 +7,14 @@ import { navigationItems } from "@/data/content";
 import { pickCurrentSection } from "@/lib/scrollspy";
 import SectionLink from "./SectionLink";
 
-const PAGES = [
-  { href: "/blog", label: "Blog" },
-  { href: "/behind-the-code", label: "Behind the Code" },
-  { href: "/consulting", label: "Consulting" },
+// Pages outside the homepage, grouped by purpose: working together, then
+// more about me. Each group sits under its own thin divider.
+const PAGE_GROUPS = [
+  [{ href: "/consulting", label: "Consulting" }],
+  [
+    { href: "/blog", label: "Blog" },
+    { href: "/behind-the-code", label: "Behind the Code" },
+  ],
 ];
 
 /**
@@ -30,9 +34,33 @@ function PageLine({ current }: { current: boolean }) {
   );
 }
 
+function PageLinks({ pages, pathname }: { pages: (typeof PAGE_GROUPS)[number]; pathname: string }) {
+  return (
+    <ul className="space-y-1 short:space-y-0">
+      {pages.map((page) => {
+        const current = pathname === page.href;
+        return (
+          <li key={page.href}>
+            <Link
+              href={page.href}
+              aria-current={current ? "page" : undefined}
+              className={`flex items-center gap-3 rounded-sm py-1 text-body transition-colors shorter:py-0.5 ${
+                current ? "font-medium text-ink" : "text-muted hover:text-ink"
+              }`}
+            >
+              <span>{page.label}</span>
+              <PageLine current={current} />
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 /**
  * Sidebar section links that mark the section currently being read, then,
- * under a thin divider, the pages that live outside the homepage.
+ * under thin dividers, the pages that live outside the homepage.
  */
 export default function SectionNav() {
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -102,7 +130,7 @@ export default function SectionNav() {
                 id={item.href.slice(1)}
                 onClick={() => markClicked(item.href.slice(1))}
                 aria-current={active ? "location" : undefined}
-                className={`flex items-center gap-3 rounded-sm py-1 text-body transition-colors ${
+                className={`flex items-center gap-3 rounded-sm py-1 text-body transition-colors shorter:py-0.5 ${
                   active ? "font-medium text-ink" : "text-muted hover:text-ink"
                 }`}
               >
@@ -119,26 +147,12 @@ export default function SectionNav() {
           );
         })}
       </ul>
-      <div aria-hidden="true" className="leader my-3 short:my-2" />
-      <ul className="space-y-1 short:space-y-0">
-        {PAGES.map((page) => {
-          const current = pathname === page.href;
-          return (
-            <li key={page.href}>
-              <Link
-                href={page.href}
-                aria-current={current ? "page" : undefined}
-                className={`flex items-center gap-3 rounded-sm py-1 text-body transition-colors ${
-                  current ? "font-medium text-ink" : "text-muted hover:text-ink"
-                }`}
-              >
-                <span>{page.label}</span>
-                <PageLine current={current} />
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      {PAGE_GROUPS.map((pages, group) => (
+        <div key={group}>
+          <div aria-hidden="true" className="leader my-3 short:my-2 shorter:my-1" />
+          <PageLinks pages={pages} pathname={pathname} />
+        </div>
+      ))}
     </nav>
   );
 }

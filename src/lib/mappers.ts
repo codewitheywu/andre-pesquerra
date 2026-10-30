@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { ExperienceItem, Project } from "@/types/content";
+import type { ExperienceItem, Project, Recommendation } from "@/types/content";
 
 // Rows arrive from the network as untrusted data: each one is validated
 // before it reaches the UI. Regenerate src/types/database.ts with
@@ -36,8 +36,17 @@ export const experienceRowSchema = z.object({
   is_current: z.boolean().nullish(),
 });
 
+export const testimonialRowSchema = z.object({
+  id: z.string(),
+  person_name: z.string().trim().min(1),
+  person_role: optionalText,
+  organization: optionalText,
+  quote: z.string().trim().min(1),
+});
+
 export type ProjectRow = z.infer<typeof projectRowSchema>;
 export type ExperienceRow = z.infer<typeof experienceRowSchema>;
+export type TestimonialRow = z.infer<typeof testimonialRowSchema>;
 
 export function formatPeriod(
   startDate: string | null | undefined,
@@ -99,6 +108,15 @@ export function mapExperience(row: ExperienceRow): ExperienceItem {
     org: row.organization,
     period: formatPeriod(row.start_date, row.end_date, row.is_current ?? false),
     description: row.description ?? "",
+  };
+}
+
+export function mapRecommendation(row: TestimonialRow): Recommendation {
+  return {
+    id: row.id,
+    name: row.person_name,
+    credit: [row.person_role, row.organization].map((part) => part?.trim()).filter(Boolean).join(", "),
+    quote: row.quote,
   };
 }
 

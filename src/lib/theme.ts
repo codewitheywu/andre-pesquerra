@@ -33,54 +33,44 @@ function applyTheme(theme: Theme) {
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
-// Ease in and out: a strong ease-out sweeps half the screen in ~80ms, which
-// reads as a flash rather than coffee pouring in.
-const REVEAL_MS = 850;
-const REVEAL_EASE = "cubic-bezier(0.5, 0, 0.25, 1)";
+const REVEAL_VARS = ["--reveal-x", "--reveal-y", "--reveal-max", "--reveal-feather"];
 
 /**
  * Switch theme with a circular reveal centred on `origin` (the button that
- * was pressed): dark pours outward from it, light draws back into it.
- * Falls back to an instant switch without View Transitions or when the
- * visitor prefers reduced motion.
+ * was pressed): dark pours outward from it, light draws back into it. The
+ * circle has a soft, feathered edge and runs as a CSS animation
+ * (globals.css), so its first and last frames are always right. Visitors
+ * who prefer reduced motion get a plain crossfade; browsers without View
+ * Transitions switch instantly.
  */
 export function setTheme(theme: Theme, origin?: { x: number; y: number }) {
   const root = document.documentElement;
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (typeof document.startViewTransition !== "function" || reduceMotion || theme === getTheme()) {
+  if (typeof document.startViewTransition !== "function" || theme === getTheme()) {
     applyTheme(theme);
     return;
   }
 
-  const x = origin?.x ?? window.innerWidth / 2;
-  const y = origin?.y ?? window.innerHeight / 2;
-  const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-  const outward = theme === "dark";
-  const circles = [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`];
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) {
+    root.dataset.themeTransition = "fade";
+  } else {
+    const x = origin?.x ?? window.innerWidth / 2;
+    const y = origin?.y ?? window.innerHeight / 2;
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    // The feather is the soft band where the two themes blend.
+    const feather = Math.max(96, radius * 0.18);
+    root.style.setProperty("--reveal-x", `${x}px`);
+    root.style.setProperty("--reveal-y", `${y}px`);
+    root.style.setProperty("--reveal-max", `${Math.ceil(radius + feather)}px`);
+    root.style.setProperty("--reveal-feather", `${Math.round(feather)}px`);
+    root.dataset.themeTransition = theme === "dark" ? "outward" : "inward";
+  }
 
-  // Outward animates the new view growing on top; inward animates the old
-  // view shrinking, which must sit above the new one (globals.css).
-  root.dataset.themeTransition = outward ? "outward" : "inward";
   const transition = document.startViewTransition(() => applyTheme(theme));
-  transition.ready
-    .then(() => {
-      root.animate(
-        { clipPath: outward ? circles : [...circles].reverse() },
-        {
-          duration: REVEAL_MS,
-          easing: REVEAL_EASE,
-          // Hold the last frame until the transition tears down. Without it the
-          // shrunken old (dark) view springs back to full size for a few frames
-          // and the page flashes dark after switching to light.
-          fill: "forwards",
-          pseudoElement: outward ? "::view-transition-new(root)" : "::view-transition-old(root)",
-        }
-      );
-    })
-    .catch(() => {
-      // Transition skipped (e.g. another one started); the theme is applied.
-    });
-  transition.finished.finally(() => delete root.dataset.themeTransition);
+  transition.finished.finally(() => {
+    delete root.dataset.themeTransition;
+    for (const name of REVEAL_VARS) root.style.removeProperty(name);
+  });
 }
 
 export function subscribeTheme(onChange: () => void) {

@@ -6,7 +6,7 @@ vi.mock("server-only", () => ({}));
 const createPublicClient = vi.fn();
 vi.mock("@/lib/supabase/public", () => ({ createPublicClient }));
 
-const { getExperience, getProjects } = await import("@/lib/queries");
+const { getExperience, getProjects, getRecommendations } = await import("@/lib/queries");
 
 /** A stand-in for the PostgREST builder: chainable, then awaitable. */
 function clientResolving(result: unknown) {
@@ -14,6 +14,7 @@ function clientResolving(result: unknown) {
     select: () => builder,
     eq: () => builder,
     order: () => builder,
+    limit: () => builder,
     then: (resolve: (value: unknown) => unknown, reject: (reason: unknown) => unknown) =>
       Promise.resolve(result).then(resolve, reject),
   };
@@ -25,6 +26,7 @@ function clientRejecting(error: Error) {
     select: () => builder,
     eq: () => builder,
     order: () => builder,
+    limit: () => builder,
     then: (_resolve: unknown, reject: (reason: unknown) => unknown) => reject(error),
   };
   return { from: vi.fn(() => builder) };
@@ -99,5 +101,36 @@ describe("queries fall back instead of breaking the page", () => {
         liveUrl: "https://example.com/",
       },
     ]);
+  });
+});
+
+describe("getRecommendations", () => {
+  beforeEach(() => {
+    createPublicClient.mockReset();
+    vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  it("never invents recommendations: empty when Supabase is unavailable or empty", async () => {
+    createPublicClient.mockReturnValue(null);
+    expect(await getRecommendations()).toEqual([]);
+
+    createPublicClient.mockReturnValue(clientResolving({ data: [], error: null }));
+    expect(await getRecommendations()).toEqual([]);
+  });
+
+  it("reads published testimonials and skips invalid rows", async () => {
+    const client = clientResolving({
+      data: [
+        { id: "t1", person_name: "Ana Cruz", person_role: "Owner", organization: "MAC Performance", quote: "Delivered on time." },
+        { id: "t2", person_name: "", person_role: null, organization: null, quote: "No name" },
+      ],
+      error: null,
+    });
+    createPublicClient.mockReturnValue(client);
+
+    expect(await getRecommendations()).toEqual([
+      { id: "t1", name: "Ana Cruz", credit: "Owner, MAC Performance", quote: "Delivered on time." },
+    ]);
+    expect(client.from).toHaveBeenCalledWith("testimonials");
   });
 });

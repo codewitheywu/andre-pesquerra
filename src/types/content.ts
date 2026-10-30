@@ -27,6 +27,14 @@ export type Certification = {
   period: string;
 };
 
+export type Recommendation = {
+  id: string;
+  name: string;
+  /** "Role, Organization", either part optional. */
+  credit: string;
+  quote: string;
+};
+
 export type NavigationItem = {
   label: string;
   href: `#${string}`;

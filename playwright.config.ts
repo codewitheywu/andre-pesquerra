@@ -8,6 +8,9 @@ const PORT = 3100;
 export default defineConfig({
   testDir: "tests/e2e",
   fullyParallel: true,
+  // Six browser setups at the default 4 workers starve Firefox and WebKit on
+  // a laptop: client navigations that take ~150ms alone overran 5–30s.
+  workers: process.env.CI ? undefined : 3,
   retries: process.env.CI ? 2 : 0,
   use: {
     baseURL: `http://localhost:${PORT}`,

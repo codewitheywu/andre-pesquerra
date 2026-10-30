@@ -10,11 +10,13 @@ import {
   experienceRowSchema,
   mapExperience,
   mapProject,
+  mapRecommendation,
   parseRows,
   projectRowSchema,
+  testimonialRowSchema,
 } from "@/lib/mappers";
 import { createPublicClient } from "@/lib/supabase/public";
-import type { ExperienceItem, Project } from "@/types/content";
+import type { ExperienceItem, Project, Recommendation } from "@/types/content";
 
 type QueryResult = PromiseLike<{
   data: unknown;
@@ -90,5 +92,25 @@ export function getExperience(): Promise<ExperienceItem[]> {
     experienceRowSchema,
     mapExperience,
     fallbackExperience
+  );
+}
+
+/**
+ * Published recommendations only (RLS hides the rest). There is no static
+ * fallback: a recommendation is only shown if a real person gave it.
+ */
+export function getRecommendations(): Promise<Recommendation[]> {
+  return queryWithFallback(
+    "recommendations",
+    (supabase) =>
+      supabase
+        .from("testimonials")
+        .select("id, person_name, person_role, organization, quote")
+        .eq("published", true)
+        .order("sort_order", { ascending: true })
+        .limit(12),
+    testimonialRowSchema,
+    mapRecommendation,
+    []
   );
 }

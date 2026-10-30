@@ -26,6 +26,8 @@
   --heat-2: #bb8452;
   --heat-3: #94592d;
   --heat-4: #5e381c;
+  /* How strongly the hover halftone shows on a card. */
+  --card-dots: 30%;
   color-scheme: light;
 }
 
@@ -46,6 +48,7 @@
     --heat-2: #8c6440;
     --heat-3: #c08a55;
     --heat-4: #e6bb8c;
+    --card-dots: 45%;
     color-scheme: dark;
   }
 }
@@ -66,6 +69,7 @@
   --heat-2: #8c6440;
   --heat-3: #c08a55;
   --heat-4: #e6bb8c;
+  --card-dots: 45%;
   color-scheme: dark;
 }
 
@@ -321,30 +325,98 @@
     animation: leader-breathe 1s ease-in-out infinite;
   }
 
+  /* Halftone coffee-ring stain (components/ui/Halftone.tsx). Its dots fill
+   * with currentColor: the theme's ink, faint, so on dark roast they read
+   * as cream on espresso. In this layer so a utility can set its strength. */
+  .halftone {
+    color: color-mix(in srgb, var(--ink) 13%, transparent);
+  }
+
   /* The command palette is a native modal <dialog>. */
   .palette::backdrop {
     background: color-mix(in srgb, var(--ink) 30%, transparent);
   }
 }
 
-/* Theme switch reveal (src/lib/theme.ts animates the clip-path). Turn off
- * the default crossfade so only the circle moves. */
+/* Theme switch (src/lib/theme.ts sets the position and size). A circle
+ * with a feathered edge: dark pours outward from the hot coffee button,
+ * light draws back into the iced coffee one. It is a CSS animation with
+ * fill-mode both, so the first frame starts hidden and the last frame holds
+ * until the transition ends: no blink at either end. */
+@property --reveal {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
 
+:root[data-theme-transition="outward"]::view-transition-new(root),
 :root[data-theme-transition="inward"]::view-transition-old(root) {
-  z-index: 1;
+  mask-image: radial-gradient(
+    circle at var(--reveal-x) var(--reveal-y),
+    #000 calc(var(--reveal) - var(--reveal-feather)),
+    transparent var(--reveal)
+  );
+  /* Longhands: the minifier turns a shorthand without a name into "none". */
+  animation-duration: 1.1s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+  animation-fill-mode: both;
 }
 
-/* Halftone coffee-ring stain (components/ui/Halftone.tsx). Its dots fill
- * with currentColor: the theme's ink, faint, so on dark roast they read as
- * cream on espresso. */
-.halftone {
-  color: color-mix(in srgb, var(--ink) 13%, transparent);
+:root[data-theme-transition="outward"]::view-transition-new(root) {
+  animation-name: reveal-grow;
 }
+
+/* Inward shrinks the old (dark) view, so it sits on top. */
+:root[data-theme-transition="inward"]::view-transition-old(root) {
+  z-index: 1;
+  animation-name: reveal-shrink;
+}
+
+/* Reduced motion: no moving circle, just a short crossfade. */
+:root[data-theme-transition="fade"]::view-transition-old(root) {
+  animation: theme-fade-out 0.3s ease both;
+}
+
+:root[data-theme-transition="fade"]::view-transition-new(root) {
+  animation: theme-fade-in 0.3s ease both;
+}
+
+@keyframes reveal-grow {
+  from {
+    --reveal: 0px;
+  }
+  to {
+    --reveal: var(--reveal-max);
+  }
+}
+
+@keyframes reveal-shrink {
+  from {
+    --reveal: var(--reveal-max);
+  }
+  to {
+    --reveal: 0px;
+  }
+}
+
+@keyframes theme-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes theme-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
 
 @keyframes leader-breathe {
   50% {

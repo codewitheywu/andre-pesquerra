@@ -4,6 +4,7 @@ import {
   formatPeriod,
   mapExperience,
   mapProject,
+  mapRecommendation,
   parseRows,
   projectRowSchema,
   toSafeExternalUrl,
@@ -98,6 +99,15 @@ describe("mapExperience", () => {
       period: "2025",
       description: "",
     });
+  });
+});
+
+describe("mapRecommendation", () => {
+  it("credits role and organization when present, either one alone, or neither", () => {
+    const row = { id: "t1", person_name: "Ana", quote: "Great work." };
+    expect(mapRecommendation({ ...row, person_role: "Owner", organization: "Clinic" }).credit).toBe("Owner, Clinic");
+    expect(mapRecommendation({ ...row, person_role: null, organization: "Clinic" }).credit).toBe("Clinic");
+    expect(mapRecommendation({ ...row, person_role: " ", organization: undefined }).credit).toBe("");
   });
 });
 

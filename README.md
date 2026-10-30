@@ -40,7 +40,7 @@ src/
   assets/              Statically imported images (blur placeholders)
   components/
     layout/            Sidebar, mobile bar, footer, command palette (⌘K), theme and sound toggles
-    sections/          Hero, Projects, Experience (+ tools logo row), GitHubActivity, Certifications, Contact
+    sections/          Hero, Projects, Experience (+ tools logo row), GitHubActivity, Certifications, Recommendations, Contact
     ui/                Primitives: Section, TextLink, LinkList, Kbd, CopyButton, Reveal, Marquee, icons
   data/content.ts      Static content (incl. certifications) and database fallbacks
   data/stack.ts        Every tool on /stack, by category; those with logos feed the logo row
