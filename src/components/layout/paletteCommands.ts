@@ -1,4 +1,5 @@
 import { navigationItems, siteContent } from "@/data/content";
+import { openBrew } from "@/components/brew/BrewLauncher";
 import { getSoundEnabled, setSoundEnabled } from "@/lib/sound";
 import { setTheme } from "@/lib/theme";
 
@@ -27,6 +28,13 @@ export const COMMANDS: Command[] = [
     group: "Actions",
     keywords: "email contact mail copy",
     hint: "⧉",
+  },
+  {
+    id: "brew",
+    label: "Brew a cup (coffee mini game)",
+    group: "Actions",
+    keywords: "game play brew coffee barista mini fun",
+    hint: "ctrl g",
   },
   {
     id: "theme-light",
@@ -120,16 +128,24 @@ export function isSitePage(target: string): boolean {
   return target.startsWith("/") && !target.startsWith("//") && !target.endsWith(".pdf");
 }
 
-/** Apply a theme or sound command; returns the confirmation, or null if `id` is another kind. */
-export function runPreferenceCommand(id: string): string | null {
+/**
+ * Run a theme, sound or game command. Returns a confirmation to show in the
+ * palette, `{ close: true }` when the command opens something else, or
+ * null when `id` is another kind of command.
+ */
+export function runActionCommand(id: string): { notice: string } | { close: true } | null {
   if (id === "theme-light" || id === "theme-dark") {
     setTheme(id === "theme-light" ? "light" : "dark");
-    return id === "theme-light" ? "Iced coffee it is ✓" : "Hot coffee it is ✓";
+    return { notice: id === "theme-light" ? "Iced coffee it is ✓" : "Hot coffee it is ✓" };
   }
   if (id === "sound") {
     const next = !getSoundEnabled();
     setSoundEnabled(next);
-    return next ? "Sound effects on ✓" : "Sound effects off";
+    return { notice: next ? "Sound effects on ✓" : "Sound effects off" };
+  }
+  if (id === "brew") {
+    openBrew();
+    return { close: true };
   }
   return null;
 }

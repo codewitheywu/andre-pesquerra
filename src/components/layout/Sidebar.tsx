@@ -1,5 +1,6 @@
 import { siteContent } from "@/data/content";
 import LinkList from "@/components/ui/LinkList";
+import BrewTrigger from "@/components/brew/BrewTrigger";
 import PaletteTrigger from "./PaletteTrigger";
 import SectionLink from "./SectionLink";
 import SectionNav from "./SectionNav";
@@ -31,9 +32,14 @@ export default function Sidebar() {
           <SoundToggle />
         </div>
 
-        <PaletteTrigger className="min-h-11 text-meta text-muted hover:text-ink">
-          Jump anywhere
-        </PaletteTrigger>
+        <div className="space-y-1 shorter:space-y-0">
+          <PaletteTrigger className="min-h-11 text-meta text-muted hover:text-ink shorter:min-h-9">
+            Jump anywhere
+          </PaletteTrigger>
+          <BrewTrigger className="min-h-11 text-meta text-muted hover:text-ink shorter:min-h-9">
+            Brew a cup
+          </BrewTrigger>
+        </div>
 
         <div className="space-y-1 border-t border-border pt-6 text-meta short:pt-4 shorter:hidden">
           <p className="text-muted">Reach me at</p>

@@ -28,6 +28,14 @@
   --heat-4: #5e381c;
   /* How strongly the hover halftone shows on a card. */
   --card-dots: 30%;
+  /* Brew (the coffee mini game): what is in the cup looks the same in
+   * both themes, like a real drink would. */
+  --brew-espresso: #4a2a17;
+  --brew-water: #c9a27c;
+  --brew-milk: #efe3d1;
+  --brew-foam: #fbf7f1;
+  --brew-caramel: #c27c3a;
+  --brew-ice: #dfe8ea;
   color-scheme: light;
 }
 
@@ -417,6 +425,19 @@
   }
 }
 
+
+/* Brew: each new layer pours in from the bottom of its band. */
+.brew-pour {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: brew-pour 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes brew-pour {
+  from {
+    transform: scaleY(0);
+  }
+}
 
 @keyframes leader-breathe {
   50% {

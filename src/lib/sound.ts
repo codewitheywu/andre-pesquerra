@@ -2,7 +2,7 @@
 // Web Audio API, so there are no audio files to download. The AudioContext
 // is created on the first sound, which always follows a click.
 
-export type SoundKind = "tap" | "toggle";
+export type SoundKind = "tap" | "toggle" | "pour" | "serve" | "miss";
 
 const STORAGE_KEY = "sound";
 const CHANGE_EVENT = "sound:change";
@@ -40,6 +40,10 @@ export function subscribeSound(onChange: () => void) {
 const TONES: Record<SoundKind, { from: number; to: number; length: number }> = {
   tap: { from: 880, to: 620, length: 0.06 },
   toggle: { from: 520, to: 780, length: 0.12 },
+  // Brew, the coffee mini game.
+  pour: { from: 330, to: 260, length: 0.07 },
+  serve: { from: 660, to: 1320, length: 0.2 },
+  miss: { from: 240, to: 150, length: 0.18 },
 };
 
 /** A short, quiet blip. No-op when sound is off or Web Audio is missing. */

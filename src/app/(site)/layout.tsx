@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import BrewLauncher from "@/components/brew/BrewLauncher";
 import CommandPalette from "@/components/layout/CommandPalette";
 import PreferenceEffects from "@/components/layout/PreferenceEffects";
 import MobileBar from "@/components/layout/MobileBar";
@@ -21,6 +22,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
         </main>
       </div>
       <CommandPalette />
+      <BrewLauncher />
       <PreferenceEffects />
     </>
   );

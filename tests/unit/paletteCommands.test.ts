@@ -19,7 +19,8 @@ describe("command palette commands", () => {
     expect(filterCommands("cv").map((c) => c.id)).toEqual(["resume"]);
     expect(filterCommands("mail").map((c) => c.id)).toEqual(["copy-email"]);
     expect(filterCommands("dark").map((c) => c.id)).toEqual(["theme-dark"]);
-    expect(filterCommands("coffee").map((c) => c.id)).toEqual(["theme-light", "theme-dark"]);
+    expect(filterCommands("coffee").map((c) => c.id)).toEqual(["brew", "theme-light", "theme-dark"]);
+    expect(filterCommands("game").map((c) => c.id)).toEqual(["brew"]);
     expect(filterCommands("mute").map((c) => c.id)).toEqual(["sound"]);
     expect(filterCommands("tiktok").map((c) => c.id)).toEqual(["blog-page"]);
   });

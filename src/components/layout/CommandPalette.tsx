@@ -4,7 +4,7 @@ import { useLenis } from "lenis/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { siteContent } from "@/data/content";
-import { filterCommands, isSitePage, moveHighlight, runPreferenceCommand } from "./paletteCommands";
+import { filterCommands, isSitePage, moveHighlight, runActionCommand } from "./paletteCommands";
 import type { Command } from "./paletteCommands";
 
 const OPEN_EVENT = "command-palette:open";
@@ -88,9 +88,10 @@ export default function CommandPalette() {
       return;
     }
 
-    const preferenceNotice = runPreferenceCommand(command.id);
-    if (preferenceNotice) {
-      setNotice(preferenceNotice);
+    const result = runActionCommand(command.id);
+    if (result) {
+      if ("notice" in result) setNotice(result.notice);
+      else close();
       return;
     }
 

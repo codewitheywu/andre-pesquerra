@@ -33,13 +33,14 @@ the Supabase table editor (`contact_messages`, newest first).
 ```
 src/
   app/
-    (site)/            Public routes: shell (sidebar, mobile bar, palette), homepage, /stack, /blog, /behind-the-code, /recommendations, /consulting (+ inquiry Server Action), error boundary
+    (site)/            Public routes: shell (sidebar, mobile bar, palette, Brew game), homepage, /stack, /blog, /behind-the-code, /recommendations, /consulting (+ inquiry Server Action), error boundary
     layout.tsx         Root layout: fonts, metadata, smooth scroll
     not-found.tsx      Styled 404
     robots.ts, sitemap.ts, icon.svg
   assets/              Statically imported images (blur placeholders)
   components/
     layout/            Sidebar, mobile bar, footer, command palette (⌘K), theme and sound toggles
+    brew/              Brew, the coffee mini game (Ctrl/⌘ G; rules in lib/brew.ts, loaded on first open)
     sections/          Hero, Projects, Experience (+ tools logo row), GitHubActivity, Certifications, Recommendations, Contact
     ui/                Primitives: Section, TextLink, LinkList, Kbd, CopyButton, Reveal, Marquee, icons
   data/content.ts      Static content (incl. certifications) and database fallbacks

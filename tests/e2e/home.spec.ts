@@ -690,6 +690,76 @@ test.describe("behind the code page", () => {
   });
 });
 
+test.describe("brew mini game", () => {
+  test("Ctrl+G opens it; an order built from the menu keys is served and scored", async ({ page, isMobile }) => {
+    test.skip(isMobile, "Keyboard play; touch is covered by the palette test");
+    await page.goto("/");
+    await waitForHydration(page);
+    await page.keyboard.press("Control+g");
+    const game = page.getByRole("dialog", { name: "Brew, a coffee mini game" });
+    await expect(game).toBeVisible();
+    await expect(game.getByRole("heading", { name: "Brew" })).toBeVisible({ timeout: 15_000 });
+
+    await page.keyboard.press("Enter");
+    const order = game.locator('[aria-current="true"]');
+    await expect(order).toBeVisible();
+    // The marked menu line reads "Name: E M"; type those keys, then serve.
+    const keys = ((await order.locator("span.font-mono").textContent()) ?? "").replace(":", "").trim().split(/\s+/);
+    for (const key of keys) await page.keyboard.press(key.toLowerCase());
+    await page.keyboard.press("Enter");
+    await expect(game.getByText(/^Served, \+\d+\./)).toBeVisible();
+    await expect(game.getByText(/^score/)).not.toHaveText(/score 0$/);
+
+    await page.keyboard.press("Escape");
+    await expect(game).toBeHidden();
+  });
+
+  test("the round ends after a minute and keeps the best score", async ({ page }) => {
+    await page.clock.install();
+    await page.goto("/");
+    const dialog = await openPalette(page);
+    await dialog.getByRole("combobox").fill("brew");
+    await page.keyboard.press("Enter");
+    const game = page.getByRole("dialog", { name: "Brew, a coffee mini game" });
+    await game.getByRole("button", { name: /Start brewing/ }).click({ timeout: 15_000 });
+    await expect(game.getByText("1:00")).toBeVisible();
+
+    // Serve the first order (always a level-1 drink) for a non-zero score.
+    const keys = ((await game.locator('[aria-current="true"] span.font-mono').textContent()) ?? "").replace(":", "").trim().split(/\s+/);
+    const labels: Record<string, string> = { E: "Espresso", W: "Water", M: "Milk" };
+    for (const key of keys) await game.getByRole("button", { name: new RegExp(`^${labels[key]}`) }).click();
+    await game.getByRole("button", { name: /^Serve/ }).click();
+
+    await page.clock.fastForward(61_000);
+    await expect(game.getByText("time!")).toBeVisible();
+    await expect(game.getByText(/1 drink served, \d+ points/)).toBeVisible();
+    await expect(game.getByText("A new best. The regulars are impressed.")).toBeVisible();
+    expect(Number(await page.evaluate(() => localStorage.getItem("brew:best")))).toBeGreaterThan(0);
+  });
+
+  test("the palette opens it too, which is how phones get there", async ({ page }) => {
+    await page.goto("/");
+    const dialog = await openPalette(page);
+    await dialog.getByRole("combobox").fill("brew");
+    await page.keyboard.press("Enter");
+    const game = page.getByRole("dialog", { name: "Brew, a coffee mini game" });
+    await expect(game.getByRole("button", { name: /Start brewing/ })).toBeVisible({ timeout: 15_000 });
+    await game.getByRole("button", { name: /Start brewing/ }).click();
+    await game.getByRole("button", { name: /^Espresso/ }).click();
+    await expect(game.getByRole("button", { name: /^Serve/ })).toBeEnabled();
+  });
+
+  test("has no WCAG A/AA violations while open", async ({ page }) => {
+    await page.goto("/");
+    await waitForHydration(page);
+    await page.keyboard.press("Control+g");
+    const game = page.getByRole("dialog", { name: "Brew, a coffee mini game" });
+    await expect(game.getByRole("heading", { name: "Brew" })).toBeVisible({ timeout: 15_000 });
+    const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).include("dialog[open]").analyze();
+    expect(results.violations.map((violation) => violation.id)).toEqual([]);
+  });
+});
+
 test.describe("recommendations", () => {
   test("the home page shows at most three and links to the full page", async ({ page }) => {
     await page.goto("/");
