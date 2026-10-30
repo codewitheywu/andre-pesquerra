@@ -7,7 +7,7 @@ type TimelineEntry = {
 };
 
 /**
- * Menu-style rows: role, dot leader, dates; the organisation underneath.
+ * Menu-style rows: role, a hairline leader, dates; the organisation underneath.
  * Phones put the dates above the role, where a leader would be a stub.
  */
 export default function Timeline({ entries }: { entries: TimelineEntry[] }) {

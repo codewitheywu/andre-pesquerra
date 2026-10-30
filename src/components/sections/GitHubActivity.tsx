@@ -31,12 +31,13 @@ function Calendar({ calendar }: { calendar: ContributionCalendar }) {
 
   return (
     <figure>
-      {/* rtl makes narrow screens open scrolled to the newest weeks. */}
+      {/* rtl makes narrow screens open scrolled to the newest weeks; the faded
+          left edge shows there is more, instead of slicing a month label. */}
       <div
         tabIndex={0}
         role="region"
         aria-label="Contribution calendar, scrollable"
-        className="overflow-x-auto pb-2 [direction:rtl]"
+        className="overflow-x-auto pb-2 [direction:rtl] max-md:mask-[linear-gradient(to_right,transparent,#000_3rem)]"
       >
         <div className="w-max min-w-full [direction:ltr]">
           <svg

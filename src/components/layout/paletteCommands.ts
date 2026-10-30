@@ -66,6 +66,14 @@ export const COMMANDS: Command[] = [
     target: "/blog",
   },
   {
+    id: "behind-page",
+    label: "Behind the Code: story, life and hobbies",
+    group: "Links",
+    keywords: "behind the code about me story life hobbies personal",
+    hint: "→",
+    target: "/behind-the-code",
+  },
+  {
     id: "resume",
     label: "Open résumé",
     group: "Links",

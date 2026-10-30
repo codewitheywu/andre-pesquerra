@@ -161,6 +161,30 @@ test.describe("layout", () => {
     await expect(link).toHaveAttribute("aria-current", "location");
   });
 
+  test("the line follows every sidebar click, also after visiting another page", async ({ page }) => {
+    test.skip((page.viewportSize()?.width ?? 0) < 1024, "The sidebar is desktop only");
+    await page.goto("/");
+    await waitForHydration(page);
+    const nav = page.getByRole("navigation", { name: "Sections" });
+    const current = nav.locator('[aria-current="location"]');
+
+    for (const label of ["Contact", "Projects", "Certifications", "GitHub", "Experience"]) {
+      await nav.getByRole("link", { name: label, exact: true }).click();
+      await expect(current).toHaveCount(1);
+      await expect(current).toHaveText(label);
+    }
+
+    // Round trip through Blog: the sections are new elements when we return.
+    await nav.getByRole("link", { name: "Blog" }).click();
+    await expect(page).toHaveURL(/[/]blog$/);
+    await expect(current).toHaveCount(0);
+    await nav.getByRole("link", { name: "Contact", exact: true }).click();
+    await expect(page.locator("#contact")).toBeInViewport();
+    await expect(current).toHaveText("Contact");
+    await nav.getByRole("link", { name: "Projects", exact: true }).click();
+    await expect(current).toHaveText("Projects");
+  });
+
   test("interactive targets are at least 44px tall on touch screens", async ({ page, isMobile }) => {
     test.skip(!isMobile, "Touch target size applies to touch layouts");
     await page.goto("/");
@@ -294,6 +318,10 @@ test.describe("accessibility", () => {
       test.slow();
       const { context, page } = await pageInScheme(browser, colorScheme);
       await revealAllSections(page);
+      // Scan from the top: wherever the reveal scroll stops, some link sits
+      // under the sticky mobile bar, and axe reads that as overlapping targets.
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
       const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
       expect(
         results.violations.map((violation) => ({
@@ -402,6 +430,43 @@ test.describe("themes and motion", () => {
     await iced.click();
     await expect.poll(background).toBe("rgb(246, 239, 230)");
     await expect(page.locator("html")).not.toHaveAttribute("data-theme-transition", /.+/);
+  });
+
+  test("switching back to light never flashes the dark page", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto("/");
+    await waitForHydration(page);
+    const supported = await page.evaluate(() => typeof document.startViewTransition === "function");
+    test.skip(!supported, "This engine has no View Transitions; the switch is instant");
+
+    // Sidebar on desktop, top bar below it.
+    const iced = page.getByRole("button", { name: "Iced coffee (light theme)" }).filter({ visible: true }).first();
+    // The light view is revealed by shrinking a snapshot of the dark one. If
+    // that clip ends before the transition does, the whole dark snapshot
+    // shows again for a few frames.
+    await iced.evaluate((button) => {
+      const root = document.documentElement;
+      const unclipped: number[] = [];
+      let frames = 0;
+      (window as unknown as { unclipped: number[] }).unclipped = unclipped;
+      const tick = () => {
+        if (root.dataset.themeTransition === "inward") {
+          frames++;
+          const clipped = document
+            .getAnimations()
+            .some((animation) => (animation.effect as KeyframeEffect | null)?.pseudoElement === "::view-transition-old(root)");
+          // The clip starts once the transition is ready, a frame or two in.
+          if (!clipped && frames > 2) unclipped.push(frames);
+        }
+        if (frames === 0 || root.dataset.themeTransition) requestAnimationFrame(tick);
+      };
+      (button as HTMLButtonElement).click();
+      requestAnimationFrame(tick);
+    });
+
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme-transition", /.+/);
+    expect(await page.evaluate(() => (window as unknown as { unclipped: number[] }).unclipped)).toEqual([]);
   });
 
   test("the palette can switch the theme", async ({ page }) => {
@@ -538,6 +603,64 @@ test.describe("blog page", () => {
 
   test("has no WCAG A/AA violations", async ({ page }) => {
     await page.goto("/blog");
+    await waitForHydration(page);
+    const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
+    expect(results.violations.map((violation) => violation.id)).toEqual([]);
+  });
+});
+
+test.describe("behind the code page", () => {
+  test("is reachable from the sidebar or the palette", async ({ page }) => {
+    await page.goto("/");
+    await waitForHydration(page);
+    const width = page.viewportSize()?.width ?? 0;
+    if (width >= 1024) {
+      await page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: "Behind the Code" }).click();
+    } else {
+      const dialog = await openPalette(page);
+      await dialog.getByRole("combobox").fill("hobbies");
+      await page.keyboard.press("Enter");
+    }
+
+    await expect(page).toHaveURL(/[/]behind-the-code$/);
+    await expect(page).toHaveTitle(/^Behind the Code — /);
+    await expect(page.getByRole("heading", { level: 1, name: "Behind the Code" })).toBeVisible();
+    const sections = page.getByRole("heading", { level: 2 });
+    const unwritten = page.getByText("This page is still being written.");
+    await expect(sections.first().or(unwritten)).toBeVisible();
+  });
+
+  test("its sidebar link shows a loading line while the page is on its way", async ({ page }) => {
+    test.skip((page.viewportSize()?.width ?? 0) < 1024, "Uses the sidebar link");
+    // Hold back the page's content, prefetched or fetched on click.
+    await page.route(/behind-the-code/, async (route) => {
+      const headers = route.request().headers();
+      const pageSegment = (headers["next-router-segment-prefetch"] ?? "").includes("__PAGE__");
+      const navigation = Boolean(headers["rsc"]) && !headers["next-router-prefetch"];
+      if (pageSegment || navigation) await new Promise((resolve) => setTimeout(resolve, 2500));
+      await route.continue().catch(() => {});
+    });
+    await page.goto("/");
+    await waitForHydration(page);
+    const link = page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: "Behind the Code" });
+    await link.click();
+
+    await expect(link.locator('[data-pending="true"]')).toBeAttached();
+    await expect(page.getByRole("heading", { level: 1, name: "Behind the Code" })).toBeVisible({ timeout: 10_000 });
+    await expect(link.locator('[data-pending="true"]')).toHaveCount(0);
+    await expect(link).toHaveAttribute("aria-current", "page");
+  });
+
+  test("first paint shows the real content, not a loading placeholder", async ({ request }) => {
+    // A route-level loading.tsx would put a skeleton in the static HTML and
+    // swap the content in later, which delayed the phone LCP by seconds.
+    const html = await (await request.get("/")).text();
+    expect(html.indexOf("full-stack web developer")).toBeGreaterThan(-1);
+    expect(html).not.toContain('hidden id="S:');
+  });
+
+  test("has no WCAG A/AA violations", async ({ page }) => {
+    await page.goto("/behind-the-code");
     await waitForHydration(page);
     const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
     expect(results.violations.map((violation) => violation.id)).toEqual([]);

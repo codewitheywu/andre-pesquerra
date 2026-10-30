@@ -9,7 +9,7 @@ type SectionProps = {
   children: ReactNode;
 };
 
-/** A section headed like a café menu line: title, dot leader, then its link. */
+/** A section headed like a café menu line: title, hairline leader, then its link. */
 export default function Section({ id, title, action, children }: SectionProps) {
   const headingId = `${id}-heading`;
 

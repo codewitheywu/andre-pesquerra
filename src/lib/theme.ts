@@ -33,8 +33,10 @@ function applyTheme(theme: Theme) {
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
-const REVEAL_MS = 600;
-const REVEAL_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+// Ease in and out: a strong ease-out sweeps half the screen in ~80ms, which
+// reads as a flash rather than coffee pouring in.
+const REVEAL_MS = 850;
+const REVEAL_EASE = "cubic-bezier(0.5, 0, 0.25, 1)";
 
 /**
  * Switch theme with a circular reveal centred on `origin` (the button that
@@ -67,6 +69,10 @@ export function setTheme(theme: Theme, origin?: { x: number; y: number }) {
         {
           duration: REVEAL_MS,
           easing: REVEAL_EASE,
+          // Hold the last frame until the transition tears down. Without it the
+          // shrunken old (dark) view springs back to full size for a few frames
+          // and the page flashes dark after switching to light.
+          fill: "forwards",
           pseudoElement: outward ? "::view-transition-new(root)" : "::view-transition-old(root)",
         }
       );

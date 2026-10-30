@@ -19,7 +19,7 @@ the fallback content in `src/data/content.ts`. Environment variables are validat
 ```
 src/
   app/
-    (site)/            Public routes: shell (sidebar, mobile bar, palette), homepage, /stack, /blog, error boundary
+    (site)/            Public routes: shell (sidebar, mobile bar, palette), homepage, /stack, /blog, /behind-the-code, error boundary
     layout.tsx         Root layout: fonts, metadata, smooth scroll
     not-found.tsx      Styled 404
     robots.ts, sitemap.ts, icon.svg
@@ -31,6 +31,7 @@ src/
   data/content.ts      Static content (incl. certifications) and database fallbacks
   data/stack.ts        Every tool on /stack, by category; those with logos feed the logo row
   data/blog.ts         TikTok posts listed on /blog (linked out, not embedded)
+  data/behind.ts       Story, life and hobbies for /behind-the-code (sections hide until filled)
   hooks/               useHydrated, useTheme / useSoundEnabled
   lib/
     env.ts             Zod-validated environment

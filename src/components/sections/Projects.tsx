@@ -15,13 +15,12 @@ function ProjectRow({ project }: { project: Project }) {
             </span>
           )}
         </h3>
+        {/* Every row draws its line, so undated projects line up with dated ones. */}
+        <span aria-hidden="true" className="leader hidden flex-1 self-center sm:block" />
         {project.year && (
-          <>
-            <span aria-hidden="true" className="leader hidden flex-1 self-center sm:block" />
-            <span className="order-first shrink-0 font-mono text-meta text-muted sm:order-0">
-              {project.year}
-            </span>
-          </>
+          <span className="order-first shrink-0 font-mono text-meta text-muted sm:order-0">
+            {project.year}
+          </span>
         )}
       </div>
       {project.summary && <p className="mt-1 text-body text-ink-2">{project.summary}</p>}

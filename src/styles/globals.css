@@ -305,14 +305,20 @@
     fill: var(--heat-4);
   }
 
-  /* Menu-board dot leader between a name and its price, here between a
-   * heading and its link or a role and its dates. */
+  /* Menu-board leader: a hairline between a name and its price, here
+   * between a heading and its link or a role and its dates. Also used on
+   * its own as a divider. */
   .leader {
-    --leader-dot: color-mix(in srgb, var(--muted) 45%, transparent);
+    --leader-line: var(--border);
     min-width: 1.5rem;
-    height: 4px;
-    background: radial-gradient(circle, var(--leader-dot) 1.25px, transparent 1.75px) 0 50% / 8px 4px
-      repeat-x;
+    height: 1px;
+    background: var(--leader-line);
+  }
+
+  /* A page link waiting on its page: its line breathes until it arrives.
+   * Reduced motion stops the breathing (global rule below), not the line. */
+  .leader[data-pending="true"] {
+    animation: leader-breathe 1s ease-in-out infinite;
   }
 
   /* The command palette is a native modal <dialog>. */
@@ -333,12 +339,17 @@
   z-index: 1;
 }
 
-/* Halftone coffee-ring stain (public/halftone.svg, made by
- * scripts/halftone.mjs). The SVG is a mask, so the dots take the theme's
- * ink colour; on dark roast they read as cream on espresso. */
+/* Halftone coffee-ring stain (components/ui/Halftone.tsx). Its dots fill
+ * with currentColor: the theme's ink, faint, so on dark roast they read as
+ * cream on espresso. */
 .halftone {
-  background-color: color-mix(in srgb, var(--ink) 13%, transparent);
-  mask: url("/halftone.svg") right top / contain no-repeat;
+  color: color-mix(in srgb, var(--ink) 13%, transparent);
+}
+
+@keyframes leader-breathe {
+  50% {
+    opacity: 0.25;
+  }
 }
 
 @keyframes marquee {
