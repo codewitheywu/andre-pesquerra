@@ -14,12 +14,26 @@ Open [http://localhost:3000](http://localhost:3000). Supabase is optional: witho
 the fallback content in `src/data/content.ts`. Environment variables are validated at startup
 (`src/lib/env.ts`); a half-configured Supabase pair fails fast.
 
+## Consulting inquiries
+
+The form on `/consulting` stores inquiries in `contact_messages` through a Server Action:
+
+1. Apply `supabase/migrations/004_consulting_inquiries.sql` (adds the inquiry columns and
+   `public.submit_inquiry`, executable only by `service_role`).
+2. Set `SUPABASE_SECRET_KEY` (Supabase → Project Settings → API Keys → secret key) in
+   `.env.local` and in the Vercel project's environment variables. Never prefix it with
+   `NEXT_PUBLIC_`. Without it the form stays up but says sending failed and offers email.
+
+Each visitor can send 3 inquiries an hour; the 4th gets the form's 429 panel. Visitors are
+counted by an HMAC of their IP keyed with the secret, so no address is stored. Read inquiries in
+the Supabase table editor (`contact_messages`, newest first).
+
 ## Project structure
 
 ```
 src/
   app/
-    (site)/            Public routes: shell (sidebar, mobile bar, palette), homepage, /stack, /blog, /behind-the-code, error boundary
+    (site)/            Public routes: shell (sidebar, mobile bar, palette), homepage, /stack, /blog, /behind-the-code, /consulting (+ inquiry Server Action), error boundary
     layout.tsx         Root layout: fonts, metadata, smooth scroll
     not-found.tsx      Styled 404
     robots.ts, sitemap.ts, icon.svg
@@ -32,9 +46,11 @@ src/
   data/stack.ts        Every tool on /stack, by category; those with logos feed the logo row
   data/blog.ts         TikTok posts listed on /blog (linked out, not embedded)
   data/behind.ts       Story, life and hobbies for /behind-the-code (sections hide until filled)
+  data/consulting.ts   Services, budget ranges and field limits for /consulting
   hooks/               useHydrated, useTheme / useSoundEnabled
   lib/
-    env.ts             Zod-validated environment
+    env.ts             Zod-validated environment (env.server.ts: server-only secrets)
+    inquiry.ts         Inquiry form validation (zod), shared by the Server Action and tests
     queries.ts         Server-side data access
     mappers.ts         Row validation and mapping (unit tested)
     motion.ts          Shared animation timing

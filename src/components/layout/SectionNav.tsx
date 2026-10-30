@@ -10,6 +10,7 @@ import SectionLink from "./SectionLink";
 const PAGES = [
   { href: "/blog", label: "Blog" },
   { href: "/behind-the-code", label: "Behind the Code" },
+  { href: "/consulting", label: "Consulting" },
 ];
 
 /**

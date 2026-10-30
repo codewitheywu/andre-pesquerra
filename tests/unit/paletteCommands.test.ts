@@ -49,7 +49,7 @@ describe("command palette commands", () => {
 
   it("only links to absolute https URLs, the local résumé or site pages", () => {
     for (const command of COMMANDS.filter((c) => c.group === "Links")) {
-      expect(command.target).toMatch(/^(https:\/\/|\/files\/|\/stack$|\/blog$|\/behind-the-code$)/);
+      expect(command.target).toMatch(/^(https:\/\/|\/files\/|\/stack$|\/blog$|\/behind-the-code$|\/consulting$)/);
     }
   });
 });

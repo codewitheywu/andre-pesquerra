@@ -667,12 +667,85 @@ test.describe("behind the code page", () => {
   });
 });
 
+test.describe("consulting page", () => {
+  test("is reachable from the sidebar or the palette and lists the services", async ({ page }) => {
+    await page.goto("/");
+    await waitForHydration(page);
+    if ((page.viewportSize()?.width ?? 0) >= 1024) {
+      await page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: "Consulting" }).click();
+    } else {
+      const dialog = await openPalette(page);
+      await dialog.getByRole("combobox").fill("consulting");
+      await page.keyboard.press("Enter");
+    }
+
+    await expect(page).toHaveURL(/[/]consulting$/);
+    await expect(page.getByRole("heading", { level: 1, name: "Consulting" })).toBeVisible();
+    for (const service of ["Graphic Design", "Web Development", "Thesis Requirements", "IoT Development"]) {
+      await expect(page.getByRole("heading", { level: 3, name: service })).toBeVisible();
+    }
+  });
+
+  test("the server explains invalid fields, focuses the first and keeps what was typed", async ({ page }) => {
+    await page.goto("/consulting");
+    await waitForHydration(page);
+    // Skip the browser's own checks to exercise the server's.
+    await page.locator("form").evaluate((form: HTMLFormElement) => (form.noValidate = true));
+    await page.getByLabel("Name").fill("Maria Santos");
+    await page.getByLabel("Email").fill("maria");
+    await page.getByLabel("Project details").fill("Too short");
+    await page.getByRole("button", { name: /Send inquiry/ }).click();
+
+    const email = page.getByLabel("Email");
+    // The action round trip is slow when every browser runs at once.
+    await expect(email).toHaveAttribute("aria-invalid", "true", { timeout: 15_000 });
+    await expect(email).toBeFocused();
+    await expect(page.getByText("Please enter a valid email address.")).toBeVisible();
+    await expect(page.getByText("Pick what you need help with.")).toBeVisible();
+    await expect(page.getByLabel("Name")).toHaveValue("Maria Santos");
+    await expect(page.getByLabel("Project details")).toHaveValue("Too short");
+  });
+
+  test("a send that fails on the server says so, offers email and keeps the text", async ({ page }) => {
+    // Tests run without the Supabase secret key, so the action cannot store.
+    await page.goto("/consulting");
+    await waitForHydration(page);
+    await page.getByLabel("Name").fill("Maria Santos");
+    await page.getByLabel("Email").fill("maria@example.com");
+    await page.getByLabel("What can I help with?").selectOption("web-development");
+    await page.getByLabel("Project details").fill("A booking site for our clinic, with an admin page.");
+    await page.getByRole("button", { name: /Send inquiry/ }).click();
+
+    const alert = page.getByRole("alert").filter({ hasText: "didn't go through" });
+    await expect(alert).toBeVisible({ timeout: 15_000 });
+    await expect(alert.getByRole("link", { name: "andrevpesquerra@gmail.com" })).toBeVisible();
+    await expect(page.getByLabel("Project details")).toHaveValue(/booking site/);
+  });
+
+  test("the honeypot is invisible and out of the tab order", async ({ page }) => {
+    await page.goto("/consulting");
+    const trap = page.locator('input[name="website"]');
+    await expect(trap).toBeAttached();
+    await expect(trap).not.toBeInViewport();
+    await expect(trap).toHaveAttribute("tabindex", "-1");
+  });
+
+  test("has no WCAG A/AA violations", async ({ page }) => {
+    await page.goto("/consulting");
+    await waitForHydration(page);
+    const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
+    expect(results.violations.map((violation) => violation.id)).toEqual([]);
+  });
+});
+
 test.describe("errors and headers", () => {
   test("unknown routes render the styled 404", async ({ page }) => {
     const response = await page.goto("/this-page-does-not-exist");
     expect(response?.status()).toBe(404);
     await expect(page.getByRole("heading", { level: 1 })).toContainText("doesn't exist");
-    await expect(page.getByRole("link", { name: /back to the homepage/i })).toHaveAttribute("href", "/");
+    const pages = page.getByRole("navigation", { name: "Pages" });
+    await expect(pages.getByRole("link", { name: /^Home/ })).toHaveAttribute("href", "/");
+    await expect(pages.getByRole("link", { name: /^Consulting/ })).toHaveAttribute("href", "/consulting");
   });
 
   test("security headers are set", async ({ request }) => {
