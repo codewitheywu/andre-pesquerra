@@ -96,10 +96,11 @@ export function getExperience(): Promise<ExperienceItem[]> {
 }
 
 /**
- * Published recommendations only (RLS hides the rest). There is no static
- * fallback: a recommendation is only shown if a real person gave it.
+ * Published recommendations only (RLS hides the rest), newest first. There
+ * is no static fallback: a recommendation is only shown if a real person
+ * gave it. The home page asks for the latest few, /recommendations for all.
  */
-export function getRecommendations(): Promise<Recommendation[]> {
+export function getRecommendations(limit = 100): Promise<Recommendation[]> {
   return queryWithFallback(
     "recommendations",
     (supabase) =>
@@ -107,8 +108,8 @@ export function getRecommendations(): Promise<Recommendation[]> {
         .from("testimonials")
         .select("id, person_name, person_role, organization, quote")
         .eq("published", true)
-        .order("sort_order", { ascending: true })
-        .limit(12),
+        .order("created_at", { ascending: false })
+        .limit(limit),
     testimonialRowSchema,
     mapRecommendation,
     []

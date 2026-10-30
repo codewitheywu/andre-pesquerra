@@ -74,6 +74,14 @@ export const COMMANDS: Command[] = [
     target: "/behind-the-code",
   },
   {
+    id: "recommendations-page",
+    label: "Recommendations: what people say",
+    group: "Links",
+    keywords: "recommendations testimonials reviews references",
+    hint: "→",
+    target: "/recommendations",
+  },
+  {
     id: "consulting-page",
     label: "Consulting: services and inquiries",
     group: "Links",

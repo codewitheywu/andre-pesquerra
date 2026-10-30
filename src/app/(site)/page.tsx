@@ -4,7 +4,7 @@ import GitHubActivity from "@/components/sections/GitHubActivity";
 import Experience from "@/components/sections/Experience";
 import Hero from "@/components/sections/Hero";
 import Projects from "@/components/sections/Projects";
-import Recommendations from "@/components/sections/Recommendations";
+import Recommendations, { HOME_RECOMMENDATIONS } from "@/components/sections/Recommendations";
 import { siteContent } from "@/data/content";
 import { getContributions } from "@/lib/github";
 import { getExperience, getProjects, getRecommendations } from "@/lib/queries";
@@ -16,7 +16,7 @@ export default async function HomePage() {
   const [projects, experience, recommendations, contributions] = await Promise.all([
     getProjects(),
     getExperience(),
-    getRecommendations(),
+    getRecommendations(HOME_RECOMMENDATIONS),
     getContributions(siteContent.githubUser),
   ]);
 
@@ -25,9 +25,9 @@ export default async function HomePage() {
       <Hero />
       <Projects projects={projects} />
       <Experience experience={experience} />
-      <GitHubActivity calendar={contributions} />
       <Certifications />
       <Recommendations recommendations={recommendations} />
+      <GitHubActivity calendar={contributions} />
       <Contact />
     </div>
   );

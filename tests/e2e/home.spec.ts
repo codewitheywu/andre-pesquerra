@@ -168,7 +168,7 @@ test.describe("layout", () => {
     const nav = page.getByRole("navigation", { name: "Sections" });
     const current = nav.locator('[aria-current="location"]');
 
-    for (const label of ["Contact", "Projects", "Certifications", "GitHub", "Experience"]) {
+    for (const label of ["Contact", "Projects", "Recommendations", "Certifications", "Experience"]) {
       await nav.getByRole("link", { name: label, exact: true }).click();
       await expect(current).toHaveCount(1);
       await expect(current).toHaveText(label);
@@ -193,7 +193,9 @@ test.describe("layout", () => {
 
     const small = await page.evaluate(() =>
       [...document.querySelectorAll("header a, header button, main a, main button")]
-        .filter((el) => el.getClientRects().length > 0)
+        // Links inside a sentence are exempt (WCAG 2.5.8 inline exception):
+        // their size is the line's, and padding them would break the text.
+        .filter((el) => el.getClientRects().length > 0 && !el.closest("p"))
         .map((el) => ({ text: (el.textContent ?? "").trim().slice(0, 30), h: el.getBoundingClientRect().height }))
         .filter((target) => target.h < 44)
     );
@@ -685,6 +687,39 @@ test.describe("behind the code page", () => {
     await waitForHydration(page);
     const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
     expect(results.violations.map((violation) => violation.id)).toEqual([]);
+  });
+});
+
+test.describe("recommendations", () => {
+  test("the home page shows at most three and links to the full page", async ({ page }) => {
+    await page.goto("/");
+    const section = page.locator("#recommendations");
+    await section.scrollIntoViewIfNeeded();
+    expect(await section.locator("figure").count()).toBeLessThanOrEqual(3);
+    const viewAll = section.getByRole("link", { name: /all recommendations/ });
+    const empty = section.getByText("No recommendations here yet.");
+    await expect(viewAll.or(empty)).toBeVisible();
+  });
+
+  test("the full page lists them, or asks for the first one", async ({ page }) => {
+    await page.goto("/recommendations");
+    await waitForHydration(page);
+    await expect(page).toHaveTitle(/^Recommendations — /);
+    await expect(page.getByRole("heading", { level: 1, name: "Recommendations" })).toBeVisible();
+    await expect(page.locator("figure").first().or(page.getByText("No recommendations here yet."))).toBeVisible();
+    const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
+    expect(results.violations.map((violation) => violation.id)).toEqual([]);
+  });
+});
+
+test.describe("experience", () => {
+  test("each role is one row: year, role, organisation, without the description", async ({ page }) => {
+    await page.goto("/");
+    const rows = page.locator("#experience ol > li");
+    await rows.first().scrollIntoViewIfNeeded();
+    expect(await rows.count()).toBeGreaterThan(0);
+    await expect(rows.first().locator("h3")).toBeVisible();
+    await expect(rows.first().locator("p")).toHaveCount(1);
   });
 });
 

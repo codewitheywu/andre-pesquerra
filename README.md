@@ -33,7 +33,7 @@ the Supabase table editor (`contact_messages`, newest first).
 ```
 src/
   app/
-    (site)/            Public routes: shell (sidebar, mobile bar, palette), homepage, /stack, /blog, /behind-the-code, /consulting (+ inquiry Server Action), error boundary
+    (site)/            Public routes: shell (sidebar, mobile bar, palette), homepage, /stack, /blog, /behind-the-code, /recommendations, /consulting (+ inquiry Server Action), error boundary
     layout.tsx         Root layout: fonts, metadata, smooth scroll
     not-found.tsx      Styled 404
     robots.ts, sitemap.ts, icon.svg

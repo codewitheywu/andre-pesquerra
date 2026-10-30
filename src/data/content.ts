@@ -30,7 +30,6 @@ export const siteContent = {
 export const navigationItems: NavigationItem[] = [
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
-  { label: "GitHub", href: "#github" },
   { label: "Certifications", href: "#certifications" },
   { label: "Recommendations", href: "#recommendations" },
   { label: "Contact", href: "#contact" },
