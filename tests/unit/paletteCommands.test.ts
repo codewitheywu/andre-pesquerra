@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { COMMANDS, filterCommands, isSitePage } from "@/components/layout/paletteCommands";
+import { COMMANDS, filterCommands, isSitePage, moveHighlight } from "@/components/layout/paletteCommands";
 import { navigationItems } from "@/data/content";
 
 describe("command palette commands", () => {
@@ -25,6 +25,17 @@ describe("command palette commands", () => {
 
   it("returns nothing for unknown terms", () => {
     expect(filterCommands("zzzz")).toEqual([]);
+  });
+
+  it("moves the highlight with wrapping arrows, Home and End", () => {
+    expect(moveHighlight("ArrowDown", 0, 3)).toBe(1);
+    expect(moveHighlight("ArrowDown", 2, 3)).toBe(0);
+    expect(moveHighlight("ArrowUp", 0, 3)).toBe(2);
+    expect(moveHighlight("Home", 2, 3)).toBe(0);
+    expect(moveHighlight("End", 0, 3)).toBe(2);
+    expect(moveHighlight("Enter", 1, 3)).toBeNull();
+    // Nothing to move through when no command matches.
+    expect(moveHighlight("ArrowDown", 0, 0)).toBeNull();
   });
 
   it("opens site pages in place and everything else in a new tab", () => {

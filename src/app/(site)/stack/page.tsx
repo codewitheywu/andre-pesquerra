@@ -37,17 +37,22 @@ export default function StackPage() {
         down to the database.
       </p>
 
-      <div className="mt-16 space-y-14">
+      <div className="mt-16 space-y-12">
         {stackCategories.map((category, index) => {
           const headingId = `stack-${index}`;
           return (
             <section key={category.label} aria-labelledby={headingId}>
-              <h2
-                id={headingId}
-                className="mb-4 font-mono text-meta font-normal tracking-normal text-muted"
-              >
-                {category.label}
-              </h2>
+              <div className="mb-4 flex items-center gap-3">
+                <h2 id={headingId} className="text-h3 font-semibold text-ink">
+                  {category.label}
+                </h2>
+                <span aria-hidden="true" className="leader flex-1" />
+                <span className="shrink-0 font-mono text-meta text-muted">
+                  {category.tools.length}
+                  {/* Phones show the bare count, like a price on a menu. */}
+                  <span className="max-sm:sr-only"> {category.tools.length === 1 ? "tool" : "tools"}</span>
+                </span>
+              </div>
               <ul className="flex flex-wrap gap-2.5">
                 {category.tools.map((tool) => (
                   <li

@@ -114,6 +114,20 @@
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
+/* Short viewports (landscape phones, zoomed laptops): the sidebar and the
+ * palette tighten up instead of scrolling. */
+@custom-variant short (@media (max-height: 760px));
+@custom-variant shorter (@media (max-height: 620px));
+
+/* Scrolls by wheel, touch and keyboard, but draws no scrollbar. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @layer base {
   html {
     background: var(--bg);
@@ -291,6 +305,16 @@
     fill: var(--heat-4);
   }
 
+  /* Menu-board dot leader between a name and its price, here between a
+   * heading and its link or a role and its dates. */
+  .leader {
+    --leader-dot: color-mix(in srgb, var(--muted) 45%, transparent);
+    min-width: 1.5rem;
+    height: 4px;
+    background: radial-gradient(circle, var(--leader-dot) 1.25px, transparent 1.75px) 0 50% / 8px 4px
+      repeat-x;
+  }
+
   /* The command palette is a native modal <dialog>. */
   .palette::backdrop {
     background: color-mix(in srgb, var(--ink) 30%, transparent);
@@ -309,14 +333,12 @@
   z-index: 1;
 }
 
-/* Faint dot grid in the top-right corner, fading out toward the content. */
-.dot-grid {
-  background-image: radial-gradient(
-    color-mix(in srgb, var(--ink) 14%, transparent) 1px,
-    transparent 1.5px
-  );
-  background-size: 20px 20px;
-  mask-image: radial-gradient(ellipse 100% 100% at 100% 0%, #000 10%, transparent 70%);
+/* Halftone coffee-ring stain (public/halftone.svg, made by
+ * scripts/halftone.mjs). The SVG is a mask, so the dots take the theme's
+ * ink colour; on dark roast they read as cream on espresso. */
+.halftone {
+  background-color: color-mix(in srgb, var(--ink) 13%, transparent);
+  mask: url("/halftone.svg") right top / contain no-repeat;
 }
 
 @keyframes marquee {

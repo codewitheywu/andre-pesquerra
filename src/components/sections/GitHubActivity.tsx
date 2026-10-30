@@ -108,8 +108,7 @@ export default function GitHubActivity({ calendar }: { calendar: ContributionCal
   return (
     <Section
       id="github"
-      index={3}
-      title="github"
+      title="GitHub"
       action={{ label: `@${siteContent.githubUser}`, href: siteContent.github }}
     >
       {calendar ? (

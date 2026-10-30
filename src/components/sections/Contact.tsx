@@ -5,7 +5,7 @@ import { siteContent } from "@/data/content";
 
 export default function Contact() {
   return (
-    <Section id="contact" index={5} title="contact">
+    <Section id="contact" title="Contact">
       <p className="max-w-136 text-lead text-ink">
         Email is the best way to reach me, whether it&apos;s about a role, a
         freelance build, or a Figma or Webflow class.

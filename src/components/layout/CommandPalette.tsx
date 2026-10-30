@@ -4,7 +4,8 @@ import { useLenis } from "lenis/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { siteContent } from "@/data/content";
-import { filterCommands, isSitePage, runPreferenceCommand, type Command } from "./paletteCommands";
+import { filterCommands, isSitePage, moveHighlight, runPreferenceCommand } from "./paletteCommands";
+import type { Command } from "./paletteCommands";
 
 const OPEN_EVENT = "command-palette:open";
 
@@ -102,19 +103,10 @@ export default function CommandPalette() {
   }
 
   function onInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    const count = results.length;
-    if (event.key === "ArrowDown" && count) {
+    const next = moveHighlight(event.key, activeIndex, results.length);
+    if (next !== null) {
       event.preventDefault();
-      setActiveIndex((index) => (index + 1) % count);
-    } else if (event.key === "ArrowUp" && count) {
-      event.preventDefault();
-      setActiveIndex((index) => (index - 1 + count) % count);
-    } else if (event.key === "Home" && count) {
-      event.preventDefault();
-      setActiveIndex(0);
-    } else if (event.key === "End" && count) {
-      event.preventDefault();
-      setActiveIndex(count - 1);
+      setActiveIndex(next);
     } else if (event.key === "Enter") {
       event.preventDefault();
       const command = results[activeIndex];
@@ -123,18 +115,24 @@ export default function CommandPalette() {
   }
 
   const active = results[activeIndex];
+  const activeId = active ? `${listId}-${active.id}` : undefined;
+
+  // The list has no visible scrollbar, so keep the arrow-key choice in view.
+  useEffect(() => {
+    if (activeId) document.getElementById(activeId)?.scrollIntoView({ block: "nearest" });
+  }, [activeId]);
 
   return (
     <dialog
       ref={dialogRef}
       aria-label="Command palette"
-      className="palette m-auto mt-[12vh] w-[min(560px,calc(100vw-32px))] rounded-lg border border-border bg-surface p-0 text-ink shadow-soft"
+      className="palette m-auto mt-[12vh] max-h-[76dvh] w-[min(560px,calc(100vw-32px))] flex-col overflow-hidden rounded-lg border border-border bg-surface p-0 text-ink shadow-soft open:flex short:mt-[6vh] short:max-h-[88dvh]"
       onClick={(event) => {
         // A click on the backdrop lands on the <dialog> element itself.
         if (event.target === event.currentTarget) close();
       }}
     >
-      <div className="flex items-center gap-3 border-b border-border px-4">
+      <div className="flex shrink-0 items-center gap-3 border-b border-border px-4">
         <span aria-hidden="true" className="font-mono text-meta text-muted">
           ⌕
         </span>
@@ -145,7 +143,7 @@ export default function CommandPalette() {
           aria-expanded="true"
           aria-controls={listId}
           aria-autocomplete="list"
-          aria-activedescendant={active ? `${listId}-${active.id}` : undefined}
+          aria-activedescendant={activeId}
           aria-label="Search sections, links and actions"
           placeholder="Jump to a section or run an action…"
           value={query}
@@ -158,7 +156,7 @@ export default function CommandPalette() {
         />
       </div>
 
-      <ul id={listId} role="listbox" aria-label="Results" className="max-h-80 overflow-y-auto p-2">
+      <ul id={listId} role="listbox" aria-label="Results" data-lenis-prevent className="no-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain p-2">
         {results.map((command, index) => {
           const selected = index === activeIndex;
           return (
@@ -169,7 +167,7 @@ export default function CommandPalette() {
               aria-selected={selected}
               onMouseMove={() => setActiveIndex(index)}
               onClick={() => void run(command)}
-              className={`flex min-h-11 cursor-pointer items-center justify-between gap-4 rounded-md px-3 text-body ${
+              className={`flex min-h-11 cursor-pointer items-center justify-between gap-4 rounded-md px-3 text-body pointer-fine:min-h-9 ${
                 selected ? "bg-surface-2 text-ink" : "text-ink-2"
               }`}
             >
@@ -191,7 +189,7 @@ export default function CommandPalette() {
         </p>
       )}
 
-      <div className="flex items-center justify-between gap-4 border-t border-border px-4 py-2 font-mono text-meta text-muted">
+      <div className="flex shrink-0 items-center justify-between gap-4 border-t border-border px-4 py-2 font-mono text-meta text-muted">
         <span aria-live="polite">{notice || "↑↓ to move · enter to select"}</span>
         <span>esc to close</span>
       </div>

@@ -32,31 +32,31 @@ export default function SectionNav() {
 
   return (
     <nav aria-label="Sections">
-      <ol className="space-y-1">
-        {navigationItems.map((item, index) => {
+      <ul className="space-y-1 short:space-y-0">
+        {navigationItems.map((item) => {
           const active = activeId === item.href.slice(1);
           return (
             <li key={item.href}>
               <SectionLink
                 id={item.href.slice(1)}
                 aria-current={active ? "location" : undefined}
-                className={`group flex items-center gap-3 rounded-sm py-1 text-body transition-colors ${
-                  active ? "text-ink" : "text-muted hover:text-ink"
+                className={`flex items-center gap-3 rounded-sm py-1 text-body transition-colors ${
+                  active ? "font-medium text-ink" : "text-muted hover:text-ink"
                 }`}
               >
-                <span className="font-mono text-meta" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
                 <span>{item.label}</span>
+                {/* The current section is underlined with a caramel dot leader. */}
                 <span
                   aria-hidden="true"
-                  className={`h-px flex-1 transition-colors ${active ? "bg-accent" : "bg-transparent"}`}
+                  className={`leader flex-1 transition-opacity [--leader-dot:var(--accent)] ${
+                    active ? "opacity-100" : "opacity-0"
+                  }`}
                 />
               </SectionLink>
             </li>
           );
         })}
-      </ol>
+      </ul>
     </nav>
   );
 }

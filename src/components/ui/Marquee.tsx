@@ -30,7 +30,7 @@ export default function Marquee({ label, action, children }: MarqueeProps) {
   return (
     <div>
       <div className="mb-3 flex items-center justify-between gap-4">
-        <h3 className="font-mono text-meta font-normal tracking-normal text-muted">{label}</h3>
+        <h3 className="text-body font-medium tracking-normal text-ink-2">{label}</h3>
         <TextLink
           href={action.href}
           className="inline-flex min-h-11 items-center font-mono text-meta lowercase lg:min-h-0"

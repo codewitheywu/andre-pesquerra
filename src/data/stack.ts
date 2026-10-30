@@ -4,7 +4,6 @@
 // the client bundle.
 
 import {
-  siAndroid,
   siC,
   siClaude,
   siCss,
@@ -33,19 +32,12 @@ export type StackCategory = { label: string; tools: StackTool[] };
 
 export const stackCategories: StackCategory[] = [
   {
-    label: "languages",
+    label: "Frontend",
     tools: [
-      { name: "JavaScript", icon: siJavascript },
-      { name: "TypeScript", icon: siTypescript },
-      { name: "PHP", icon: siPhp },
-      { name: "C", icon: siC },
       { name: "HTML", icon: siHtml5 },
       { name: "CSS", icon: siCss },
-    ],
-  },
-  {
-    label: "frameworks & libraries",
-    tools: [
+      { name: "JavaScript", icon: siJavascript },
+      { name: "TypeScript", icon: siTypescript },
       { name: "React", icon: siReact },
       { name: "Next.js", icon: siNextdotjs },
       { name: "Tailwind CSS", icon: siTailwindcss },
@@ -53,27 +45,18 @@ export const stackCategories: StackCategory[] = [
     ],
   },
   {
-    label: "databases",
+    label: "Backend & databases",
     tools: [
+      { name: "PHP", icon: siPhp },
+      { name: "C", icon: siC },
+      { name: "PDO" },
       { name: "MySQL", icon: siMysql },
       { name: "MariaDB", icon: siMariadb },
-      { name: "PDO" },
       { name: "Supabase", icon: siSupabase },
     ],
   },
   {
-    label: "mobile",
-    tools: [{ name: "Android", icon: siAndroid }],
-  },
-  {
-    label: "design & no-code",
-    tools: [
-      { name: "Figma", icon: siFigma },
-      { name: "Webflow", icon: siWebflow },
-    ],
-  },
-  {
-    label: "tools & hosting",
+    label: "Deployment tools",
     tools: [
       { name: "Git", icon: siGit },
       { name: "GitHub", icon: siGithub },
@@ -83,7 +66,14 @@ export const stackCategories: StackCategory[] = [
     ],
   },
   {
-    label: "ai-assisted development",
+    label: "Design & no-code",
+    tools: [
+      { name: "Figma", icon: siFigma },
+      { name: "Webflow", icon: siWebflow },
+    ],
+  },
+  {
+    label: "AI-assisted tools",
     tools: [{ name: "Claude", icon: siClaude }, { name: "ChatGPT" }],
   },
 ];

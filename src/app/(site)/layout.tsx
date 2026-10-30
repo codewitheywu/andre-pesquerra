@@ -8,13 +8,18 @@ import SiteFooter from "@/components/layout/SiteFooter";
 export default function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <>
+      {/* The coffee-ring stain, top right, and a second print where the page ends. */}
       <div
         aria-hidden="true"
-        className="dot-grid pointer-events-none absolute top-0 right-0 -z-10 h-130 w-130 max-w-full"
+        className="halftone pointer-events-none absolute top-0 right-0 -z-10 size-105 max-w-full sm:size-160"
       />
       <Sidebar />
       <MobileBar />
-      <div className="lg:pl-64">
+      <div className="relative lg:pl-64">
+        <div
+          aria-hidden="true"
+          className="halftone pointer-events-none absolute bottom-0 left-0 -z-10 size-80 rotate-180 lg:left-64"
+        />
         <main id="main" tabIndex={-1} className="mx-auto max-w-170 px-5 sm:px-8">
           {children}
           <SiteFooter />

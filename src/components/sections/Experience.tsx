@@ -8,8 +8,7 @@ export default function Experience({ experience }: { experience: ExperienceItem[
   return (
     <Section
       id="experience"
-      index={2}
-      title="experience"
+      title="Experience"
       action={{ label: "résumé", href: siteContent.resume }}
     >
       <Timeline

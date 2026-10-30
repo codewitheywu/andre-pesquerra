@@ -226,6 +226,25 @@ test.describe("command palette", () => {
     await expect(trigger).toBeFocused();
   });
 
+  test("fits a short screen without scrollbars and keeps the choice in view", async ({ page }) => {
+    await page.setViewportSize({ width: 1100, height: 480 });
+    await page.goto("/");
+    const dialog = await openPalette(page);
+
+    // Neither the sidebar (when shown) nor the palette itself scrolls.
+    const sidebarOverflow = await page.evaluate(() => {
+      const aside = document.querySelector("aside");
+      return aside ? aside.scrollHeight - aside.clientHeight : 0;
+    });
+    expect(sidebarOverflow).toBeLessThanOrEqual(0);
+    const box = await dialog.boundingBox();
+    expect((box?.y ?? 0) + (box?.height ?? 0)).toBeLessThanOrEqual(480);
+
+    await page.keyboard.press("End");
+    await expect(dialog.getByRole("option").last()).toBeInViewport();
+    await expect(dialog.getByRole("option").last()).toHaveAttribute("aria-selected", "true");
+  });
+
   test("shows a helpful empty state", async ({ page }) => {
     await page.goto("/");
     const dialog = await openPalette(page);
@@ -459,7 +478,7 @@ test.describe("stack page", () => {
     await expect(page).toHaveURL(/[/]stack$/);
     await expect(page).toHaveTitle(/^Stack — /);
     await expect(page.getByRole("heading", { level: 1, name: "Stack" })).toBeVisible();
-    for (const category of ["languages", "frameworks & libraries", "databases", "tools & hosting"]) {
+    for (const category of ["Frontend", "Backend & databases", "Deployment tools", "Design & no-code", "AI-assisted tools"]) {
       await expect(page.getByRole("heading", { level: 2, name: category })).toBeVisible();
     }
     await expect(page.getByRole("listitem").filter({ hasText: /^PDO$/ })).toBeVisible();

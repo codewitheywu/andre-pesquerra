@@ -4,27 +4,23 @@ import Reveal from "./Reveal";
 
 type SectionProps = {
   id: string;
-  index: number;
   title: string;
   action?: { label: string; href: string };
   children: ReactNode;
 };
 
-/** A numbered, quiet section: `01 — projects` with an optional link on the right. */
-export default function Section({ id, index, title, action, children }: SectionProps) {
+/** A section headed like a café menu line: title, dot leader, then its link. */
+export default function Section({ id, title, action, children }: SectionProps) {
   const headingId = `${id}-heading`;
 
   return (
     <section id={id} aria-labelledby={headingId} className="scroll-mt-8">
       <Reveal>
-        <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-border pb-3">
-          <h2
-            id={headingId}
-            tabIndex={-1}
-            className="font-mono text-meta font-normal tracking-normal text-muted"
-          >
-            {String(index).padStart(2, "0")} — {title}
+        <div className="mb-6 flex items-center gap-3">
+          <h2 id={headingId} tabIndex={-1} className="text-h3 font-semibold text-ink">
+            {title}
           </h2>
+          <span aria-hidden="true" className="leader flex-1" />
           {action && (
             <TextLink
               href={action.href}

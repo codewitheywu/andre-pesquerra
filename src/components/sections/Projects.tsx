@@ -5,8 +5,8 @@ import type { Project } from "@/types/content";
 
 function ProjectRow({ project }: { project: Project }) {
   const body = (
-    <div className="flex items-start justify-between gap-6 py-5">
-      <div className="min-w-0">
+    <div className="py-5">
+      <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-3">
         <h3 className="text-lead font-medium tracking-normal text-ink">
           {project.title}
           {project.liveUrl && (
@@ -15,14 +15,19 @@ function ProjectRow({ project }: { project: Project }) {
             </span>
           )}
         </h3>
-        {project.summary && <p className="mt-1 text-body text-ink-2">{project.summary}</p>}
-        <p className="mt-2 font-mono text-meta text-muted">
-          {[project.role, ...project.stack].filter(Boolean).join(" · ")}
-        </p>
+        {project.year && (
+          <>
+            <span aria-hidden="true" className="leader hidden flex-1 self-center sm:block" />
+            <span className="order-first shrink-0 font-mono text-meta text-muted sm:order-none">
+              {project.year}
+            </span>
+          </>
+        )}
       </div>
-      {project.year && (
-        <span className="shrink-0 pt-1 font-mono text-meta text-muted">{project.year}</span>
-      )}
+      {project.summary && <p className="mt-1 text-body text-ink-2">{project.summary}</p>}
+      <p className="mt-2 font-mono text-meta text-muted">
+        {[project.role, ...project.stack].filter(Boolean).join(" · ")}
+      </p>
     </div>
   );
 
@@ -49,12 +54,11 @@ export default function Projects({ projects }: { projects: Project[] }) {
   return (
     <Section
       id="projects"
-      index={1}
-      title="projects"
+      title="Projects"
       action={{ label: "github", href: siteContent.github }}
     >
       {projects.length > 0 ? (
-        <ul className="divide-y divide-border">
+        <ul className="-my-5">
           {projects.map((project) => (
             <ProjectRow key={project.id} project={project} />
           ))}

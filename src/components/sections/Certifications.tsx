@@ -4,7 +4,7 @@ import Timeline from "./Timeline";
 
 export default function Certifications() {
   return (
-    <Section id="certifications" index={4} title="certifications">
+    <Section id="certifications" title="Certifications">
       <Timeline
         entries={certifications.map((item) => ({
           id: item.id,
