@@ -14,9 +14,9 @@ export default function Hero() {
           </h1>
           <p className="mt-6 text-lead text-ink">
             I&apos;m a full-stack web developer who builds database-driven
-            applications end to end. I led my capstone team in building an
-            appointment system for Gavina Noble Dental Clinic, and I teach Figma
-            and Webflow part-time.
+            applications end to end. I focus on functional, scalable software,
+            with clear data models and server logic that hold up as usage
+            grows.
           </p>
         </div>
 
