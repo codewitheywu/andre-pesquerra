@@ -14,10 +14,9 @@ const githubUser = "codewitheywu";
 export const siteContent = {
   name: "Andre V. Pesquerra",
   shortName: "Andre Pesquerra",
-  location: "Bataan, Philippines",
   role: "Full-stack web developer",
   description:
-    "Full-stack web developer in Bataan, Philippines, building database-driven web apps and persistent browser games.",
+    "Full-stack web developer building database-driven web apps and persistent browser games.",
 
   email: "andrevpesquerra@gmail.com",
   githubUser,

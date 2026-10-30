@@ -12,17 +12,10 @@ export default function Hero() {
           <h1 id="hero-heading" className="text-h2 font-semibold text-ink sm:text-h1">
             {siteContent.shortName}
           </h1>
-          <p className="mt-2 font-mono text-meta lowercase text-muted">{siteContent.location}</p>
-
           <p className="mt-6 text-lead text-ink">
-            <span className="font-medium">Full-stack developer and project lead.</span>{" "}
-            I design and build database-driven web applications, from the data
-            model and server logic to the interface people use.
-          </p>
-          <p className="mt-4 text-body text-ink-2">
-            As project lead for my capstone, I delivered an appointment
-            management system for Gavina Noble Dental Clinic, with a Three.js
-            3D dental chart and an Android companion app. I also teach Figma
+            I&apos;m a full-stack web developer who builds database-driven
+            applications end to end. I led my capstone team in building an
+            appointment system for Gavina Noble Dental Clinic, and I teach Figma
             and Webflow part-time.
           </p>
         </div>

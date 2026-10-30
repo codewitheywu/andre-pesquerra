@@ -21,6 +21,7 @@ describe("command palette commands", () => {
     expect(filterCommands("dark").map((c) => c.id)).toEqual(["theme-dark"]);
     expect(filterCommands("coffee").map((c) => c.id)).toEqual(["theme-light", "theme-dark"]);
     expect(filterCommands("mute").map((c) => c.id)).toEqual(["sound"]);
+    expect(filterCommands("tiktok").map((c) => c.id)).toEqual(["blog-page"]);
   });
 
   it("returns nothing for unknown terms", () => {
@@ -48,7 +49,7 @@ describe("command palette commands", () => {
 
   it("only links to absolute https URLs, the local résumé or site pages", () => {
     for (const command of COMMANDS.filter((c) => c.group === "Links")) {
-      expect(command.target).toMatch(/^(https:\/\/|\/files\/|\/stack$)/);
+      expect(command.target).toMatch(/^(https:\/\/|\/files\/|\/stack$|\/blog$)/);
     }
   });
 });

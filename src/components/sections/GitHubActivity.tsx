@@ -116,7 +116,7 @@ export default function GitHubActivity({ calendar }: { calendar: ContributionCal
       ) : (
         <p className="text-body text-ink-2">
           The activity graph is unavailable right now. My code is on{" "}
-          <TextLink href={siteContent.github}>GitHub</TextLink>.
+          <span className="whitespace-nowrap"><TextLink href={siteContent.github}>GitHub</TextLink>.</span>
         </p>
       )}
     </Section>

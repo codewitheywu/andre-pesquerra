@@ -58,6 +58,14 @@ export const COMMANDS: Command[] = [
     target: "/stack",
   },
   {
+    id: "blog-page",
+    label: "Blog: my TikTok posts",
+    group: "Links",
+    keywords: "blog tiktok videos posts",
+    hint: "→",
+    target: "/blog",
+  },
+  {
     id: "resume",
     label: "Open résumé",
     group: "Links",

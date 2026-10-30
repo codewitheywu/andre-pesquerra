@@ -18,7 +18,7 @@ function ProjectRow({ project }: { project: Project }) {
         {project.year && (
           <>
             <span aria-hidden="true" className="leader hidden flex-1 self-center sm:block" />
-            <span className="order-first shrink-0 font-mono text-meta text-muted sm:order-none">
+            <span className="order-first shrink-0 font-mono text-meta text-muted sm:order-0">
               {project.year}
             </span>
           </>
@@ -66,7 +66,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
       ) : (
         <p className="text-body text-ink-2">
           Project write-ups are being added. In the meantime, the code is on{" "}
-          <TextLink href={siteContent.github}>GitHub</TextLink>.
+          <span className="whitespace-nowrap"><TextLink href={siteContent.github}>GitHub</TextLink>.</span>
         </p>
       )}
     </Section>

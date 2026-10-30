@@ -33,7 +33,7 @@ export default function Marquee({ label, action, children }: MarqueeProps) {
         <h3 className="text-body font-medium tracking-normal text-ink-2">{label}</h3>
         <TextLink
           href={action.href}
-          className="inline-flex min-h-11 items-center font-mono text-meta lowercase lg:min-h-0"
+          className="inline-flex min-h-11 items-center font-mono text-meta lowercase lg:min-h-6"
         >
           {action.label}
         </TextLink>

@@ -24,7 +24,7 @@ export default function Section({ id, title, action, children }: SectionProps) {
           {action && (
             <TextLink
               href={action.href}
-              className="inline-flex min-h-11 items-center font-mono text-meta lowercase lg:min-h-0"
+              className="inline-flex min-h-11 items-center font-mono text-meta lowercase lg:min-h-6"
             >
               {action.label}
             </TextLink>

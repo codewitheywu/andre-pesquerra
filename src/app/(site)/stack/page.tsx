@@ -25,7 +25,7 @@ export default function StackPage() {
     <div className="pb-8 pt-10 lg:pt-24">
       <Link
         href="/#experience"
-        className="press inline-flex min-h-11 items-center gap-1.5 font-mono text-meta text-muted transition-colors hover:text-ink lg:min-h-0"
+        className="press inline-flex min-h-11 items-center gap-1.5 font-mono text-meta text-muted transition-colors hover:text-ink lg:min-h-6"
       >
         <span aria-hidden="true">←</span>
         back to experience

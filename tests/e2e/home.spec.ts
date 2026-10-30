@@ -289,6 +289,9 @@ test.describe("copy email", () => {
 test.describe("accessibility", () => {
   for (const colorScheme of ["light", "dark"] as const) {
     test(`no WCAG A/AA violations in ${colorScheme} mode once content is visible`, async ({ browser }) => {
+      // Scrolling through every section, then scanning the whole page, takes
+      // 15–25s on its own (WebKit is slowest) and overruns 30s under a full run.
+      test.slow();
       const { context, page } = await pageInScheme(browser, colorScheme);
       await revealAllSections(page);
       const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
@@ -502,6 +505,40 @@ test.describe("stack page", () => {
   test("has no WCAG A/AA violations", async ({ page }) => {
     // The stack page has no scroll reveals: everything is visible on load.
     await page.goto("/stack");
+    const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
+    expect(results.violations.map((violation) => violation.id)).toEqual([]);
+  });
+});
+
+test.describe("blog page", () => {
+  test("is reachable from the sidebar or the palette and lists posts or says why not", async ({ page }) => {
+    await page.goto("/");
+    await waitForHydration(page);
+    const width = page.viewportSize()?.width ?? 0;
+    if (width >= 1024) {
+      await page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: "Blog" }).click();
+    } else {
+      const dialog = await openPalette(page);
+      await dialog.getByRole("combobox").fill("blog");
+      await page.keyboard.press("Enter");
+    }
+
+    await expect(page).toHaveURL(/[/]blog$/);
+    await expect(page).toHaveTitle(/^Blog — /);
+    await expect(page.getByRole("heading", { level: 1, name: "Blog" })).toBeVisible();
+    const posts = page.locator("#posts-heading ~ ul > li");
+    const empty = page.getByText("The first posts are on their way.");
+    await expect(posts.first().or(empty)).toBeVisible();
+    if (width >= 1024) {
+      await expect(
+        page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: "Blog" })
+      ).toHaveAttribute("aria-current", "page");
+    }
+  });
+
+  test("has no WCAG A/AA violations", async ({ page }) => {
+    await page.goto("/blog");
+    await waitForHydration(page);
     const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
     expect(results.violations.map((violation) => violation.id)).toEqual([]);
   });

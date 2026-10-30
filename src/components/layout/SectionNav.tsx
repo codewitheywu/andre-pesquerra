@@ -1,12 +1,18 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { navigationItems } from "@/data/content";
 import SectionLink from "./SectionLink";
 
-/** Sidebar section links that mark the section currently being read. */
+/**
+ * Sidebar section links that mark the section currently being read, then,
+ * under a dotted divider, the pages that live outside the homepage.
+ */
 export default function SectionNav() {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const onBlog = usePathname() === "/blog";
 
   useEffect(() => {
     const sections = navigationItems
@@ -56,6 +62,20 @@ export default function SectionNav() {
             </li>
           );
         })}
+      </ul>
+      <div aria-hidden="true" className="leader my-3 short:my-2" />
+      <ul>
+        <li>
+          <Link
+            href="/blog"
+            aria-current={onBlog ? "page" : undefined}
+            className={`flex items-center rounded-sm py-1 text-body transition-colors ${
+              onBlog ? "font-medium text-ink" : "text-muted hover:text-ink"
+            }`}
+          >
+            Blog
+          </Link>
+        </li>
       </ul>
     </nav>
   );

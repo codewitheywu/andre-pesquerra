@@ -11,7 +11,6 @@ export default function SiteFooter() {
         </p>
         <PaletteTrigger className="min-h-11 hover:text-ink">Jump anywhere</PaletteTrigger>
       </div>
-      <p>Brewed with Next.js and Supabase. Set in Poppins and Geist Mono.</p>
     </footer>
   );
 }

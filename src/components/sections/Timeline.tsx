@@ -18,7 +18,7 @@ export default function Timeline({ entries }: { entries: TimelineEntry[] }) {
           <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-3">
             <h3 className="text-body font-medium tracking-normal text-ink">{entry.title}</h3>
             <span aria-hidden="true" className="leader hidden flex-1 self-center sm:block" />
-            <span className="order-first shrink-0 font-mono text-meta lowercase text-muted sm:order-none">
+            <span className="order-first shrink-0 font-mono text-meta lowercase text-muted sm:order-0">
               {entry.period}
             </span>
           </div>
