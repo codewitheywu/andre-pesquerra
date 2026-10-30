@@ -1,30 +1,32 @@
 import { siteContent } from "@/data/content";
 import LinkList from "@/components/ui/LinkList";
 import PaletteTrigger from "./PaletteTrigger";
+import SectionLink from "./SectionLink";
 import SectionNav from "./SectionNav";
+import SoundToggle from "./SoundToggle";
+import ThemeToggle from "./ThemeToggle";
 
 /** Fixed identity + navigation column on large screens. */
 export default function Sidebar() {
   return (
     <aside
       aria-label="Site"
-      className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-bg px-7 py-8 lg:flex"
+      className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col overflow-y-auto border-r border-border bg-bg px-7 py-8 lg:flex"
     >
-      <a href="#top" className="block rounded-sm">
-        <span className="block text-lead font-medium text-ink">{siteContent.shortName}</span>
-        <span className="block text-meta text-muted">{siteContent.role}</span>
-      </a>
-
-      <p className="mt-4 flex items-center gap-2 text-meta text-ink-2">
-        <span aria-hidden="true" className="size-2 rounded-full bg-accent" />
-        {siteContent.availability}
-      </p>
+      <SectionLink id="top" className="block rounded-sm text-lead font-medium text-ink">
+        {siteContent.shortName}
+      </SectionLink>
 
       <div className="mt-10">
         <SectionNav />
       </div>
 
-      <div className="mt-auto space-y-6">
+      <div className="mt-auto space-y-6 pt-10">
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <SoundToggle />
+        </div>
+
         <PaletteTrigger className="min-h-11 text-meta text-muted hover:text-ink">
           Jump anywhere
         </PaletteTrigger>

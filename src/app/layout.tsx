@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import { siteContent } from "@/data/content";
 import { env } from "@/lib/env";
+import { THEME_COLORS, THEME_SCRIPT } from "@/lib/theme";
 import "lenis/dist/lenis.css";
 import "@/styles/globals.css";
 
@@ -61,8 +62,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6efe6" },
-    { media: "(prefers-color-scheme: dark)", color: "#17110d" },
+    { media: "(prefers-color-scheme: light)", color: THEME_COLORS.light },
+    { media: "(prefers-color-scheme: dark)", color: THEME_COLORS.dark },
   ],
 };
 
@@ -71,7 +72,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       className={`${poppins.variable} ${geistMono.variable}`}
+      // THEME_SCRIPT sets data-theme before React hydrates.
+      suppressHydrationWarning
     >
+      <head>
+        {/* Restore a saved theme before first paint (no flash of the wrong theme). */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         <noscript>
           <style>{`[data-reveal] { opacity: 1 !important; transform: none !important; }`}</style>

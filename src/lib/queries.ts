@@ -3,21 +3,18 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { z } from "zod";
 import {
-  fallbackEducation,
   fallbackExperience,
   fallbackProjects,
 } from "@/data/content";
 import {
-  educationRowSchema,
   experienceRowSchema,
-  mapEducation,
   mapExperience,
   mapProject,
   parseRows,
   projectRowSchema,
 } from "@/lib/mappers";
 import { createPublicClient } from "@/lib/supabase/public";
-import type { EducationItem, ExperienceItem, Project } from "@/types/content";
+import type { ExperienceItem, Project } from "@/types/content";
 
 type QueryResult = PromiseLike<{
   data: unknown;
@@ -93,21 +90,5 @@ export function getExperience(): Promise<ExperienceItem[]> {
     experienceRowSchema,
     mapExperience,
     fallbackExperience
-  );
-}
-
-export function getEducation(): Promise<EducationItem[]> {
-  return queryWithFallback(
-    "education",
-    (supabase) =>
-      supabase
-        .from("education")
-        .select(
-          "id, institution, qualification, field_of_study, start_date, end_date, details"
-        )
-        .order("sort_order", { ascending: true }),
-    educationRowSchema,
-    mapEducation,
-    fallbackEducation
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import { useLenis } from "lenis/react";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { siteContent } from "@/data/content";
-import { filterCommands, type Command } from "./paletteCommands";
+import { filterCommands, isSitePage, runPreferenceCommand, type Command } from "./paletteCommands";
 
 const OPEN_EVENT = "command-palette:open";
 
@@ -20,6 +21,7 @@ export default function CommandPalette() {
   const [notice, setNotice] = useState("");
   const closeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const lenis = useLenis();
+  const router = useRouter();
   const listId = useId();
 
   const results = useMemo(() => filterCommands(query), [query]);
@@ -61,7 +63,11 @@ export default function CommandPalette() {
       const id = command.target;
       const target = document.getElementById(id);
       close();
-      if (!target) return;
+      if (!target) {
+        // Not on the home page (e.g. /stack): go there instead.
+        router.push(`/#${id}`);
+        return;
+      }
       history.pushState(null, "", `#${id}`);
       if (lenis) lenis.scrollTo(target);
       else target.scrollIntoView();
@@ -81,9 +87,17 @@ export default function CommandPalette() {
       return;
     }
 
+    const preferenceNotice = runPreferenceCommand(command.id);
+    if (preferenceNotice) {
+      setNotice(preferenceNotice);
+      return;
+    }
+
     if (command.group === "Links" && command.target) {
-      window.open(command.target, "_blank", "noopener,noreferrer");
       close();
+      // Site pages open in place; profiles and the résumé PDF in a new tab.
+      if (isSitePage(command.target)) router.push(command.target);
+      else window.open(command.target, "_blank", "noopener,noreferrer");
     }
   }
 

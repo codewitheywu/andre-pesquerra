@@ -19,17 +19,12 @@ export type ExperienceItem = {
   description: string;
 };
 
-export type EducationItem = {
+export type Certification = {
   id: string;
-  qualification: string;
-  institution: string;
+  name: string;
+  issuer: string;
+  /** Year earned, or a short label such as "certification". */
   period: string;
-  details: string;
-};
-
-export type StackGroup = {
-  label: string;
-  items: string[];
 };
 
 export type NavigationItem = {

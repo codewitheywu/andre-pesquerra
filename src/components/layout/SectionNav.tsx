@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { navigationItems } from "@/data/content";
+import SectionLink from "./SectionLink";
 
 /** Sidebar section links that mark the section currently being read. */
 export default function SectionNav() {
@@ -36,8 +37,8 @@ export default function SectionNav() {
           const active = activeId === item.href.slice(1);
           return (
             <li key={item.href}>
-              <a
-                href={item.href}
+              <SectionLink
+                id={item.href.slice(1)}
                 aria-current={active ? "location" : undefined}
                 className={`group flex items-center gap-3 rounded-sm py-1 text-body transition-colors ${
                   active ? "text-ink" : "text-muted hover:text-ink"
@@ -51,7 +52,7 @@ export default function SectionNav() {
                   aria-hidden="true"
                   className={`h-px flex-1 transition-colors ${active ? "bg-accent" : "bg-transparent"}`}
                 />
-              </a>
+              </SectionLink>
             </li>
           );
         })}

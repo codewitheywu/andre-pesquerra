@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Browser, type Page } from "@playwright/test";
 
-const SECTIONS = ["projects", "experience", "education", "stack", "contact"];
+const SECTIONS = ["projects", "experience", "github", "certifications", "contact"];
 const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
 function collectErrors(page: Page): string[] {
@@ -50,9 +50,11 @@ async function pageInScheme(browser: Browser, colorScheme: "light" | "dark") {
   return { context, page };
 }
 
-/** Event listeners attach on hydration; Reveal marks that moment. */
+/** Event listeners attach on hydration; wait for it before interacting. */
 async function waitForHydration(page: Page) {
-  await expect(page.locator('[data-reveal="hydrated"]').first()).toBeAttached();
+  // The theme is unknown during SSR, so one coffee button is pressed only
+  // once the client has taken over. Present on every route.
+  await expect(page.locator('[role="group"][aria-label="Theme"] [aria-pressed="true"]').first()).toBeAttached();
 }
 
 async function openPalette(page: Page) {
@@ -108,6 +110,18 @@ test.describe("homepage", () => {
     expect(overflow).toBeLessThanOrEqual(0);
   });
 
+  test("the GitHub section shows the activity graph or a fallback link", async ({ page }) => {
+    await page.goto("/");
+    const section = page.locator("#github");
+    const graph = section.getByRole("img", { name: /contribution/ });
+    const fallback = section.getByText("The activity graph is unavailable right now");
+    await expect(graph.or(fallback)).toBeVisible();
+    await expect(section.getByRole("link", { name: /@codewitheywu/ })).toHaveAttribute(
+      "href",
+      "https://github.com/codewitheywu"
+    );
+  });
+
   test("contact points to real destinations", async ({ page }) => {
     await page.goto("/");
     const contact = page.locator("#contact");
@@ -141,9 +155,9 @@ test.describe("layout", () => {
     await page.goto("/");
     test.skip((page.viewportSize()?.width ?? 0) < 1024, "Sidebar is desktop-only");
 
-    const link = page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: /Education/ });
+    const link = page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: /Certifications/ });
     await link.click();
-    await expect(page.locator("#education")).toBeInViewport();
+    await expect(page.locator("#certifications")).toBeInViewport();
     await expect(link).toHaveAttribute("aria-current", "location");
   });
 
@@ -169,14 +183,14 @@ test.describe("command palette", () => {
     const input = dialog.getByRole("combobox");
     await expect(input).toBeFocused();
 
-    await input.fill("edu");
+    await input.fill("cert");
     await expect(dialog.getByRole("option")).toHaveCount(1);
     await page.keyboard.press("Enter");
 
     await expect(dialog).toBeHidden();
-    await expect(page.locator("#education")).toBeInViewport();
-    await expect(page.locator("#education-heading")).toBeFocused();
-    await expect(page).toHaveURL(/#education$/);
+    await expect(page.locator("#certifications")).toBeInViewport();
+    await expect(page.locator("#certifications-heading")).toBeFocused();
+    await expect(page).toHaveURL(/#certifications$/);
   });
 
   test("arrow keys move the active option", async ({ page }) => {
@@ -325,11 +339,11 @@ test.describe("routing", () => {
   test("back returns to the previous section after a palette jump", async ({ page }) => {
     await page.goto("/");
     const dialog = await openPalette(page);
-    await dialog.getByRole("combobox").fill("stack");
+    await dialog.getByRole("combobox").fill("certifications");
     await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/#stack$/);
+    await expect(page).toHaveURL(/#certifications$/);
     await page.goBack();
-    await expect(page).not.toHaveURL(/#stack$/);
+    await expect(page).not.toHaveURL(/#certifications$/);
   });
 });
 
@@ -345,6 +359,69 @@ test.describe("themes and motion", () => {
     });
   }
 
+  test("the coffee buttons switch the theme and remember it", async ({ page }) => {
+    await page.goto("/");
+    await waitForHydration(page);
+    const background = () => page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor);
+    const hot = page.getByRole("button", { name: "Hot coffee (dark theme)" });
+    const iced = page.getByRole("button", { name: "Iced coffee (light theme)" });
+
+    // The switch animates (View Transitions), so wait for it to land.
+    await hot.click();
+    await expect(hot).toHaveAttribute("aria-pressed", "true");
+    await expect(iced).toHaveAttribute("aria-pressed", "false");
+    await expect.poll(background).toBe("rgb(23, 17, 13)");
+
+    await page.reload();
+    await waitForHydration(page);
+    expect(await background()).toBe("rgb(23, 17, 13)");
+    await expect(hot).toHaveAttribute("aria-pressed", "true");
+
+    await iced.click();
+    await expect.poll(background).toBe("rgb(246, 239, 230)");
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme-transition", /.+/);
+  });
+
+  test("the palette can switch the theme", async ({ page }) => {
+    await page.goto("/");
+    const dialog = await openPalette(page);
+    await dialog.getByRole("combobox").fill("hot coffee");
+    await page.keyboard.press("Enter");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(dialog).toContainText("Hot coffee it is");
+  });
+
+  test("sound effects are off by default and the choice persists", async ({ page }) => {
+    await page.goto("/");
+    await waitForHydration(page);
+    const sound = page.getByRole("button", { name: "Sound effects" });
+    await expect(sound).toHaveAttribute("aria-pressed", "false");
+    await sound.click();
+    await expect(sound).toHaveAttribute("aria-pressed", "true");
+    await page.reload();
+    await waitForHydration(page);
+    await expect(sound).toHaveAttribute("aria-pressed", "true");
+  });
+
+  test("the tools row moves on screen and holds still on hover", async ({ page, isMobile }) => {
+    await page.goto("/");
+    await waitForHydration(page);
+    const marquee = page.locator("#experience .marquee");
+    const track = marquee.locator(".marquee-track").first();
+    await expect(marquee).toHaveAttribute("data-running", "false");
+
+    await marquee.scrollIntoViewIfNeeded();
+    await expect(marquee).toHaveAttribute("data-running", "true");
+    if (!isMobile) {
+      await page.mouse.move(0, 0);
+      await expect(track).toHaveCSS("animation-play-state", "running");
+      await marquee.hover();
+      await expect(track).toHaveCSS("animation-play-state", "paused");
+    }
+    // The duplicate track exists only for the loop; assistive tech hears each tool once.
+    await expect(marquee.getByRole("list")).toHaveCount(1);
+  });
+
   test.describe("reduced motion", () => {
     test.use({ reducedMotion: "reduce" });
 
@@ -353,6 +430,61 @@ test.describe("themes and motion", () => {
       await revealAllSections(page);
       await expect(reveal(page, "projects")).toHaveCSS("transform", "none");
     });
+
+    test("the tools row is a static list", async ({ page }) => {
+      await page.goto("/");
+      await waitForHydration(page);
+      const tracks = page.locator("#experience .marquee-track");
+      await expect(tracks.first()).toHaveCSS("animation-name", "none");
+      await expect(tracks.nth(1)).toBeHidden();
+    });
+
+    test("the theme switches instantly, without the reveal", async ({ page }) => {
+      await page.goto("/");
+      await waitForHydration(page);
+      await page.getByRole("button", { name: "Hot coffee (dark theme)" }).click();
+      await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+      await expect(page.locator("html")).not.toHaveAttribute("data-theme-transition", /.+/);
+    });
+  });
+});
+
+test.describe("stack page", () => {
+  test("view all opens the full stack, grouped by category", async ({ page }) => {
+    await page.goto("/");
+    await waitForHydration(page);
+    await page.locator("#experience .marquee").scrollIntoViewIfNeeded();
+    await page.getByRole("link", { name: "view all" }).click();
+
+    await expect(page).toHaveURL(/[/]stack$/);
+    await expect(page).toHaveTitle(/^Stack — /);
+    await expect(page.getByRole("heading", { level: 1, name: "Stack" })).toBeVisible();
+    for (const category of ["languages", "frameworks & libraries", "databases", "tools & hosting"]) {
+      await expect(page.getByRole("heading", { level: 2, name: category })).toBeVisible();
+    }
+    await expect(page.getByRole("listitem").filter({ hasText: /^PDO$/ })).toBeVisible();
+  });
+
+  test("section links lead back to the home page", async ({ page }) => {
+    await page.goto("/stack");
+    await waitForHydration(page);
+    const width = page.viewportSize()?.width ?? 0;
+    if (width >= 1024) {
+      await page.getByRole("navigation", { name: "Sections" }).getByRole("link", { name: /Projects/ }).click();
+    } else {
+      const dialog = await openPalette(page);
+      await dialog.getByRole("combobox").fill("projects");
+      await page.keyboard.press("Enter");
+    }
+    await expect(page).toHaveURL(/[/]#projects$/);
+    await expect(page.locator("#projects")).toBeInViewport();
+  });
+
+  test("has no WCAG A/AA violations", async ({ page }) => {
+    // The stack page has no scroll reveals: everything is visible on load.
+    await page.goto("/stack");
+    const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
+    expect(results.violations.map((violation) => violation.id)).toEqual([]);
   });
 });
 

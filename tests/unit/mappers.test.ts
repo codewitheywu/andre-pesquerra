@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   experienceRowSchema,
   formatPeriod,
-  mapEducation,
   mapExperience,
   mapProject,
   parseRows,
@@ -80,7 +79,7 @@ describe("mapProject", () => {
   });
 });
 
-describe("mapExperience and mapEducation", () => {
+describe("mapExperience", () => {
   it("maps schema columns to UI fields", () => {
     expect(
       mapExperience({
@@ -99,18 +98,6 @@ describe("mapExperience and mapEducation", () => {
       period: "2025",
       description: "",
     });
-
-    expect(
-      mapEducation({
-        id: "d1",
-        institution: "University",
-        qualification: "BS",
-        field_of_study: "Computer Science",
-        start_date: null,
-        end_date: null,
-        details: null,
-      }).qualification
-    ).toBe("BS — Computer Science");
   });
 });
 

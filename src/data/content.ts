@@ -1,26 +1,27 @@
-// Static site content. Projects, experience and education are loaded from
+// Static site content. Projects and experience are loaded from
 // Supabase (see src/lib/queries.ts); the fallback lists below are shown when
 // the database is unavailable or its tables are empty.
 
 import type {
-  EducationItem,
+  Certification,
   ExperienceItem,
   NavigationItem,
   Project,
-  StackGroup,
 } from "@/types/content";
+
+const githubUser = "codewitheywu";
 
 export const siteContent = {
   name: "Andre V. Pesquerra",
   shortName: "Andre Pesquerra",
   location: "Bataan, Philippines",
   role: "Full-stack web developer",
-  availability: "Open to selected opportunities",
   description:
     "Full-stack web developer in Bataan, Philippines, building database-driven web apps and persistent browser games.",
 
   email: "andrevpesquerra@gmail.com",
-  github: "https://github.com/codewitheywu",
+  githubUser,
+  github: `https://github.com/${githubUser}`,
   linkedin: "https://www.linkedin.com/in/andre-pesquerra/",
 
   resume: "/files/resume.pdf",
@@ -30,16 +31,9 @@ export const siteContent = {
 export const navigationItems: NavigationItem[] = [
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
-  { label: "Education", href: "#education" },
-  { label: "Stack", href: "#stack" },
+  { label: "GitHub", href: "#github" },
+  { label: "Certifications", href: "#certifications" },
   { label: "Contact", href: "#contact" },
-];
-
-export const stackGroups: StackGroup[] = [
-  { label: "languages", items: ["PHP", "JavaScript", "HTML", "CSS", "C"] },
-  { label: "data", items: ["MySQL", "MariaDB", "PDO"] },
-  { label: "frameworks", items: ["Next.js", "React", "Three.js", "Tailwind CSS"] },
-  { label: "design & tools", items: ["Figma", "Webflow", "Git", "AI-assisted coding"] },
 ];
 
 export const fallbackProjects: Project[] = [
@@ -109,19 +103,12 @@ export const fallbackExperience: ExperienceItem[] = [
   },
 ];
 
-export const fallbackEducation: EducationItem[] = [
-  {
-    id: "bs-computer-science",
-    qualification: "Bachelor of Science in Computer Science",
-    institution: "Undergraduate studies",
-    period: "Education",
-    details: "",
-  },
+// TODO: add the year earned, and any newer certifications.
+export const certifications: Certification[] = [
   {
     id: "tesda-nc3-vgd",
-    qualification: "TESDA NC III — Visual Graphic Design",
-    institution: "Technical Education and Skills Development Authority",
+    name: "National Certificate III in Visual Graphic Design",
+    issuer: "TESDA, Technical Education and Skills Development Authority",
     period: "Certification",
-    details: "",
   },
 ];

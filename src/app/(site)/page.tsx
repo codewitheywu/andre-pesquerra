@@ -1,19 +1,21 @@
+import Certifications from "@/components/sections/Certifications";
 import Contact from "@/components/sections/Contact";
-import Education from "@/components/sections/Education";
+import GitHubActivity from "@/components/sections/GitHubActivity";
 import Experience from "@/components/sections/Experience";
 import Hero from "@/components/sections/Hero";
 import Projects from "@/components/sections/Projects";
-import Stack from "@/components/sections/Stack";
-import { getEducation, getExperience, getProjects } from "@/lib/queries";
+import { siteContent } from "@/data/content";
+import { getContributions } from "@/lib/github";
+import { getExperience, getProjects } from "@/lib/queries";
 
 // Re-fetch portfolio content from Supabase at most once a minute.
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [projects, experience, education] = await Promise.all([
+  const [projects, experience, contributions] = await Promise.all([
     getProjects(),
     getExperience(),
-    getEducation(),
+    getContributions(siteContent.githubUser),
   ]);
 
   return (
@@ -21,8 +23,8 @@ export default async function HomePage() {
       <Hero />
       <Projects projects={projects} />
       <Experience experience={experience} />
-      <Education education={education} />
-      <Stack />
+      <GitHubActivity calendar={contributions} />
+      <Certifications />
       <Contact />
     </div>
   );

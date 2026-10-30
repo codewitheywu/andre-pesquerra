@@ -1,4 +1,6 @@
 import { navigationItems, siteContent } from "@/data/content";
+import { getSoundEnabled, setSoundEnabled } from "@/lib/sound";
+import { setTheme } from "@/lib/theme";
 
 export type Command = {
   id: string;
@@ -6,7 +8,7 @@ export type Command = {
   group: "Jump to" | "Links" | "Actions";
   keywords: string;
   hint: string;
-  /** Section id for "Jump to", URL for "Links". */
+  /** Section id for "Jump to"; URL for "Links" (site pages open in place). */
   target?: string;
 };
 
@@ -25,6 +27,35 @@ export const COMMANDS: Command[] = [
     group: "Actions",
     keywords: "email contact mail copy",
     hint: "⧉",
+  },
+  {
+    id: "theme-light",
+    label: "Iced coffee (light theme)",
+    group: "Actions",
+    keywords: "theme light mode iced coffee appearance",
+    hint: "theme",
+  },
+  {
+    id: "theme-dark",
+    label: "Hot coffee (dark theme)",
+    group: "Actions",
+    keywords: "theme dark mode hot coffee appearance",
+    hint: "theme",
+  },
+  {
+    id: "sound",
+    label: "Turn sound effects on or off",
+    group: "Actions",
+    keywords: "sound effects audio mute volume",
+    hint: "sound",
+  },
+  {
+    id: "stack-page",
+    label: "Stack: every tool I use",
+    group: "Links",
+    keywords: "stack tools skills technologies languages frameworks",
+    hint: "→",
+    target: "/stack",
   },
   {
     id: "resume",
@@ -51,6 +82,25 @@ export const COMMANDS: Command[] = [
     target: siteContent.linkedin,
   },
 ];
+
+/** A page of this site (opened in place), as opposed to a file or another site. */
+export function isSitePage(target: string): boolean {
+  return target.startsWith("/") && !target.startsWith("//") && !target.endsWith(".pdf");
+}
+
+/** Apply a theme or sound command; returns the confirmation, or null if `id` is another kind. */
+export function runPreferenceCommand(id: string): string | null {
+  if (id === "theme-light" || id === "theme-dark") {
+    setTheme(id === "theme-light" ? "light" : "dark");
+    return id === "theme-light" ? "Iced coffee it is ✓" : "Hot coffee it is ✓";
+  }
+  if (id === "sound") {
+    const next = !getSoundEnabled();
+    setSoundEnabled(next);
+    return next ? "Sound effects on ✓" : "Sound effects off";
+  }
+  return null;
+}
 
 export function filterCommands(query: string): Command[] {
   const needle = query.trim().toLowerCase();

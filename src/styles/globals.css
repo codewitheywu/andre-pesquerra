@@ -4,7 +4,11 @@
  * Light coffee palette (CLAUDE.md §1). Light --muted is darkened from
  * #8C7764 (3.7:1) to #76614F (>= 4.7:1 on every surface) so it can carry
  * small text. --accent is never used for small text (3.9:1); it marks
- * hover underlines, the status dot and focus rings.
+ * hover underlines, focus rings and pressed toggles.
+ *
+ * Light ("iced coffee") is the default. Dark ("hot coffee") follows the
+ * OS unless the visitor picked a theme, which sets data-theme on <html>.
+ * --heat-* is the GitHub activity ramp: one hue, light to dark.
  * ------------------------------------------------------------------ */
 :root {
   --bg: #f6efe6;
@@ -17,11 +21,16 @@
   --accent: #a8693a;
   --accent-2: #c99a6b;
   --ring: #a8693a40;
+  --heat-0: #efe5d8;
+  --heat-1: #d6b48c;
+  --heat-2: #bb8452;
+  --heat-3: #94592d;
+  --heat-4: #5e381c;
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #17110d;
     --surface: #1f1712;
     --surface-2: #2a2019;
@@ -32,8 +41,32 @@
     --accent: #d29a63;
     --accent-2: #e6bb8c;
     --ring: #d29a6366;
+    --heat-0: #2a2019;
+    --heat-1: #5a3f2a;
+    --heat-2: #8c6440;
+    --heat-3: #c08a55;
+    --heat-4: #e6bb8c;
     color-scheme: dark;
   }
+}
+
+:root[data-theme="dark"] {
+  --bg: #17110d;
+  --surface: #1f1712;
+  --surface-2: #2a2019;
+  --border: #3a2d23;
+  --ink: #f2e8dc;
+  --ink-2: #cdbba8;
+  --muted: #9a8572;
+  --accent: #d29a63;
+  --accent-2: #e6bb8c;
+  --ring: #d29a6366;
+  --heat-0: #2a2019;
+  --heat-1: #5a3f2a;
+  --heat-2: #8c6440;
+  --heat-3: #c08a55;
+  --heat-4: #e6bb8c;
+  color-scheme: dark;
 }
 
 /* Only the design system exists: Tailwind's default colors, sizes, radii
@@ -87,11 +120,40 @@
     color: var(--ink);
     /* Clear the sticky mobile bar when jumping to a section. */
     scroll-padding-top: 72px;
+    /* Scrollbars wear the palette: a honey thumb on the page colour. */
+    scrollbar-color: color-mix(in srgb, var(--accent-2) 75%, var(--border)) var(--bg);
   }
 
   @media (min-width: 64rem) {
     html {
       scroll-padding-top: 32px;
+    }
+  }
+
+  * {
+    scrollbar-width: thin;
+  }
+
+  /* Safari ignores scrollbar-color; style its scrollbars directly. Engines
+   * that support the standard properties skip this block. */
+  @supports not (scrollbar-color: auto) {
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border: 3px solid transparent;
+      border-radius: var(--radius-full);
+      background: color-mix(in srgb, var(--accent-2) 75%, var(--border)) padding-box;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent) padding-box;
     }
   }
 
@@ -169,9 +231,97 @@
     transform: none;
   }
 
+  /* Infinite logo row: two identical tracks slide one track-width left, so
+   * the loop has no gap. It runs only while on screen and not paused by its
+   * button (data-running), and holds still on hover or keyboard focus. */
+  .marquee {
+    --marquee-gap: 2.5rem;
+    display: flex;
+    gap: var(--marquee-gap);
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--marquee-gap);
+    min-width: 100%;
+    justify-content: space-around;
+    animation: marquee 45s linear infinite paused;
+    will-change: transform;
+  }
+
+  .marquee[data-running="true"] .marquee-track {
+    animation-play-state: running;
+  }
+
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* GitHub activity cells. */
+  .heat-cell {
+    stroke: transparent;
+    stroke-width: 1.5;
+  }
+
+  .heat-cell:hover {
+    stroke: var(--ink);
+  }
+
+  .heat-0 {
+    fill: var(--heat-0);
+  }
+
+  .heat-1 {
+    fill: var(--heat-1);
+  }
+
+  .heat-2 {
+    fill: var(--heat-2);
+  }
+
+  .heat-3 {
+    fill: var(--heat-3);
+  }
+
+  .heat-4 {
+    fill: var(--heat-4);
+  }
+
   /* The command palette is a native modal <dialog>. */
   .palette::backdrop {
     background: color-mix(in srgb, var(--ink) 30%, transparent);
+  }
+}
+
+/* Theme switch reveal (src/lib/theme.ts animates the clip-path). Turn off
+ * the default crossfade so only the circle moves. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+:root[data-theme-transition="inward"]::view-transition-old(root) {
+  z-index: 1;
+}
+
+/* Faint dot grid in the top-right corner, fading out toward the content. */
+.dot-grid {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--ink) 14%, transparent) 1px,
+    transparent 1.5px
+  );
+  background-size: 20px 20px;
+  mask-image: radial-gradient(ellipse 100% 100% at 100% 0%, #000 10%, transparent 70%);
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(calc(-100% - var(--marquee-gap)));
   }
 }
 
@@ -192,6 +342,22 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* No sliding: list the logos once, wrapped, without the duplicate track. */
+  .marquee {
+    mask-image: none;
+  }
+
+  .marquee-track {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    row-gap: 1rem;
+    animation: none;
+  }
+
+  .marquee-track[aria-hidden="true"] {
+    display: none;
+  }
+
   *,
   *::before,
   *::after {

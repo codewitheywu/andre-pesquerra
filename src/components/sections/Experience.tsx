@@ -1,6 +1,7 @@
 import Section from "@/components/ui/Section";
 import { siteContent } from "@/data/content";
 import type { ExperienceItem } from "@/types/content";
+import StackMarquee from "./StackMarquee";
 import Timeline from "./Timeline";
 
 export default function Experience({ experience }: { experience: ExperienceItem[] }) {
@@ -20,6 +21,9 @@ export default function Experience({ experience }: { experience: ExperienceItem[
           detail: item.description,
         }))}
       />
+      <div className="mt-10">
+        <StackMarquee />
+      </div>
     </Section>
   );
 }

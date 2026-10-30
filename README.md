@@ -19,22 +19,25 @@ the fallback content in `src/data/content.ts`. Environment variables are validat
 ```
 src/
   app/
-    (site)/            Public routes: shell (sidebar, mobile bar, palette), homepage, error boundary
+    (site)/            Public routes: shell (sidebar, mobile bar, palette), homepage, /stack, error boundary
     layout.tsx         Root layout: fonts, metadata, smooth scroll
     not-found.tsx      Styled 404
     robots.ts, sitemap.ts, icon.svg
   assets/              Statically imported images (blur placeholders)
   components/
-    layout/            Sidebar, mobile bar, footer, command palette (⌘K), smooth scroll
-    sections/          Hero, Projects, Experience, Education, Stack, Contact
-    ui/                Primitives: Section, TextLink, LinkList, Kbd, CopyButton, Reveal
-  data/content.ts      Static content and database fallbacks
-  hooks/               useHydrated
+    layout/            Sidebar, mobile bar, footer, command palette (⌘K), theme and sound toggles
+    sections/          Hero, Projects, Experience (+ tools logo row), GitHubActivity, Certifications, Contact
+    ui/                Primitives: Section, TextLink, LinkList, Kbd, CopyButton, Reveal, Marquee, icons
+  data/content.ts      Static content (incl. certifications) and database fallbacks
+  data/stack.ts        Every tool on /stack, by category; those with logos feed the logo row
+  hooks/               useHydrated, useTheme / useSoundEnabled
   lib/
     env.ts             Zod-validated environment
     queries.ts         Server-side data access
     mappers.ts         Row validation and mapping (unit tested)
     motion.ts          Shared animation timing
+    theme.ts, sound.ts Visitor preferences (iced/hot coffee theme, optional sound effects)
+    github.ts          Public contribution calendar (cached 1h; falls back to a link)
     supabase/          The only place Supabase clients are created
   styles/globals.css   Light-coffee tokens and the Tailwind v4 design system
   types/               UI types; database.ts is generated (see below)

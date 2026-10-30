@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { COMMANDS, filterCommands } from "@/components/layout/paletteCommands";
+import { COMMANDS, filterCommands, isSitePage } from "@/components/layout/paletteCommands";
 import { navigationItems } from "@/data/content";
 
 describe("command palette commands", () => {
@@ -14,18 +14,30 @@ describe("command palette commands", () => {
   });
 
   it("matches labels case-insensitively and keywords", () => {
-    expect(filterCommands("EDU").map((c) => c.label)).toEqual(["Education"]);
+    expect(filterCommands("CERT").map((c) => c.label)).toEqual(["Certifications"]);
+    expect(filterCommands("skills").map((c) => c.id)).toEqual(["stack-page"]);
     expect(filterCommands("cv").map((c) => c.id)).toEqual(["resume"]);
     expect(filterCommands("mail").map((c) => c.id)).toEqual(["copy-email"]);
+    expect(filterCommands("dark").map((c) => c.id)).toEqual(["theme-dark"]);
+    expect(filterCommands("coffee").map((c) => c.id)).toEqual(["theme-light", "theme-dark"]);
+    expect(filterCommands("mute").map((c) => c.id)).toEqual(["sound"]);
   });
 
   it("returns nothing for unknown terms", () => {
     expect(filterCommands("zzzz")).toEqual([]);
   });
 
-  it("only links to absolute https URLs or the local résumé", () => {
+  it("opens site pages in place and everything else in a new tab", () => {
+    expect(isSitePage("/stack")).toBe(true);
+    expect(isSitePage("/files/resume.pdf")).toBe(false);
+    expect(isSitePage("https://github.com/codewitheywu")).toBe(false);
+    // Protocol-relative URLs leave the site.
+    expect(isSitePage("//evil.example")).toBe(false);
+  });
+
+  it("only links to absolute https URLs, the local résumé or site pages", () => {
     for (const command of COMMANDS.filter((c) => c.group === "Links")) {
-      expect(command.target).toMatch(/^(https:\/\/|\/files\/)/);
+      expect(command.target).toMatch(/^(https:\/\/|\/files\/|\/stack$)/);
     }
   });
 });
